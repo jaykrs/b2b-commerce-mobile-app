@@ -7,19 +7,19 @@ class OnboardingData {
       imageUrl: AppImages.onboarding1,
       headline: 'Browse all the category',
       description:
-          'In aliquip aute exercitation ut et nisi ut mollit. Deserunt dolor elit pariatur aute .',
+          'Discover deals, essentials, and top-selling products...',
     ),
     OnboardingModel(
       imageUrl: AppImages.onboarding2,
       headline: 'Amazing Discounts & Offers',
       description:
-          'In aliquip aute exercitation ut et nisi ut mollit. Deserunt dolor elit pariatur aute .',
+          'Limited-time deals—don’t miss your chance to save!...',
     ),
     OnboardingModel(
       imageUrl: AppImages.onboarding3,
-      headline: 'Delivery in 30 Min',
+      headline: 'Fastest Delivery',
       description:
-          'In aliquip aute exercitation ut et nisi ut mollit. Deserunt dolor elit pariatur aute .',
+          'Get your orders delivered to your doorstep in record time...',
     ),
   ];
 }

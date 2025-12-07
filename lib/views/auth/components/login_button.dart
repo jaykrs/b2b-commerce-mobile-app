@@ -4,17 +4,28 @@ class LoginButton extends StatelessWidget {
   const LoginButton({
     super.key,
     required this.onPressed,
+    required this.loading,
   });
 
-  final void Function() onPressed;
+  final void Function()? onPressed;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: onPressed,
-        child: const Text('Login'),
+        onPressed: loading ? null : onPressed,
+        child: loading
+            ? const SizedBox(
+                height: 22,
+                width: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : const Text("Login"),
       ),
     );
   }
