@@ -33,9 +33,18 @@ class HomePage extends StatelessWidget {
               ),
               floating: true,
               title: SvgPicture.asset(
-                "assets/images/app_logo.svg",
+                "assets/images/logo.svg",
                 height: 32,
               ),
+              // title: SvgPicture.asset(
+              //   "assets/images/logo.svg",
+              //   height: 20,
+              //   colorFilter: const ColorFilter.mode(
+              //     Colors.black,
+              //     BlendMode.srcIn,
+              //   ),
+              // ),
+
               actions: [
                 Padding(
                   padding: const EdgeInsets.only(right: 8, top: 4, bottom: 4),

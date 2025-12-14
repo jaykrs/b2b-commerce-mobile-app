@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:grocery/core/models/dummy_bundle_model.dart';
 
 import '../constants/constants.dart';
-import '../models/dummy_product_model.dart';
 import '../routes/app_routes.dart';
 import 'network_image.dart';
 
@@ -11,78 +11,98 @@ class ProductTileSquare extends StatelessWidget {
     required this.data,
   });
 
-  final ProductModel data;
+  final BundleModel data;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding / 2),
-      child: Material(
+    return Material(
+      borderRadius: AppDefaults.borderRadius,
+      color: AppColors.scaffoldBackground,
+      child: InkWell(
         borderRadius: AppDefaults.borderRadius,
-        color: AppColors.scaffoldBackground,
-        child: InkWell(
-          borderRadius: AppDefaults.borderRadius,
-          onTap: () => Navigator.pushNamed(context, AppRoutes.productDetails),
-          child: Container(
-            width: 176,
-            height: 296,
-            padding: const EdgeInsets.all(AppDefaults.padding),
-            decoration: BoxDecoration(
-              border: Border.all(width: 0.1, color: AppColors.placeholder),
-              borderRadius: AppDefaults.borderRadius,
+        onTap: () => Navigator.pushNamed(
+          context,
+          AppRoutes.productDetails,
+          arguments: data.id,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.grey.shade300, // border color
+              width: 1, // border width
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppDefaults.padding / 2),
-                  child: AspectRatio(
-                    aspectRatio: 1 / 1,
-                    child: NetworkImageWithLoader(
-                      data.cover,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+            borderRadius: AppDefaults.borderRadius, // rounded corners
+          ),
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // center vertically
+            crossAxisAlignment: CrossAxisAlignment.center, // center horizontally
+            children: [
+              // Product Image
+              SizedBox(
+                height: 100,
+                child: NetworkImageWithLoader(
+                  data.productImage ?? "",
+                  fit: BoxFit.contain,
                 ),
-                const SizedBox(height: 8),
+              ),
+              const SizedBox(height: 8),
+
+              // Product Name
+              Text(
+                data.name,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Colors.black, fontSize: 14),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+
+              // Package weight
+              if ((data.pkgGwt ?? data.dimension) != null)
                 Text(
-                  data.name,
+                  data.pkgGwt ?? data.dimension ?? "",
                   style: Theme.of(context)
                       .textTheme
-                      .titleMedium
-                      ?.copyWith(color: Colors.black),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                      .bodySmall
+                      ?.copyWith(color: Colors.black54),
+                  textAlign: TextAlign.center,
                 ),
-                const Spacer(),
-                Text(
-                  data.weight,
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
+              const SizedBox(height: 6),
+
+              // Price Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center, // center row
+                children: [
+                  Text(
+                    '₹${data.price.toStringAsFixed(1)}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 6),
+                  if (data.mrp != null)
                     Text(
-                      '\$${data.price.toInt()}',
+                      '₹${data.mrp!.toStringAsFixed(1)}',
                       style: Theme.of(context)
                           .textTheme
-                          .titleLarge
-                          ?.copyWith(color: Colors.black),
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      '\$${data.mainPrice}',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          .bodySmall
+                          ?.copyWith(
                             decoration: TextDecoration.lineThrough,
+                            color: Colors.grey,
+                            fontSize: 12,
                           ),
                     ),
-                  ],
-                )
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

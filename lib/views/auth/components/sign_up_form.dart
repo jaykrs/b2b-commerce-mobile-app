@@ -53,8 +53,6 @@ Future<void> registerUser() async {
   }
 
   setState(() => loading = true);
-  print("Sending request...");
-
   final url =
       Uri.parse('http://api.eazysupplies.com/api/auth/user'); // correct HTTPS
   try {

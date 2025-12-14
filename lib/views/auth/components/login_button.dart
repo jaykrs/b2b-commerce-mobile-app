@@ -5,10 +5,12 @@ class LoginButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.loading,
+    this.text = "Login",
   });
 
-  final void Function()? onPressed;
+  final VoidCallback? onPressed;
   final bool loading;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class LoginButton extends StatelessWidget {
                   color: Colors.white,
                 ),
               )
-            : const Text("Login"),
+            : Text(text),
       ),
     );
   }

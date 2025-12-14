@@ -1,11 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:grocery/core/constants/get_bundels.dart';
+import 'package:grocery/core/models/dummy_bundle_model.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/routes/app_routes.dart';
 import 'components/category_tile.dart';
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
+
+  @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  List<Category> categories = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  Future<void> fetchCategories() async {
+    try {
+      final data = await getCategories(); // fetch from API or local
+      setState(() {
+        categories = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() => isLoading = false);
+      debugPrint('Error fetching categories: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,108 +50,40 @@ class MenuPage extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 16),
-          const CateogoriesGrid()
-        ],
-      ),
-    );
-  }
-}
-
-class CateogoriesGrid extends StatelessWidget {
-  const CateogoriesGrid({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.count(
-        crossAxisCount: 3,
-        children: [
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/tGChxbZ.png',
-            label: 'Vegetables',
-            backgroundColor: AppColors.primary,
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/yOFxoIP.png',
-            label: 'Meat And Fish',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/GPsRaFC.png',
-            label: 'Medicine',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/mGRqfnc.png',
-            label: 'Baby Care',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/fwyz4oC.png',
-            label: 'Office Supplies',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/DNr8a6R.png',
-            label: 'Beauty',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/O2ZX5nR.png',
-            label: 'Gym Equipment',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/wJBopjL.png',
-            label: 'Gardening Tools',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/P4yJA9t.png',
-            label: 'Pet Care',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/sxGf76e.png',
-            label: 'Eye Wears',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/BPvKeXl.png',
-            label: 'Pack',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/m65fusg.png',
-            label: 'Others',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
+          Expanded(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : categories.isEmpty
+                    ? const Center(child: Text('No categories found'))
+                    : GridView.builder(
+                        padding: const EdgeInsets.all(AppDefaults.padding),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 0.8, // makes tile taller if needed
+                        ),
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          final category = categories[index];
+                          return CategoryTile(
+                            imageLink: "", // add category.image if available
+                            label: category.name,
+                            backgroundColor: AppColors.primary,
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.categoryDetails,
+                                arguments: {
+                                  'categoryId': category.id,
+                                  'categoryName': category.name,
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
           ),
         ],
       ),

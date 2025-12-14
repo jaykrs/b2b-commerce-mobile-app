@@ -28,10 +28,19 @@ class CategoryTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              
               padding: const EdgeInsets.all(AppDefaults.padding * 1),
+              // decoration: BoxDecoration(
+              //   color: backgroundColor ?? AppColors.textInputBackground,
+              //   shape: BoxShape.circle,
+              // ),
               decoration: BoxDecoration(
                 color: backgroundColor ?? AppColors.textInputBackground,
-                shape: BoxShape.circle,
+                //shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.grey.shade400, // border color
+                  width: 1.5, // border width
+                ),
               ),
               child: SizedBox(
                 width: 36,
@@ -47,10 +56,11 @@ class CategoryTile extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               label,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500,
+                    fontSize: 12
                   ),
-              maxLines: 1,
+              maxLines: 2,
               textAlign: TextAlign.center,
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../views/auth/forget_password_page.dart';
 import '../../views/auth/intro_login_page.dart';
@@ -78,8 +79,29 @@ class RouteGenerator {
       case AppRoutes.checkoutPage:
         return CupertinoPageRoute(builder: (_) => const CheckoutPage());
 
+      // case AppRoutes.categoryDetails:
+      //   return CupertinoPageRoute(builder: (_) => const CategoryProductPage());
+
       case AppRoutes.categoryDetails:
-        return CupertinoPageRoute(builder: (_) => const CategoryProductPage());
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        if (args != null &&
+            args.containsKey('categoryId') &&
+            args.containsKey('categoryName')) {
+          return CupertinoPageRoute(
+            builder: (_) => CategoryProductPage(
+              categoryId: args['categoryId'] as int,
+              categoryName: args['categoryName'] as String,
+            ),
+          );
+        } else {
+          // Fallback if arguments are missing
+          return CupertinoPageRoute(
+            builder: (_) => const Scaffold(
+              body: Center(child: Text('Category not found')),
+            ),
+          );
+        }
 
       case AppRoutes.login:
         return CupertinoPageRoute(builder: (_) => const LoginPage());
@@ -106,15 +128,38 @@ class RouteGenerator {
       case AppRoutes.popularItems:
         return CupertinoPageRoute(builder: (_) => const PopularPackPage());
 
+      // case AppRoutes.bundleProduct:
+      //   return CupertinoPageRoute(
+      //       builder: (_) => const BundleProductDetailsPage());
+
       case AppRoutes.bundleProduct:
-        return CupertinoPageRoute(
-            builder: (_) => const BundleProductDetailsPage());
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        if (args != null && args.containsKey('productId')) {
+          return MaterialPageRoute(
+            builder: (_) => BundleProductDetailsPage(
+              productId: args['productId'] as int,
+            ),
+          );
+        }
+
+        return MaterialPageRoute(
+          builder: (_) => const Scaffold(
+            body: Center(child: Text('Product not found')),
+          ),
+        );
 
       case AppRoutes.bundleDetailsPage:
         return CupertinoPageRoute(builder: (_) => const BundleDetailsPage());
 
+      // case AppRoutes.productDetails:
+      //   return CupertinoPageRoute(builder: (_) => const ProductDetailsPage());
+
       case AppRoutes.productDetails:
-        return CupertinoPageRoute(builder: (_) => const ProductDetailsPage());
+        final productId = settings.arguments as int; // extract argument
+        return CupertinoPageRoute(
+          builder: (_) => ProductDetailsPage(productId: productId),
+        );
 
       case AppRoutes.createMyPack:
         return CupertinoPageRoute(builder: (_) => const BundleCreatePage());
