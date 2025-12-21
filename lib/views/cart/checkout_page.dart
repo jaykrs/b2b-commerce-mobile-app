@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grocery/views/cart/components/checkout_address_selector.dart';
 
 import '../../core/components/app_back_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/routes/app_routes.dart';
-import 'components/checkout_address_selector.dart';
 import 'components/checkout_card_details.dart';
 import 'components/checkout_payment_systems.dart';
 
@@ -21,8 +21,8 @@ class CheckoutPage extends StatelessWidget {
         child: Column(
           children: [
             AddressSelector(),
-            PaymentSystem(),
-            CardDetails(),
+           // PaymentSystem(),
+           // CardDetails(),
             PayNowButton(),
             SizedBox(height: 16),
           ],
@@ -47,7 +47,7 @@ class PayNowButton extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, AppRoutes.orderSuccessfull);
           },
-          child: const Text('Pay Now'),
+          child: const Text('Place Order'),
         ),
       ),
     );

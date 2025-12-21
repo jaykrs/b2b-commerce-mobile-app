@@ -22,34 +22,36 @@ class DrawerPage extends StatelessWidget {
         child: Column(
           children: [
             AppSettingsListTile(
-              label: 'Invite Friend',
+              label: 'My Profile',
               trailing: SvgPicture.asset(AppIcons.right),
             ),
             AppSettingsListTile(
-              label: 'About Us',
+              label: 'Order',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () => Navigator.pushNamed(context, AppRoutes.aboutUs),
             ),
             AppSettingsListTile(
-              label: 'FAQs',
+              label: 'Payment',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () => Navigator.pushNamed(context, AppRoutes.faq),
+            ),
+            AppSettingsListTile(
+              label: 'Address',
+              trailing: SvgPicture.asset(AppIcons.right),
+              onTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.termsAndConditions),
+            ),
+            AppSettingsListTile(
+              label: 'Notification',
+              trailing: SvgPicture.asset(AppIcons.right),
+              onTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.termsAndConditions),
             ),
             AppSettingsListTile(
               label: 'Terms & Conditions',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
                   Navigator.pushNamed(context, AppRoutes.termsAndConditions),
-            ),
-            AppSettingsListTile(
-              label: 'Help Center',
-              trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () => Navigator.pushNamed(context, AppRoutes.help),
-            ),
-            AppSettingsListTile(
-              label: 'Rate This App',
-              trailing: SvgPicture.asset(AppIcons.right),
-              // onTap: () => Navigator.pushNamed(context, AppRoutes.help),
             ),
             AppSettingsListTile(
               label: 'Privacy Policy',

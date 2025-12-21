@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:grocery/core/constants/app_colors.dart';
+import 'package:grocery/core/routes/app_routes.dart';
 
 import '../../core/components/network_image.dart';
 import '../../core/constants/app_defaults.dart';
@@ -60,15 +62,25 @@ class OrderSuccessfullPage extends StatelessWidget {
                   padding: const EdgeInsets.all(AppDefaults.padding),
                   child: SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
+                    child: OutlinedButton(
                       onPressed: () {
-                        UiUtil.openDialog(
-                          context: context,
-                          widget: const DeliverySuccessfullDialog(),
-                        );
+                        Navigator.pushNamed(context, AppRoutes.entryPoint);
                       },
-                      child: const Text('Continue'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.primary,
+                        side: const BorderSide(color: AppColors.primary),
+                      ),
+                      child: const Text('Browse Home'),
                     ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     UiUtil.openDialog(
+                    //       context: context,
+                    //       widget: const DeliverySuccessfullDialog(),
+                    //     );
+                    //   },
+                    //   child: const Text('Continue'),
+                    // ),
                   ),
                 ),
                 Padding(

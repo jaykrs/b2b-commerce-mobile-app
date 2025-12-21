@@ -29,7 +29,7 @@ class AppBottomNavigationBar extends StatelessWidget {
             onTap: () => onNavTap(0),
           ),
           BottomAppBarItem(
-            name: 'Menu',
+            name: 'Category',
             iconLocation: AppIcons.menu,
             isActive: currentIndex == 1,
             onTap: () => onNavTap(1),
@@ -41,7 +41,7 @@ class AppBottomNavigationBar extends StatelessWidget {
           /* <---- We have to leave this 3rd index (2) for the cart item -----> */
 
           BottomAppBarItem(
-            name: 'Save',
+            name: 'Brand',
             iconLocation: AppIcons.save,
             isActive: currentIndex == 3,
             onTap: () => onNavTap(3),

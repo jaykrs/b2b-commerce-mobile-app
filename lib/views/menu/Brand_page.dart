@@ -1,0 +1,98 @@
+import 'package:flutter/material.dart';
+import 'package:grocery/core/constants/get_bundels.dart';
+import 'package:grocery/core/models/dummy_bundle_model.dart';
+
+import '../../core/constants/constants.dart';
+import '../../core/routes/app_routes.dart';
+import 'components/category_tile.dart';
+
+class BrandPage extends StatefulWidget {
+  //const BrandPage({super.key});
+  const BrandPage({
+    super.key,
+    this.isHomePage = false,
+  });
+
+  final bool isHomePage;
+
+  @override
+  State<BrandPage> createState() => _BrandPageState();
+}
+
+class _BrandPageState extends State<BrandPage> {
+  List<Brand> Brands = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  Future<void> fetchCategories() async {
+    try {
+      final data = await getBrands(); // fetch from API or local
+      setState(() {
+        Brands = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() => isLoading = false);
+      debugPrint('Error fetching categories: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          const SizedBox(height: 32),
+          Text(
+            'Choose a brand',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Brands.isEmpty
+                    ? const Center(child: Text('No brand found'))
+                    : GridView.builder(
+                        padding: const EdgeInsets.all(AppDefaults.padding),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 0.8, // makes tile taller if needed
+                        ),
+                        itemCount: Brands.length,
+                        itemBuilder: (context, index) {
+                          final brand = Brands[index];
+                          return CategoryTile(
+                            imageLink: "", // add category.image if available
+                            label: brand.name,
+                            backgroundColor: AppColors.primary,
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.brandDetails,
+                                arguments: {
+                                  'brandId': brand.id,
+                                  'brandName': brand.name,
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+          ),
+        ],
+      ),
+    );
+  }
+}

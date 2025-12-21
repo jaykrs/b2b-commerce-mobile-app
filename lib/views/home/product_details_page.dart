@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:grocery/core/constants/cartStorage.dart';
+import 'package:grocery/core/constants/localStorageService.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
@@ -23,11 +25,12 @@ class ProductDetailsPage extends StatefulWidget {
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   BundleModel? product;
   bool isLoading = true;
-
+  int quantity = 1;
   @override
   void initState() {
     super.initState();
     fetchProductDetails();
+    _loadCartQuantity();
   }
 
   Future<void> fetchProductDetails() async {
@@ -52,8 +55,32 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     }
   }
 
+  void onQuantityChanged(int newQuantity) {
+    setState(() {
+      quantity = newQuantity; // update parent
+    });
+  }
+
+  Future<void> _loadCartQuantity() async {
+  final id = widget.productId.toString();
+  final existingQty = await CartStorage.getItemQty(id);
+
+  if (existingQty > 0) {
+    setState(() {
+      quantity = existingQty;
+    });
+  }
+}
+
   @override
   Widget build(BuildContext context) {
+    final imageUrls = product?.productImage
+            ?.split(',') // split by comma
+            .map((e) => e.trim()) // remove spaces
+            .where((e) => e.isNotEmpty) // ignore empty strings
+            .toList() ??
+        [];
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -68,7 +95,35 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
                 child: BuyNowRow(
                   onBuyButtonTap: () {},
-                  onCartButtonTap: () {},
+                  //onCartButtonTap: () {},
+                  onCartButtonTap: () async {
+                    final id = product?.id?.toString();
+                    if (id == null) return;
+
+                    final isInCart = await CartStorage.isInCart(id);
+
+                    if (!isInCart) {
+                      // Add item with qty = 1
+                      await CartStorage.addToCart(id, 1);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Item added to cart'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    } else {
+                      // Increase qty if already in cart
+                      await CartStorage.increaseQty(id);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Item quantity updated'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
             ),
@@ -80,11 +135,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   child: Column(
                     children: [
                       ProductImagesSlider(
-                        images: [
-                          'https://i.imgur.com/3o6ons9.png',
-                          'https://i.imgur.com/3o6ons9.png',
-                          'https://i.imgur.com/3o6ons9.png',
-                        ],
+                        images: imageUrls,
                       ),
                       //   product!.productImage ??
                       //       [product!.productImage ?? ""],
@@ -116,7 +167,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         child: PriceAndQuantityRow(
                           currentPrice: product!.price,
                           orginalPrice: product!.mrp ?? product!.price,
-                          quantity: 1, // default quantity
+                          quantity: quantity,
+                          onQuantityIncrease: () =>
+                              onQuantityChanged(quantity + 1),
+                          onQuantityDecrease: () {
+                            if (quantity > 1) onQuantityChanged(quantity - 1);
+                          },
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -146,7 +202,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         child: Column(
                           children: [
                             const Divider(thickness: 0.1),
-                            ReviewRowButton(totalStars:  0),
+                            ReviewRowButton(totalStars: 0),
                             const Divider(thickness: 0.1),
                           ],
                         ),
@@ -157,113 +213,3 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-
-// import '../../core/components/app_back_button.dart';
-// import '../../core/components/buy_now_row_button.dart';
-// import '../../core/components/price_and_quantity.dart';
-// import '../../core/components/product_images_slider.dart';
-// import '../../core/components/review_row_button.dart';
-// import '../../core/constants/app_defaults.dart';
-
-// class ProductDetailsPage extends StatelessWidget {
-//   const ProductDetailsPage({super.key, required int productId});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       resizeToAvoidBottomInset: false,
-//       appBar: AppBar(
-//         leading: const AppBackButton(),
-//         title: const Text('Product Details'),
-//       ),
-//       bottomNavigationBar: SafeArea(
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
-//           child: BuyNowRow(
-//             onBuyButtonTap: () {},
-//             onCartButtonTap: () {},
-//           ),
-//         ),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             const ProductImagesSlider(
-//               images: [
-//                 'https://i.imgur.com/3o6ons9.png',
-//                 'https://i.imgur.com/3o6ons9.png',
-//                 'https://i.imgur.com/3o6ons9.png',
-//               ],
-//             ),
-//             SizedBox(
-//               width: double.infinity,
-//               child: Padding(
-//                 padding: const EdgeInsets.all(AppDefaults.padding),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text(
-//                       'Cauliflower Bangladeshi',
-//                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                     ),
-//                     const SizedBox(height: 8),
-//                     const Text('Weight: 5Kg'),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             const Padding(
-//               padding: EdgeInsets.symmetric(horizontal: AppDefaults.padding),
-//               child: PriceAndQuantityRow(
-//                 currentPrice: 20,
-//                 orginalPrice: 30,
-//                 quantity: 2,
-//               ),
-//             ),
-//             const SizedBox(height: 8),
-
-//             /// Product Details
-//             Padding(
-//               padding: const EdgeInsets.all(AppDefaults.padding),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     'Product Details',
-//                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-//                           fontWeight: FontWeight.bold,
-//                           color: Colors.black,
-//                         ),
-//                   ),
-//                   const SizedBox(height: 8),
-//                   const Text(
-//                     'Duis aute veniam veniam qui aliquip irure duis sint magna occaecat dolore nisi culpa do. Est nisi incididunt aliquip  commodo aliqua tempor.',
-//                   ),
-//                 ],
-//               ),
-//             ),
-
-//             /// Review Row
-//             const Padding(
-//               padding: EdgeInsets.symmetric(
-//                 horizontal: AppDefaults.padding,
-//                 // vertical: AppDefaults.padding,
-//               ),
-//               child: Column(
-//                 children: [
-//                   Divider(thickness: 0.1),
-//                   ReviewRowButton(totalStars: 5),
-//                   Divider(thickness: 0.1),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

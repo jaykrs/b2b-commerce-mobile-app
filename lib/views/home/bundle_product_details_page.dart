@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:grocery/core/constants/api_config.dart';
+import 'package:grocery/core/constants/cartStorage.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
@@ -12,6 +13,7 @@ import '../../core/constants/constants.dart';
 import '../../core/models/dummy_bundle_model.dart';
 import 'components/bundle_meta_data.dart';
 import 'components/bundle_pack_details.dart';
+import '../../core/constants/localStorageService.dart';
 
 class BundleProductDetailsPage extends StatefulWidget {
   final int productId;
@@ -29,11 +31,13 @@ class BundleProductDetailsPage extends StatefulWidget {
 class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
   BundleModel? product;
   bool isLoading = true;
+  int quantity = 1;
 
   @override
   void initState() {
     super.initState();
     fetchProductDetails();
+    _loadCartQuantity();
   }
 
   Future<void> fetchProductDetails() async {
@@ -62,6 +66,23 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
     }
   }
 
+  void onQuantityChanged(int newQuantity) {
+    setState(() {
+      quantity = newQuantity; // update parent
+    });
+  }
+
+  Future<void> _loadCartQuantity() async {
+    final id = widget.productId.toString();
+    final existingQty = await CartStorage.getItemQty(id);
+
+    if (existingQty > 0) {
+      setState(() {
+        quantity = existingQty;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +99,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                     children: [
                       ProductImagesSlider(
                         images: [
-                          product!.productImage ??
-                              'https://i.imgur.com/NOuZzbe.png',
+                          product!.productImage ?? '',
                         ],
                       ),
 
@@ -100,10 +120,21 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                                     ),
                               ),
                             ),
+                            // PriceAndQuantityRow(
+                            //   currentPrice: product!.price,
+                            //   orginalPrice: product!.mrp ?? product!.price,
+                            //   quantity: 1,
+                            // ),
                             PriceAndQuantityRow(
                               currentPrice: product!.price,
                               orginalPrice: product!.mrp ?? product!.price,
-                              quantity: 1,
+                              quantity: quantity,
+                              onQuantityIncrease: () =>
+                                  onQuantityChanged(quantity + 1),
+                              onQuantityDecrease: () {
+                                if (quantity > 1)
+                                  onQuantityChanged(quantity - 1);
+                              },
                             ),
                             const SizedBox(height: AppDefaults.padding / 2),
                             BundleMetaData(
@@ -120,8 +151,37 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                               onBuyButtonTap: () {
                                 debugPrint('Buy Now: ${product!.id}');
                               },
-                              onCartButtonTap: () {
-                                debugPrint('Add to cart: ${product!.id}');
+                              // onCartButtonTap: () {
+                              //   debugPrint('Add to cart: ${product!.id}');
+                              // },
+                              onCartButtonTap: () async {
+                                final id = product?.id?.toString();
+                                if (id == null) return;
+
+                                final isInCart = await CartStorage.isInCart(id);
+
+                                if (!isInCart) {
+                                  // Add item with current quantity from parent state
+                                  await CartStorage.addToCart(id, quantity);
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Item added to cart'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                } else {
+                                  // Update quantity in cart to match current quantity in UI
+                                  await CartStorage.updateCartQty(id, quantity);
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Item quantity updated in cart'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ],
@@ -133,73 +193,3 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-
-// import '../../core/components/app_back_button.dart';
-// import '../../core/components/buy_now_row_button.dart';
-// import '../../core/components/price_and_quantity.dart';
-// import '../../core/components/product_images_slider.dart';
-// import '../../core/components/review_row_button.dart';
-// import '../../core/constants/constants.dart';
-// import 'components/bundle_meta_data.dart';
-// import 'components/bundle_pack_details.dart';
-
-// class BundleProductDetailsPage extends StatelessWidget {
-//   const BundleProductDetailsPage({super.key, required int productId});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         leading: const AppBackButton(),
-//         title: const Text('Product Details'),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             const ProductImagesSlider(
-//               images: [
-//                 'https://i.imgur.com/NOuZzbe.png',
-//                 'https://i.imgur.com/NOuZzbe.png',
-//                 'https://i.imgur.com/NOuZzbe.png',
-//               ],
-//             ),
-//             /* <---- Product Data -----> */
-//             Padding(
-//               padding: const EdgeInsets.all(AppDefaults.padding),
-//               child: Column(
-//                 children: [
-//                   Align(
-//                     alignment: Alignment.centerLeft,
-//                     child: Text(
-//                       'Bundle Pack',
-//                       style:
-//                           Theme.of(context).textTheme.headlineSmall?.copyWith(
-//                                 fontWeight: FontWeight.bold,
-//                               ),
-//                     ),
-//                   ),
-//                   const PriceAndQuantityRow(
-//                     currentPrice: 20,
-//                     orginalPrice: 30,
-//                     quantity: 2,
-//                   ),
-//                   const SizedBox(height: AppDefaults.padding / 2),
-//                   const BundleMetaData(),
-//                   const PackDetails(),
-//                   const ReviewRowButton(totalStars: 5),
-//                   const Divider(thickness: 0.1),
-//                   BuyNowRow(
-//                     onBuyButtonTap: () {},
-//                     onCartButtonTap: () {},
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

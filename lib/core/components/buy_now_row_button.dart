@@ -28,11 +28,11 @@ class BuyNowRow extends StatelessWidget {
           const SizedBox(width: AppDefaults.padding),
           Expanded(
             child: ElevatedButton(
-              onPressed: onBuyButtonTap,
+              onPressed: onCartButtonTap,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(AppDefaults.padding * 1.2),
               ),
-              child: const Text('Buy Now'),
+              child: const Text('Add Cart'),
             ),
           ),
         ],

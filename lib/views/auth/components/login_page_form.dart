@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grocery/core/constants/apiClients.dart';
 import 'package:grocery/core/constants/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,41 +50,73 @@ class _LoginPageFormState extends State<LoginPageForm> {
 
     final url = Uri.parse(ApiConfig.login);
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "email": emailCtrl.text.trim(),
-          "password": passwordCtrl.text.trim(),
-        }),
-      );
+try {
+  setState(() => loading = true);
 
-      setState(() => loading = false);
-     // print('.......................................................');
-     // print(response);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // Clear SharedPreferences
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.clear();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Logged in successfully!")),
-        );
-        Navigator.pushNamed(context, AppRoutes.entryPoint);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Login failed: ${response.body}"),
-          ),
-        );
-      }
-    } catch (e) {
-      setState(() => loading = false);
+  final response = await ApiClient.dio.post(
+    '/auth/login',
+    data: {
+      'email': emailCtrl.text.trim(),
+      'password': passwordCtrl.text.trim(),
+    },
+  );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Connection error: $e")),
-      );
-    }
+  setState(() => loading = false);
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Logged in successfully!")),
+    );
+    Navigator.pushNamed(context, AppRoutes.entryPoint);
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Login failed: ${response.data}")),
+    );
+  }
+} on DioException catch (e) {
+  setState(() => loading = false);
+
+  // DioException contains requestOptions, response, type, message
+  String errorMsg = e.response != null
+      ? "Login failed: ${e.response?.data}"
+      : "Connection error: ${e.message}";
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(errorMsg)),
+  );
+}
+
+
+    // try {
+    //   final response = await http.post(
+    //     url,
+    //     headers: {"Content-Type": "application/json"},
+    //     body: jsonEncode({
+    //       "email": emailCtrl.text.trim(),
+    //       "password": passwordCtrl.text.trim(),
+    //     }),
+    //   );
+
+    //   setState(() => loading = false);
+    //   if (response.statusCode == 200 || response.statusCode == 201) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(content: Text("Logged in successfully!")),
+    //     );
+    //     Navigator.pushNamed(context, AppRoutes.entryPoint);
+    //   } else {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(
+    //         content: Text("Login failed: ${response.body}"),
+    //       ),
+    //     );
+    //   }
+    // } catch (e) {
+    //   setState(() => loading = false);
+
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text("Connection error: $e")),
+    //   );
+    // }
   }
 
   @override

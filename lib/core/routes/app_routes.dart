@@ -34,6 +34,7 @@ class AppRoutes {
   /// Category
   static const category = '/category';
   static const categoryDetails = '/categoryDetails';
+  static const brandDetails = '/brandDetails';
 
   /// Search Page
   static const search = '/search';

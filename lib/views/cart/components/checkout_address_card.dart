@@ -60,9 +60,22 @@ class AddressCard extends StatelessWidget {
                           ),
                     ),
                     const SizedBox(height: 8),
-                    Text(phoneNumber),
+                    Text(
+                      phoneNumber,
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                    ),
                     const SizedBox(height: 8),
-                    Text(address)
+                    // Wrap the address in Expanded to prevent overflow
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width -
+                          100, // adjust padding & radio width
+                      child: Text(
+                        address,
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
                   ],
                 ),
               ],

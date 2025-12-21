@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/views/menu/brand_product_list_page.dart';
 
 import '../../views/auth/forget_password_page.dart';
 import '../../views/auth/intro_login_page.dart';
@@ -103,6 +105,27 @@ class RouteGenerator {
           );
         }
 
+      case AppRoutes.brandDetails:
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        if (args != null &&
+            args.containsKey('brandId') &&
+            args.containsKey('brandName')) {
+          return CupertinoPageRoute(
+            builder: (_) => BrandProductPage(
+              brandId: args['brandId'] as int,
+              brandName: args['brandName'] as String,
+            ),
+          );
+        } else {
+          // Fallback if arguments are missing
+          return CupertinoPageRoute(
+            builder: (_) => const Scaffold(
+              body: Center(child: Text('Brand not found')),
+            ),
+          );
+        }
+
       case AppRoutes.login:
         return CupertinoPageRoute(builder: (_) => const LoginPage());
 
@@ -125,8 +148,17 @@ class RouteGenerator {
       case AppRoutes.newItems:
         return CupertinoPageRoute(builder: (_) => const NewItemsPage());
 
+      // case AppRoutes.popularItems:
+      //   return CupertinoPageRoute(builder: (_) => const PopularPackPage());
+
       case AppRoutes.popularItems:
-        return CupertinoPageRoute(builder: (_) => const PopularPackPage());
+        final args = settings.arguments;
+        if (args == null || args is! TagModel) {
+          throw Exception('TagModel argument is required for PopularPackPage!');
+        }
+        return CupertinoPageRoute(
+          builder: (_) => PopularPackPage(tag: args),
+        );
 
       // case AppRoutes.bundleProduct:
       //   return CupertinoPageRoute(

@@ -48,4 +48,36 @@ class LocalStorageService {
     final prefs = await SharedPreferences.getInstance();
     return prefs.containsKey(_keyCategories);
   }
+
+  static Future<void> addToCart(String productId) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final ids = prefs.getStringList('cart_product_ids') ?? [];
+
+    if (!ids.contains(productId)) {
+      ids.add(productId);
+      await prefs.setStringList('cart_product_ids', ids);
+    }
+  }
+
+  static Future<List<String>> getCartProductIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList('cart_product_ids') ?? [];
+  }
+
+  static Future<void> removeFromCart(String productId) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final ids = prefs.getStringList('cart_product_ids') ?? [];
+    ids.remove(productId);
+
+    await prefs.setStringList('cart_product_ids', ids);
+  }
+
+  static Future<bool> isInCart(String productId) async {
+  final prefs = await SharedPreferences.getInstance();
+  final ids = prefs.getStringList('cart_product_ids') ?? [];
+  return ids.contains(productId);
+}
+
 }

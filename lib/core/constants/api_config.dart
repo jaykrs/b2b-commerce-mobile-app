@@ -6,7 +6,10 @@ class ApiConfig {
   // Endpoints
   static const String products = '$baseUrl/products';
   static const String categories = '$baseUrl/categories';
+    static const String brands = '$baseUrl/brands';
   static const String login = '$baseUrl/auth/login';
+  static const String tagTogetProduct = '$baseUrl/tags?isAllTagOfProducts=ALL';
+  static const String address = '$baseUrl/address';
 
   // Timeouts
   static const Duration timeout = Duration(seconds: 10);

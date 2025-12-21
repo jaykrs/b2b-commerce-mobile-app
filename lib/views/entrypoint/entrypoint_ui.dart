@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grocery/views/menu/Brand_page.dart';
 import '../../core/constants/app_icons.dart';
 
 import '../../core/constants/app_colors.dart';
@@ -35,7 +36,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
     const HomePage(),
     const MenuPage(),
     const CartPage(isHomePage: true),
-    const SavePage(isHomePage: false),
+    const BrandPage(isHomePage: false),
     const ProfilePage(),
   ];
 
