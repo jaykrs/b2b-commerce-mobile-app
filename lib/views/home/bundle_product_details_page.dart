@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:grocery/core/constants/api_config.dart';
 import 'package:grocery/core/constants/cartStorage.dart';
+import 'package:grocery/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
@@ -29,7 +30,7 @@ class BundleProductDetailsPage extends StatefulWidget {
 }
 
 class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
-  BundleModel? product;
+  Product? product;
   bool isLoading = true;
   int quantity = 1;
 
@@ -54,7 +55,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
         final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         final data = jsonResponse['data'];
         setState(() {
-          product = BundleModel.fromJson(data);
+          product = Product.fromJson(data);
           isLoading = false;
         });
       } else {
@@ -143,7 +144,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                               stock: product!.stock,
                             ),
                             PackDetails(
-                              description: product!.description,
+                              description: product?.description ?? '',
                             ),
                             const ReviewRowButton(totalStars: 5),
                             const Divider(thickness: 0.1),

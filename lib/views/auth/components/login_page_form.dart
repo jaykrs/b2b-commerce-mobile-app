@@ -50,42 +50,41 @@ class _LoginPageFormState extends State<LoginPageForm> {
 
     final url = Uri.parse(ApiConfig.login);
 
-try {
-  setState(() => loading = true);
+    try {
+      setState(() => loading = true);
 
-  final response = await ApiClient.dio.post(
-    '/auth/login',
-    data: {
-      'email': emailCtrl.text.trim(),
-      'password': passwordCtrl.text.trim(),
-    },
-  );
+      final response = await ApiClient.dio.post(
+        '/auth/login',
+        data: {
+          'email': emailCtrl.text.trim(),
+          'password': passwordCtrl.text.trim(),
+        },
+      );
 
-  setState(() => loading = false);
+      setState(() => loading = false);
 
-  if (response.statusCode == 200 || response.statusCode == 201) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Logged in successfully!")),
-    );
-    Navigator.pushNamed(context, AppRoutes.entryPoint);
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Login failed: ${response.data}")),
-    );
-  }
-} on DioException catch (e) {
-  setState(() => loading = false);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Logged in successfully!")),
+        );
+        Navigator.pushNamed(context, AppRoutes.entryPoint);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Login failed: ${response.data}")),
+        );
+      }
+    } on DioException catch (e) {
+      setState(() => loading = false);
 
-  // DioException contains requestOptions, response, type, message
-  String errorMsg = e.response != null
-      ? "Login failed: ${e.response?.data}"
-      : "Connection error: ${e.message}";
+      // DioException contains requestOptions, response, type, message
+      String errorMsg = e.response != null
+          ? "Login failed: ${e.response?.data}"
+          : "Connection error: ${e.message}";
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(errorMsg)),
-  );
-}
-
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMsg)),
+      );
+    }
 
     // try {
     //   final response = await http.post(

@@ -10,102 +10,138 @@ class ContactUsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final padding = width * 0.04; // 4% of screen width
+    final iconSize = width * 0.07; // scalable icon size
+
     return Scaffold(
       appBar: AppBar(
         leading: const AppBackButton(),
         title: const Text('Contact Us'),
       ),
       backgroundColor: AppColors.cardColor,
-      body: Container(
-        margin: const EdgeInsets.all(AppDefaults.padding),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDefaults.padding,
-          vertical: AppDefaults.padding * 2,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.scaffoldBackground,
-          borderRadius: AppDefaults.borderRadius,
-        ),
-        child: Column(
-          children: [
-            const SizedBox(height: AppDefaults.padding),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(padding),
+          padding: EdgeInsets.symmetric(
+            horizontal: padding,
+            vertical: padding * 2,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.scaffoldBackground,
+            borderRadius: AppDefaults.borderRadius,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+
+              /// Title
+              Text(
                 'Contact Us',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
               ),
-            ),
 
-            const SizedBox(height: AppDefaults.padding * 2),
+              SizedBox(height: padding * 1.5),
 
-            /// Number
-            Row(
-              children: [
-                SvgPicture.asset(AppIcons.contactPhone),
-                const SizedBox(width: AppDefaults.padding),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '+8801710000000',
+              /// Phone Numbers
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SvgPicture.asset(
+                    AppIcons.contactPhone,
+                    width: iconSize,
+                    height: iconSize,
+                  ),
+                  SizedBox(width: padding),
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '+757554445544',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: Colors.black,
+                                  ),
+                        ),
+                        SizedBox(height: padding / 2),
+                        Text(
+                          '+5676543456',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: Colors.black,
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: padding),
+
+              /// Email
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    AppIcons.contactEmail,
+                    width: iconSize,
+                    height: iconSize,
+                  ),
+                  SizedBox(width: padding),
+                  Flexible(
+                    child: Text(
+                      'jonarban45@gmail.com',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.black,
                           ),
                     ),
-                    const SizedBox(height: AppDefaults.padding / 2),
-                    Text(
-                      '+8801710000000',
+                  ),
+                ],
+              ),
+
+              SizedBox(height: padding),
+
+              /// Address
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SvgPicture.asset(
+                    AppIcons.contactMap,
+                    width: iconSize,
+                    height: iconSize,
+                  ),
+                  SizedBox(width: padding),
+                  Flexible(
+                    child: Text(
+                      '#123, 1st cross HSR Layout, Bangalore, India',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.black,
                           ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: AppDefaults.padding),
-            Row(
-              children: [
-                SvgPicture.asset(AppIcons.contactEmail),
-                const SizedBox(width: AppDefaults.padding),
-                Text(
-                  'jonarban45@gmail.com',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.black,
-                      ),
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
 
-            const SizedBox(height: AppDefaults.padding),
-            Row(
-              children: [
-                SvgPicture.asset(AppIcons.contactMap),
-                const SizedBox(width: AppDefaults.padding),
-                Text(
-                  '26/C Mohammadpur\nDhaka, Bangladesh',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.black,
-                      ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppDefaults.padding),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: const AspectRatio(
-                aspectRatio: 3 / 2,
-                child: NetworkImageWithLoader(
-                  'https://i.imgur.com/nys3Bxw.png',
-                  fit: BoxFit.contain,
+              SizedBox(height: padding),
+
+              /// Map Image
+              SizedBox(
+                width: double.infinity,
+                child: AspectRatio(
+                  aspectRatio: 3 / 2,
+                  child: NetworkImageWithLoader(
+                    'https://i.imgur.com/nys3Bxw.png',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

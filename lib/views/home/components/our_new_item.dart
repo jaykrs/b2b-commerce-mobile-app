@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/get_bundels.dart';
-import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/core/constants/apiCall.dart';
+import 'package:grocery/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/components/product_tile_square.dart';
@@ -17,7 +17,7 @@ class OurNewItem extends StatefulWidget {
 }
 
 class _OurNewItemState extends State<OurNewItem> {
-  List<BundleModel> products = [];
+  List<Product> products = [];
   bool isLoading = true;
 
   @override
@@ -27,7 +27,7 @@ class _OurNewItemState extends State<OurNewItem> {
   }
 
   Future<void> loadBundles() async {
-    final data = await getBundles();
+    final data = await getProducts();
     setState(() {
       products = data;
       isLoading = false;

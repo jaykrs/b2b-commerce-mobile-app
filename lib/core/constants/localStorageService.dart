@@ -1,23 +1,23 @@
 import 'dart:convert';
-import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/core/models/userModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
   static const _keyBundles = 'bundles';
 
-  static Future<void> saveBundles(List<BundleModel> bundles) async {
+  static Future<void> saveBundles(List<Product> bundles) async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = jsonEncode(bundles.map((e) => e.toJson()).toList());
     await prefs.setString(_keyBundles, jsonString);
   }
 
-  static Future<List<BundleModel>> loadBundles() async {
+  static Future<List<Product>> loadBundles() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_keyBundles);
     if (jsonString == null || jsonString.isEmpty) return [];
 
     final List<dynamic> data = jsonDecode(jsonString);
-    return data.map((e) => BundleModel.fromJson(e)).toList();
+    return data.map((e) => Product.fromJson(e)).toList();
   }
 
   static Future<bool> hasBundles() async {

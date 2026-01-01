@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:grocery/core/constants/cartStorage.dart';
 import 'package:grocery/core/constants/localStorageService.dart';
+import 'package:grocery/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
@@ -11,7 +12,6 @@ import '../../core/components/product_images_slider.dart';
 import '../../core/components/review_row_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/constants/api_config.dart';
-import '../../core/models/dummy_bundle_model.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final int productId; // receive productId
@@ -23,7 +23,7 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  BundleModel? product;
+  Product? product;
   bool isLoading = true;
   int quantity = 1;
   @override
@@ -42,7 +42,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         setState(() {
-          product = BundleModel.fromJson(jsonResponse['data']);
+          product = Product.fromJson(jsonResponse['data']);
           isLoading = false;
         });
       } else {

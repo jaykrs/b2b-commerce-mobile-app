@@ -1,5 +1,8 @@
 class AppRoutes {
   /// The Initial Page
+  /// 
+  static const addEditAddressPage = '/addEditAddressPage';
+  static const deliveryWidget = '/deliveryWidget';
   static const introLogin = '/intro_login';
   static const onboarding = '/onboarding';
 
@@ -43,6 +46,7 @@ class AppRoutes {
   /* <---- Profile & Settings -----> */
   static const profile = 'profile';
   static const myOrder = '/myOrder';
+  static const orderView = '/viewOrder';
   static const orderDetails = '/orderDetails';
   static const coupon = '/coupon';
   static const couponDetails = '/couponDetails';
@@ -74,4 +78,5 @@ class AppRoutes {
   /* <---- Payment Method -----> */
   static const paymentMethod = '/paymentMethod';
   static const paymentCardAdd = '/paymentCardAdd';
+  static const profilePage = '/profilePage';
 }

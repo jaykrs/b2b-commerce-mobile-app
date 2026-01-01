@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/get_bundels.dart';
-import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/core/constants/apiCall.dart';
+import 'package:grocery/core/models/userModel.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/routes/app_routes.dart';

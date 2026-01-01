@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/get_bundels.dart';
-import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/core/constants/apiCall.dart';
+import 'package:grocery/core/models/userModel.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/routes/app_routes.dart';
@@ -38,54 +38,62 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          const SizedBox(height: 32),
-          Text(
-            'Choose a category',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : categories.isEmpty
-                    ? const Center(child: Text('No categories found'))
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(AppDefaults.padding),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 16,
-                          childAspectRatio: 0.8, // makes tile taller if needed
+    return WillPopScope(
+      onWillPop: () async {
+        //Navigator.pushAndRemoveUntil(context, AppRoutes.entryPoint, (route)=> false)
+         Navigator.pushNamed(context, AppRoutes.entryPoint);
+        return false;
+      },
+      child: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 32),
+            Text(
+              'Choose a category',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : categories.isEmpty
+                      ? const Center(child: Text('No categories found'))
+                      : GridView.builder(
+                          padding: const EdgeInsets.all(AppDefaults.padding),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio:
+                                0.8, // makes tile taller if needed
+                          ),
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            final category = categories[index];
+                            return CategoryTile(
+                              imageLink: "", // add category.image if available
+                              label: category.name,
+                              backgroundColor: AppColors.primary,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.categoryDetails,
+                                  arguments: {
+                                    'categoryId': category.id,
+                                    'categoryName': category.name,
+                                  },
+                                );
+                              },
+                            );
+                          },
                         ),
-                        itemCount: categories.length,
-                        itemBuilder: (context, index) {
-                          final category = categories[index];
-                          return CategoryTile(
-                            imageLink: "", // add category.image if available
-                            label: category.name,
-                            backgroundColor: AppColors.primary,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRoutes.categoryDetails,
-                                arguments: {
-                                  'categoryId': category.id,
-                                  'categoryName': category.name,
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/components/product_tile_square.dart';
@@ -15,7 +15,7 @@ class ProductGridView extends StatefulWidget {
 }
 
 class _ProductGridViewState extends State<ProductGridView> {
-  List<BundleModel> products = [];
+  List<Product> products = [];
   bool isLoading = true;
 
   @override
@@ -36,7 +36,7 @@ class _ProductGridViewState extends State<ProductGridView> {
        
         final List<dynamic> data = jsonResponse['data'];   
         setState(() {
-          products = data.map((e) => BundleModel.fromJson(e)).toList();
+          products = data.map((e) => Product.fromJson(e)).toList();
           isLoading = false;
         });
       } else {

@@ -105,4 +105,11 @@ class CartStorage {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_cartKey, jsonEncode(cart));
   }
+
+  static Future<void> clearCart() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Set the cart to an empty list
+    await prefs.setString(_cartKey, jsonEncode([]));
+  }
 }

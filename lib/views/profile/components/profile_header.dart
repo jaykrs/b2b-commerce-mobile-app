@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:grocery/core/constants/apiCall.dart';
+import 'package:grocery/core/models/userModel.dart';
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
 import 'profile_header_options.dart';
 
-class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({
-    super.key,
-  });
+class ProfileHeader extends StatefulWidget {
+  const ProfileHeader({super.key});
+
+  @override
+  State<ProfileHeader> createState() => _ProfileHeaderState();
+}
+
+class _ProfileHeaderState extends State<ProfileHeader> {
+  late Future<User> _userFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _userFuture = getUser(); // directly assign the future
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +35,33 @@ class ProfileHeader extends StatelessWidget {
             AppBar(
               title: const Text('Profile'),
               elevation: 0,
+              automaticallyImplyLeading:false,
               backgroundColor: Colors.transparent,
               titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            const _UserData(),
-            const ProfileHeaderOptions()
+            FutureBuilder<User>(
+              future: _userFuture,
+              builder: (context, snapshot) {
+                debugPrint('SNAPSHOT: $snapshot');
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator(color: Colors.white);
+                }
+
+                if (!snapshot.hasData) {
+                  return const Text(
+                    'User data not available',
+                    style: TextStyle(color: Colors.white),
+                  );
+                }
+
+                return UserData(user: snapshot.data!);
+              },
+            ),
+            const ProfileHeaderOptions(),
           ],
         ),
       ],
@@ -37,47 +69,57 @@ class ProfileHeader extends StatelessWidget {
   }
 }
 
-class _UserData extends StatelessWidget {
-  const _UserData();
+class UserData extends StatelessWidget {
+  final User user;
+
+  const UserData({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppDefaults.padding),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(width: AppDefaults.padding),
-          const SizedBox(
+
+          /// Profile Image
+          SizedBox(
             width: 100,
             height: 100,
             child: ClipOval(
               child: AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: NetworkImageWithLoader(
-                      'https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80')),
+                aspectRatio: 1 / 1,
+                child: NetworkImageWithLoader(
+                  user.profileImagePath ?? '',
+                ),
+              ),
             ),
           ),
+
           const SizedBox(width: AppDefaults.padding),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Shakibul Islam',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'ID: 1540580',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(color: Colors.white),
-              ),
-            ],
-          )
+
+          /// Text area MUST be Expanded
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
+

@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/core/models/userModel.dart';
+import 'package:grocery/views/cart/components/add_edit_address.dart';
+import 'package:grocery/views/cart/components/address.dart';
 import 'package:grocery/views/menu/brand_product_list_page.dart';
+import 'package:grocery/views/profile/order/components/order_view_page.dart';
+import 'package:grocery/views/profile/profile_page.dart';
 
 import '../../views/auth/forget_password_page.dart';
 import '../../views/auth/intro_login_page.dart';
@@ -79,7 +83,9 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const SavePage());
 
       case AppRoutes.checkoutPage:
-        return CupertinoPageRoute(builder: (_) => const CheckoutPage());
+        final checkOutList = settings.arguments as List<Map<String, dynamic>>;
+        return CupertinoPageRoute(
+            builder: (_) => CheckoutPage(checkOutList: checkOutList));
 
       // case AppRoutes.categoryDetails:
       //   return CupertinoPageRoute(builder: (_) => const CategoryProductPage());
@@ -205,6 +211,10 @@ class RouteGenerator {
       case AppRoutes.myOrder:
         return CupertinoPageRoute(builder: (_) => const AllOrderPage());
 
+      case AppRoutes.orderView:
+          final orderData = settings.arguments;
+          return CupertinoPageRoute(builder: (_)=> OrderViewPage(orderData: orderData));
+
       case AppRoutes.orderDetails:
         return CupertinoPageRoute(builder: (_) => const OrderDetailsPage());
 
@@ -222,6 +232,17 @@ class RouteGenerator {
 
       case AppRoutes.deliveryAddress:
         return CupertinoPageRoute(builder: (_) => const AddressPage());
+
+      case AppRoutes.deliveryWidget:
+        return CupertinoPageRoute(builder: (_) => const AddressWidget());
+
+      case AppRoutes.addEditAddressPage:
+        final args = settings.arguments;
+        return CupertinoPageRoute(
+          builder: (_) => AddEditAddressPage(
+            existingAddress: args is Address ? args : null,
+          ),
+        );
 
       case AppRoutes.notifications:
         return CupertinoPageRoute(builder: (_) => const NotificationPage());
@@ -273,6 +294,9 @@ class RouteGenerator {
 
       case AppRoutes.paymentCardAdd:
         return CupertinoPageRoute(builder: (_) => const AddNewCardPage());
+
+      case AppRoutes.profilePage:
+        return CupertinoPageRoute(builder: (_) => const ProfilePage());
 
       default:
         return errorRoute();

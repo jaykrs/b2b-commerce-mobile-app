@@ -29,18 +29,18 @@ class ProfileHeaderOptions extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.myOrder);
             },
           ),
-          ProfileSqureTile(
-            label: 'Voucher',
-            icon: AppIcons.voucher,
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.coupon);
-            },
-          ),
+          // ProfileSqureTile(
+          //   label: 'Voucher',
+          //   icon: AppIcons.voucher,
+          //   onTap: () {
+          //     Navigator.pushNamed(context, AppRoutes.coupon);
+          //   },
+          // ),
           ProfileSqureTile(
             label: 'Address',
             icon: AppIcons.homeProfile,
             onTap: () {
-              Navigator.pushNamed(context, AppRoutes.deliveryAddress);
+              Navigator.pushNamed(context, AppRoutes.deliveryWidget);
             },
           ),
         ],

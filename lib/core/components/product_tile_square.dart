@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/core/models/userModel.dart';
 
 import '../constants/constants.dart';
 import '../routes/app_routes.dart';
@@ -11,7 +11,7 @@ class ProductTileSquare extends StatelessWidget {
     required this.data,
   });
 
-  final BundleModel data;
+  final Product data;
 
   @override
   Widget build(BuildContext context) {

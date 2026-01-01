@@ -1,0 +1,182 @@
+import 'package:flutter/material.dart';
+import 'package:grocery/core/constants/apiClients.dart';
+import 'package:grocery/core/constants/api_config.dart';
+import 'package:grocery/core/models/userModel.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:grocery/core/routes/app_routes.dart';
+Future<User> getUser() async {
+  try {
+    final response = await ApiClient.dio
+        .get(ApiConfig.userProfile)
+        .timeout(ApiConfig.timeout);
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> body =
+          Map<String, dynamic>.from(response.data);
+      final data = body['data'];
+      if (data == null) {
+        return User.empty();
+      }
+      return User.fromJson(
+        Map<String, dynamic>.from(data),
+      );
+    }
+    return User.empty();
+  } catch (e, stack) {
+    debugPrint('User API error: $e');
+    debugPrint(stack.toString());
+    return User.empty();
+  }
+}
+
+Future<List<Product>> getProducts() async {
+  try {
+    final response = await ApiClient.dio
+        .get(
+          ApiConfig.products,
+        )
+        .timeout(ApiConfig.timeout);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = response.data;
+      final List<dynamic> data = jsonResponse['data'];
+
+      final bundles = data.map((e) => Product.fromJson(e)).toList();
+
+      // ✅ STEP 3: Save API data locally
+      //    await LocalStorageService.saveBundles(bundles);
+
+      debugPrint('Loaded bundles from API');
+      return bundles;
+    } else {
+      return [];
+    }
+  } catch (e) {
+    debugPrint('API error: $e');
+    return [];
+  }
+}
+
+Future<List<Category>> getCategories() async {
+  // 1️⃣ Load local first
+  try {
+    final response = await ApiClient.dio
+        .get(ApiConfig.categories)
+        .timeout(ApiConfig.timeout);
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = response.data;
+      final List<dynamic> data = jsonResponse['data'];
+      final categories = data.map((e) => Category.fromJson(e)).toList();
+
+      // 3️⃣ Save locally
+      //await LocalStorageService.saveCategories(categories);
+
+      return categories;
+    }
+  } catch (e) {
+    debugPrint('Category API error: $e');
+  }
+
+  return [];
+}
+
+Future<List<TagModel>> getProductListBasedOnTags() async {
+  try {
+    final response = await ApiClient.dio
+        .get(ApiConfig.tagTogetProduct)
+        .timeout(ApiConfig.timeout);
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse =
+          response.data as Map<String, dynamic>;
+
+      final List<dynamic> data = jsonResponse['data'];
+
+      final List<TagModel> tags =
+          data.map((e) => TagModel.fromJson(e)).toList();
+
+      // Save locally (optional)
+      // await LocalStorageService.saveTags(tags);
+
+      return tags;
+    }
+  } catch (e) {
+    debugPrint('Tag API error: $e');
+  }
+
+  return [];
+}
+
+Future<List<Brand>> getBrands() async {
+  try {
+    final response =
+        await ApiClient.dio.get(ApiConfig.brands).timeout(ApiConfig.timeout);
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = response.data;
+      final List<dynamic> data = jsonResponse['data'];
+      final brands = data.map((e) => Brand.fromJson(e)).toList();
+      return brands;
+    }
+  } catch (e) {
+    debugPrint('Brand API error: $e');
+  }
+  return [];
+}
+
+Future<List<Address>> getAddress() async {
+  try {
+    final response =
+        await ApiClient.dio.get(ApiConfig.address).timeout(ApiConfig.timeout);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse =
+          response.data as Map<String, dynamic>;
+
+      final List<dynamic> data = jsonResponse['data'];
+
+      final List<Address> address =
+          data.map<Address>((e) => Address.fromJson(e)).toList();
+
+      return address;
+    }
+  } catch (e) {
+    debugPrint('Address API error: $e');
+  }
+
+  return <Address>[]; // empty list of Address
+}
+
+Future<Object> getOrders() async {
+  try {
+    final response = await ApiClient.dio
+        .get(ApiConfig.order)
+        .timeout(ApiConfig.timeout);
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> body =
+          Map<String, dynamic>.from(response.data);
+      final data = body['orders'];
+      if (data == null) {
+        return Order.empty();
+      }
+      return Order.fromJson(
+        Map<String, dynamic>.from(data),
+      );
+    }
+    return Order.empty();
+  } catch (e, stack) {
+    debugPrint('User API error: $e');
+    return Order.empty();
+  }
+}
+
+Future<void> _logout(BuildContext context) async {
+    // Clear all cookies
+    await ApiClient.cookieJar.deleteAll();
+
+    // Navigate to login/signup screen and remove all previous routes
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.loginOrSignup,
+      (route) => false,
+    );
+  }
+

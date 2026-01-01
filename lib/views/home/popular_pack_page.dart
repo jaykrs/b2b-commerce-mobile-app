@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grocery/core/models/userModel.dart';
 import '../../core/components/app_back_button.dart';
 import '../../core/components/bundle_tile_square.dart';
 import '../../core/constants/constants.dart';
 import '../../core/models/dummy_bundle_model.dart';
 import '../../core/routes/app_routes.dart';
-import '../../core/constants/get_bundels.dart'; // If needed for BundleModel
+import '../../core/constants/get_bundels.dart'; // If needed for Product
 
 class PopularPackPage extends StatelessWidget {
   final TagModel tag;

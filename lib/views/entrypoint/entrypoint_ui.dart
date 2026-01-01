@@ -22,16 +22,14 @@ class EntryPointUI extends StatefulWidget {
 }
 
 class _EntryPointUIState extends State<EntryPointUI> {
-  /// Current Page
   int currentIndex = 0;
 
-  /// On labelLarge navigation tap
   void onBottomNavigationTap(int index) {
-    currentIndex = index;
-    setState(() {});
+    setState(() {
+      currentIndex = index;
+    });
   }
 
-  /// All the pages
   List<Widget> pages = [
     const HomePage(),
     const MenuPage(),
@@ -40,34 +38,62 @@ class _EntryPointUIState extends State<EntryPointUI> {
     const ProfilePage(),
   ];
 
+  DateTime? lastBackPressTime;
+
+  Future<bool> _onWillPop() async {
+    if (currentIndex != 0) {
+      // If not on home tab, go to home tab
+      setState(() {
+        currentIndex = 0;
+      });
+      return false; // prevent app from exiting
+    }
+
+    // If already on home tab, check double press to exit
+    final now = DateTime.now();
+    if (lastBackPressTime == null ||
+        now.difference(lastBackPressTime!) > const Duration(seconds: 2)) {
+      lastBackPressTime = now;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Press back again to exit")),
+      );
+      return false; // prevent exit
+    }
+    return true; // allow exit
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageTransitionSwitcher(
-        transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
-          return SharedAxisTransition(
-            animation: primaryAnimation,
-            secondaryAnimation: secondaryAnimation,
-            transitionType: SharedAxisTransitionType.horizontal,
-            fillColor: AppColors.scaffoldBackground,
-            child: child,
-          );
-        },
-        duration: AppDefaults.duration,
-        child: pages[currentIndex],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          onBottomNavigationTap(2);
-        },
-        backgroundColor: AppColors.primary,
-        child: SvgPicture.asset(AppIcons.cart),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: AppBottomNavigationBar(
-        currentIndex: currentIndex,
-        onNavTap: onBottomNavigationTap,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: PageTransitionSwitcher(
+          transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+            return SharedAxisTransition(
+              animation: primaryAnimation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              fillColor: AppColors.scaffoldBackground,
+              child: child,
+            );
+          },
+          duration: AppDefaults.duration,
+          child: pages[currentIndex],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            onBottomNavigationTap(2); // go to cart tab
+          },
+          backgroundColor: AppColors.primary,
+          child: SvgPicture.asset(AppIcons.cart),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: AppBottomNavigationBar(
+          currentIndex: currentIndex,
+          onNavTap: onBottomNavigationTap,
+        ),
       ),
     );
   }
 }
+

@@ -24,11 +24,12 @@ class DrawerPage extends StatelessWidget {
             AppSettingsListTile(
               label: 'My Profile',
               trailing: SvgPicture.asset(AppIcons.right),
+              onTap: () => Navigator.pushNamed(context, AppRoutes.profilePage),
             ),
             AppSettingsListTile(
               label: 'Order',
               trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () => Navigator.pushNamed(context, AppRoutes.aboutUs),
+              onTap: () => Navigator.pushNamed(context, AppRoutes.myOrder),
             ),
             AppSettingsListTile(
               label: 'Payment',
@@ -39,7 +40,7 @@ class DrawerPage extends StatelessWidget {
               label: 'Address',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
-                  Navigator.pushNamed(context, AppRoutes.termsAndConditions),
+                  Navigator.pushNamed(context, AppRoutes.deliveryWidget),
             ),
             AppSettingsListTile(
               label: 'Notification',

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/models/dummy_bundle_model.dart';
+import 'package:grocery/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
@@ -16,7 +16,7 @@ class NewItemsPage extends StatefulWidget {
 }
 
 class _NewItemsPageState extends State<NewItemsPage> {
-  List<BundleModel> products = [];
+  List<Product> products = [];
   bool isLoading = true;
 
   @override
@@ -38,7 +38,7 @@ class _NewItemsPageState extends State<NewItemsPage> {
         final List<dynamic> data = jsonResponse['data'];   
         setState(() {
           products = data
-              .map((e) => BundleModel.fromJson(e))
+              .map((e) => Product.fromJson(e))
               .toList();
           isLoading = false;
         });

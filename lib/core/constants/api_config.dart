@@ -9,7 +9,10 @@ class ApiConfig {
     static const String brands = '$baseUrl/brands';
   static const String login = '$baseUrl/auth/login';
   static const String tagTogetProduct = '$baseUrl/tags?isAllTagOfProducts=ALL';
-  static const String address = '$baseUrl/address';
+  static const String address = '$baseUrl/address/getAddress';
+  static const String addressPost = '$baseUrl/address';
+  static const String userProfile = '$baseUrl/auth/user';
+  static const String order = '$baseUrl/orders/getOrder';
 
   // Timeouts
   static const Duration timeout = Duration(seconds: 10);

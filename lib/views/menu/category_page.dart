@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:grocery/core/constants/api_config.dart';
+import 'package:grocery/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
 import '../../core/components/product_tile_square.dart';
 import '../../core/constants/constants.dart';
-import '../../core/models/dummy_bundle_model.dart';
 
 class CategoryProductPage extends StatefulWidget {
   final int categoryId;
@@ -23,7 +23,7 @@ class CategoryProductPage extends StatefulWidget {
 }
 
 class _CategoryProductPageState extends State<CategoryProductPage> {
-  List<BundleModel> products = [];
+  List<Product> products = [];
   bool isLoading = true;
 
   @override
@@ -43,7 +43,7 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
         final List<dynamic> data = jsonResponse['data'];
 
         setState(() {
-          products = data.map((e) => BundleModel.fromJson(e)).toList();
+          products = data.map((e) => Product.fromJson(e)).toList();
           isLoading = false;
         });
       } else {
