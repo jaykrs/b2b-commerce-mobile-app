@@ -1,6 +1,10 @@
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiCall.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/apiCall.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
@@ -19,46 +23,53 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   @override
   void initState() {
     super.initState();
-    _userFuture = getUser(); // directly assign the future
+    _userFuture = getUser();
+  }
+
+  void refreshUser() {
+    setState(() {
+      _userFuture = getUser();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        /// Background
         Image.asset('assets/images/profile_page_background.png'),
-
-        /// Content
         Column(
           children: [
             AppBar(
               title: const Text('Profile'),
               elevation: 0,
-              automaticallyImplyLeading:false,
               backgroundColor: Colors.transparent,
-              titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+              automaticallyImplyLeading: false,
+              titleTextStyle: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             FutureBuilder<User>(
               future: _userFuture,
               builder: (context, snapshot) {
-                debugPrint('SNAPSHOT: $snapshot');
-
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator(color: Colors.white);
+                  return const Padding(
+                    padding: EdgeInsets.all(24),
+                    child: CircularProgressIndicator(color: Colors.white),
+                  );
                 }
 
-                if (!snapshot.hasData) {
+                if (snapshot.hasError || !snapshot.hasData) {
                   return const Text(
-                    'User data not available',
+                    'Failed to load profile',
                     style: TextStyle(color: Colors.white),
                   );
                 }
 
-                return UserData(user: snapshot.data!);
+                return UserData(
+                  user: snapshot.data!,
+                  onProfileUpdated: refreshUser, // ✅ key
+                );
               },
             ),
             const ProfileHeaderOptions(),
@@ -71,55 +82,351 @@ class _ProfileHeaderState extends State<ProfileHeader> {
 
 class UserData extends StatelessWidget {
   final User user;
+  final VoidCallback onProfileUpdated;
 
-  const UserData({super.key, required this.user});
+  const UserData({
+    super.key,
+    required this.user,
+    required this.onProfileUpdated,
+  });
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('profile image ${user.profileImagePath}');
     return Padding(
       padding: const EdgeInsets.all(AppDefaults.padding),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(width: AppDefaults.padding),
-
-          /// Profile Image
-          SizedBox(
-            width: 100,
-            height: 100,
-            child: ClipOval(
-              child: AspectRatio(
-                aspectRatio: 1 / 1,
+          GestureDetector(
+            onTap: () => _showProfileOptions(context),
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: ClipOval(
                 child: NetworkImageWithLoader(
-                  user.profileImagePath ?? '',
+                  user.profileImagePath != null &&
+                          user.profileImagePath!.isNotEmpty
+                      ? '${ApiConfig.profileImgPath}${user.profileImagePath!.replaceFirst('/uploads/', '')}'
+                      : 'https://www.pngkit.com/png/detail/281-2812821_user-account-management-logo-user-icon-png.png',
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
-
           const SizedBox(width: AppDefaults.padding),
-
-          /// Text area MUST be Expanded
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                ),
-              ],
+            child: Text(
+              user.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
         ],
       ),
     );
   }
+
+  /* ---------------- Bottom Sheet ---------------- */
+
+  void _showProfileOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (_) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _tile(Icons.visibility, 'View Photo', () {
+              Navigator.pop(context);
+              _viewProfileImage(context);
+            }),
+            _tile(Icons.edit, 'Add Photo', () {
+              Navigator.pop(context);
+              _editProfileImage(context);
+            }),
+            _tile(Icons.delete, 'Delete Photo', () {
+              Navigator.pop(context);
+              _confirmDelete(context);
+            }, color: Colors.red),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _tile(IconData icon, String title, VoidCallback onTap,
+      {Color color = Colors.black}) {
+    return ListTile(
+      leading: Icon(icon, color: color),
+      title: Text(title),
+      onTap: onTap,
+    );
+  }
+
+  /// ✅ Helper method must be inside the class
+  Widget _optionTile({
+    required IconData icon,
+    required String title,
+    Color iconColor = Colors.black,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: iconColor),
+      title: Text(title),
+      onTap: onTap,
+    );
+  }
+
+  /* ---------------- Actions ---------------- */
+
+  void _viewProfileImage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => Scaffold(
+          appBar: AppBar(title: const Text('Profile Photo')),
+          body: Center(
+            child: NetworkImageWithLoader(
+              user.profileImagePath != null && user.profileImagePath!.isNotEmpty
+                  ? '${ApiConfig.profileImgPath}${user.profileImagePath!.replaceFirst('/uploads/', '')}'
+                  : 'https://www.pngkit.com/png/detail/281-2812821_user-account-management-logo-user-icon-png.png',
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _editProfileImage(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _optionTile(
+              icon: Icons.camera_alt,
+              title: 'Take Photo',
+              onTap: () {
+                Navigator.pop(context);
+                _pickAndUploadImage(
+                  ImageSource.camera,
+                  context,
+                  onProfileUpdated, // refresh callback from parent
+                );
+              },
+            ), 
+            _optionTile(
+              icon: Icons.photo_library,
+              title: 'Choose from Gallery',
+              onTap: () {
+                Navigator.pop(context);
+                _pickAndUploadImage(
+                  ImageSource.gallery,
+                  context,
+                  onProfileUpdated, // refresh callback from parent
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickAndUpload(ImageSource source, BuildContext context) async {
+    try {
+      final picker = ImagePicker();
+      final file = await picker.pickImage(source: source, imageQuality: 80);
+      if (file == null) return;
+
+      _showLoader(context);
+
+      final formData = FormData.fromMap({
+        'profileImage':
+            await MultipartFile.fromFile(file.path, filename: file.name),
+      });
+
+      await ApiClient.dio.put('/user/profile-image', data: formData);
+
+      Navigator.pop(context); // loader
+      onProfileUpdated(); // ✅ refresh profile
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile image updated')),
+      );
+    } catch (e) {
+      Navigator.pop(context);
+      debugPrint('Upload error: $e');
+    }
+  }
+
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Delete Profile Photo'),
+        content: const Text('Are you sure?'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await ApiClient.dio.delete('/user/profile-image');
+              onProfileUpdated();
+            },
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLoader(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const AlertDialog(
+        content: Row(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 16),
+            Text('Uploading...'),
+          ],
+        ),
+      ),
+    );
+  }
 }
+
+Future<void> _pickAndUploadImage(
+  ImageSource source,
+  BuildContext context,
+  VoidCallback onProfileUpdated, // pass callback to refresh
+) async {
+  try {
+    final picker = ImagePicker();
+    final XFile? file = await picker.pickImage(
+      source: source,
+      imageQuality: 80,
+    );
+
+    if (file == null) return;
+
+    // Show uploading dialog
+    _showUploadingDialog(context);
+
+    // Prepare form data
+    final formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(
+        file.path,
+        filename: file.name,
+      ),
+    });
+
+    // Call API to upload
+    await ApiClient.dio.post(
+      ApiConfig.profileImg,
+      data: formData,
+    );
+
+    Navigator.pop(context); // close loader
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile image updated')),
+    );
+
+    // Refresh profile after successful upload
+    onProfileUpdated();
+  } catch (e) {
+    Navigator.pop(context); // close loader if error
+    debugPrint('Upload image error: $e');
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to upload image')),
+    );
+  }
+}
+
+/// Show a simple "Uploading..." dialog
+void _showUploadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => const AlertDialog(
+      content: Row(
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(width: 16),
+          Text('Uploading...'),
+        ],
+      ),
+    ),
+  );
+}
+
+
+
+// class UserData extends StatelessWidget {
+//   final User user;
+
+//   const UserData({super.key, required this.user});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(AppDefaults.padding),
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.center,
+//         children: [
+//           const SizedBox(width: AppDefaults.padding),
+
+//           /// Profile Image
+//           SizedBox(
+//             width: 100,
+//             height: 100,
+//             child: ClipOval(
+//               child: AspectRatio(
+//                 aspectRatio: 1 / 1,
+//                 child: NetworkImageWithLoader(
+//                   user.profileImagePath ?? '',
+//                 ),
+//               ),
+//             ),
+//           ),
+
+//           const SizedBox(width: AppDefaults.padding),
+
+//           /// Text area MUST be Expanded
+//           Expanded(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   user.name,
+//                   maxLines: 2,
+//                   overflow: TextOverflow.ellipsis,
+//                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
+//                         fontWeight: FontWeight.bold,
+//                         color: Colors.white,
+//                         fontSize: 20,
+//                       ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 

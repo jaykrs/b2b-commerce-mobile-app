@@ -18,4 +18,19 @@ class Validators {
 
   /// Plain Required Validator
   static final required = RequiredValidator(errorText: 'Field is required');
+
+  static String? phone(String? value) {
+    if (value == null || value.isEmpty) return 'Phone number is required';
+    final phoneRegex = RegExp(r'^[0-9]{10}$'); // basic 10-digit check
+    if (!phoneRegex.hasMatch(value)) return 'Enter a valid phone number';
+    return null;
+  }
+
+  static String? gst(String? value) {
+    if (value == null || value.isEmpty) return 'GST number is required';
+    // GST regex: 2 digits state code, 10 chars PAN, 1 char entity, 1 char Z by default, 1 check digit
+    final gstRegex = RegExp(r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}[Z]{1}[A-Z0-9]{1}$');
+    if (!gstRegex.hasMatch(value)) return 'Enter a valid GST number';
+    return null;
+  }
 }

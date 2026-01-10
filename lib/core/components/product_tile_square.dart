@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 
 import '../constants/constants.dart';
 import '../routes/app_routes.dart';

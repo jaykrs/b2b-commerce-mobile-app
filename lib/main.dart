@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiClients.dart';
-import 'package:grocery/core/constants/api_config.dart';
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
 
 import 'core/routes/app_routes.dart';
 import 'core/routes/on_generate_route.dart';
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
 
 
 // import 'package:flutter/material.dart';
-// import 'package:grocery/core/constants/apiClients.dart';
+// import 'package:EazySupplies/core/constants/apiClients.dart';
 // import 'core/constants/apiCall.dart';
 // import 'core/routes/app_routes.dart';
 // import 'core/routes/on_generate_route.dart';
@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget {
 
 
 // import 'package:flutter/material.dart';
-// import 'package:grocery/core/constants/apiClients.dart';
+// import 'package:EazySupplies/core/constants/apiClients.dart';
 
 // import 'core/routes/app_routes.dart';
 // import 'core/routes/on_generate_route.dart';

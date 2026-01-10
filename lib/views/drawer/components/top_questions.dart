@@ -32,7 +32,7 @@ class TopQuestions extends StatelessWidget {
           trailing: SvgPicture.asset(AppIcons.right),
         ),
         AppSettingsListTile(
-          label: 'What is Grocery?',
+          label: 'What is EazySupplies?',
           trailing: SvgPicture.asset(AppIcons.right),
         ),
         AppSettingsListTile(

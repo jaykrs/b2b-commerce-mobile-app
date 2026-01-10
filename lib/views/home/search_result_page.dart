@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiCall.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/apiCall.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/routes/app_routes.dart';

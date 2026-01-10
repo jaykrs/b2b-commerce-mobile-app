@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/app_colors.dart';
-import 'package:grocery/core/routes/app_routes.dart';
+import 'package:EazySupplies/core/constants/app_colors.dart';
+import 'package:EazySupplies/core/routes/app_routes.dart';
 
 import '../../core/components/network_image.dart';
 import '../../core/constants/app_defaults.dart';

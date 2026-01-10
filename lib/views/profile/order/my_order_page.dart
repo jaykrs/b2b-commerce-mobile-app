@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiClients.dart';
-import 'package:grocery/core/constants/api_config.dart';
-import 'package:grocery/core/models/userModel.dart';
-import 'package:grocery/core/routes/app_routes.dart';
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
+import 'package:EazySupplies/core/routes/app_routes.dart';
 
 import '../../../core/components/app_back_button.dart';
 import '../../../core/constants/app_colors.dart';
@@ -64,14 +64,6 @@ class _AllOrderPageState extends State<AllOrderPage> {
         appBar: AppBar(
           leading: const AppBackButton(),
           title: const Text('My Order'),
-          bottom: const TabBar(
-            physics: NeverScrollableScrollPhysics(),
-            tabs: [
-              CustomTabLabel(label: 'All', value: '(58)'),
-              CustomTabLabel(label: 'Running', value: '(14)'),
-              CustomTabLabel(label: 'Previous', value: '(44)'),
-            ],
-          ),
         ),
         body: Container(
           color: AppColors.cardColor,
@@ -89,7 +81,7 @@ class _AllOrderPageState extends State<AllOrderPage> {
                   child: Text('No orders found'),
                 );
               }
-
+         
               final orders = snapshot.data!;
               return ListView.separated(
                 padding: const EdgeInsets.all(16),
@@ -111,7 +103,7 @@ class _AllOrderPageState extends State<AllOrderPage> {
 
 class OrderCard extends StatelessWidget {
   final Order order;
-
+  
   const OrderCard({super.key, required this.order});
 
   @override
@@ -134,9 +126,7 @@ class OrderCard extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.remove_red_eye), // View icon
                   onPressed: () {
-                    // Navigate or show details
-                    // Example: Navigator.push to details page
-                    Navigator.pushNamed(context, AppRoutes.orderView ,arguments: order.toJson());
+                    Navigator.pushNamed(context, AppRoutes.orderView ,arguments: order);
                   },
                 ),
               ],
@@ -153,51 +143,18 @@ class OrderCard extends StatelessWidget {
             ...order.items.map((item) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Text(
-                      '${item.product?.name ?? ''} - Qty: ${item.quantity} - Price: ${item.price}'),
+                      '${item.productName ?? ''} - Qty: ${item.quantity} - Price: ${item.price}'),
                 )),
             if (order.user != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text('User: ${order.user!.name}'),
               ),
+            
           ],
         ),
       ),
     );
   }
 
-  // Widget build(BuildContext context) {
-  //   return Card(
-  //     color: Colors.white,
-  //     child: Padding(
-  //       padding: const EdgeInsets.all(12),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text('Order ID: ${order.id}',
-  //               style: const TextStyle(fontWeight: FontWeight.bold)),
-  //           const SizedBox(height: 4),
-  //           Text('Status: ${order.status}'),
-  //           const SizedBox(height: 4),
-  //           Text('Created At: ${order.createdAt.toLocal()}'),
-  //           const SizedBox(height: 8),
-  //           Text(
-  //             'Items:',
-  //             style: const TextStyle(fontWeight: FontWeight.bold),
-  //           ),
-  //           ...order.items.map((item) => Padding(
-  //                 padding: const EdgeInsets.symmetric(vertical: 2),
-  //                 child: Text(
-  //                     '${item.product?.name ?? ''} - Qty: ${item.quantity} - Price: ${item.price}'),
-  //               )),
-  //           if (order.user != null)
-  //             Padding(
-  //               padding: const EdgeInsets.only(top: 8),
-  //               child: Text('User: ${order.user!.name}'),
-  //             ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }

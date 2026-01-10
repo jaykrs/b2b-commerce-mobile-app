@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/api_config.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
@@ -34,13 +35,10 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
 
   Future<void> fetchCategoryProducts() async {
     try {
-      final response = await http.get(
-        Uri.parse('${ApiConfig.products}?categoryId=${widget.categoryId}'),
-      );
+      final response = await ApiClient.dio.get(ApiConfig.products, queryParameters: {'categoryId':widget.categoryId});
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-        final List<dynamic> data = jsonResponse['data'];
+        final List<dynamic> data = response.data['data'];
 
         setState(() {
           products = data.map((e) => Product.fromJson(e)).toList();

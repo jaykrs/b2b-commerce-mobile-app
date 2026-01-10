@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiCall.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/apiCall.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/components/bundle_tile_square.dart';

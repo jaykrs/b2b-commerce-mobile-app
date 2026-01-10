@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiCall.dart';
-import 'package:grocery/core/constants/app_colors.dart';
-import 'package:grocery/core/constants/app_defaults.dart';
-import 'package:grocery/core/models/userModel.dart';
-import 'package:grocery/core/routes/app_routes.dart';
+import 'package:EazySupplies/core/constants/apiCall.dart';
+import 'package:EazySupplies/core/constants/app_colors.dart';
+import 'package:EazySupplies/core/constants/app_defaults.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
+import 'package:EazySupplies/core/routes/app_routes.dart';
 
 class AddressWidget extends StatefulWidget {
   const AddressWidget({super.key});
@@ -168,11 +168,11 @@ class AddressCardView extends StatelessWidget {
 
 
 // import 'package:flutter/material.dart';
-// import 'package:grocery/core/constants/apiCall.dart';
-// import 'package:grocery/core/constants/app_colors.dart';
-// import 'package:grocery/core/constants/app_defaults.dart';
-// import 'package:grocery/core/models/userModel.dart';
-// import 'package:grocery/core/routes/app_routes.dart';
+// import 'package:EazySupplies/core/constants/apiCall.dart';
+// import 'package:EazySupplies/core/constants/app_colors.dart';
+// import 'package:EazySupplies/core/constants/app_defaults.dart';
+// import 'package:EazySupplies/core/models/userModel.dart';
+// import 'package:EazySupplies/core/routes/app_routes.dart';
 
 // class AddressWidget extends StatefulWidget {
 //   const AddressWidget({super.key});

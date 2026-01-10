@@ -34,11 +34,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.flutter_upgrde_app"
+        applicationId "com.example.eazysupplies"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        resValue "string", "ESupplies", "EazySupplies"
     }
 
     buildTypes {

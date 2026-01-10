@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import '../../core/components/app_back_button.dart';
 import '../../core/components/bundle_tile_square.dart';
 import '../../core/constants/constants.dart';

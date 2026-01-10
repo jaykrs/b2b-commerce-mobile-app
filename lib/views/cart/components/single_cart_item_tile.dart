@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:grocery/core/routes/app_routes.dart';
+import 'package:EazySupplies/core/routes/app_routes.dart';
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';

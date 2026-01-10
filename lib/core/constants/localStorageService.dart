@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {

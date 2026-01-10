@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Pro_Grocery",
+            "name": "Pro_EazySupplies",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "Pro_Grocery (profile mode)",
+            "name": "Pro_EazySupplies (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "Pro_Grocery (release mode)",
+            "name": "Pro_EazySupplies (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

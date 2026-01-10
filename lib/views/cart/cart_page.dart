@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiCall.dart';
-import 'package:grocery/core/constants/cartStorage.dart';
-import 'package:grocery/core/constants/get_bundels.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/apiCall.dart';
+import 'package:EazySupplies/core/constants/cartStorage.dart';
+import 'package:EazySupplies/core/constants/get_bundels.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 
 import '../../core/components/app_back_button.dart';
 import '../../core/constants/app_defaults.dart';

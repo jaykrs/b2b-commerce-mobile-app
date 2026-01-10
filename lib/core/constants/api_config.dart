@@ -1,8 +1,8 @@
 class ApiConfig {
   // Base URL
   //static const String baseUrl = 'http://192.168.18.14:3000/api';
-  static const String baseUrl = 'http://api.eazysupplies.com/api';
-
+  static const String baseUrl = 'https://api.eazysupplies.com/api';
+  static const String profileImgPath = '$baseUrl/file?file=';
   // Endpoints
   static const String products = '$baseUrl/products';
   static const String categories = '$baseUrl/categories';
@@ -13,7 +13,10 @@ class ApiConfig {
   static const String addressPost = '$baseUrl/address';
   static const String userProfile = '$baseUrl/auth/user';
   static const String order = '$baseUrl/orders/getOrder';
+  static const String notificationList = '$baseUrl/notifications';
+  static const String profileImg = '$baseUrl/file/profileImg';
 
+ 
   // Timeouts
   static const Duration timeout = Duration(seconds: 10);
 }

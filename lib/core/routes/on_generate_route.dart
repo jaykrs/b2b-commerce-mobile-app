@@ -1,11 +1,12 @@
+import 'package:EazySupplies/views/drawer/notification_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/models/userModel.dart';
-import 'package:grocery/views/cart/components/add_edit_address.dart';
-import 'package:grocery/views/cart/components/address.dart';
-import 'package:grocery/views/menu/brand_product_list_page.dart';
-import 'package:grocery/views/profile/order/components/order_view_page.dart';
-import 'package:grocery/views/profile/profile_page.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
+import 'package:EazySupplies/views/cart/components/add_edit_address.dart';
+import 'package:EazySupplies/views/cart/components/address.dart';
+import 'package:EazySupplies/views/menu/brand_product_list_page.dart';
+import 'package:EazySupplies/views/profile/order/components/order_view_page.dart';
+import 'package:EazySupplies/views/profile/profile_page.dart';
 
 import '../../views/auth/forget_password_page.dart';
 import '../../views/auth/intro_login_page.dart';
@@ -55,6 +56,7 @@ import '../../views/review/submit_review_page.dart';
 import '../../views/save/save_page.dart';
 import 'app_routes.dart';
 import 'unknown_page.dart';
+import '../enums/login_type.dart';
 
 class RouteGenerator {
   static Route? onGenerate(RouteSettings settings) {
@@ -132,8 +134,16 @@ class RouteGenerator {
           );
         }
 
+      // case AppRoutes.login:
+      // final loginType = settings.arguments as String;
+      //   return CupertinoPageRoute(builder: (_) =>  LoginPage(loginType));
+
       case AppRoutes.login:
-        return CupertinoPageRoute(builder: (_) => const LoginPage());
+        final loginType = settings.arguments as LoginType? ?? LoginType.email;
+
+        return CupertinoPageRoute(
+          builder: (_) => LoginPage(loginType: loginType),
+        );
 
       case AppRoutes.signup:
         return CupertinoPageRoute(builder: (_) => const SignUpPage());
@@ -212,8 +222,14 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const AllOrderPage());
 
       case AppRoutes.orderView:
-          final orderData = settings.arguments;
-          return CupertinoPageRoute(builder: (_)=> OrderViewPage(orderData: orderData));
+        final orderData = settings.arguments;
+
+        if (orderData is! Order) {
+          throw Exception('Expected Order argument for OrderViewPage');
+        }
+        return CupertinoPageRoute(
+          builder: (_) => OrderViewPage(orderData: orderData),
+        );
 
       case AppRoutes.orderDetails:
         return CupertinoPageRoute(builder: (_) => const OrderDetailsPage());
@@ -297,6 +313,8 @@ class RouteGenerator {
 
       case AppRoutes.profilePage:
         return CupertinoPageRoute(builder: (_) => const ProfilePage());
+      case AppRoutes.notificationList:
+        return CupertinoPageRoute(builder: (_) => const NotificationListPage());
 
       default:
         return errorRoute();

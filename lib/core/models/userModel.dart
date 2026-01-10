@@ -848,3 +848,49 @@ class Address {
     );
   }
 }
+
+class NotificationModel {
+  final int id;
+  final String name;
+  final String? type;
+  final dynamic data;
+  final String? attachment;
+  final String? recepient;
+  final bool readStatus;
+  final bool sentStatus;
+  final String? remarks;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+
+  NotificationModel({
+    required this.id,
+    required this.name,
+    this.type,
+    this.data,
+    this.attachment,
+    this.recepient,
+    required this.readStatus,
+    required this.sentStatus,
+    this.remarks,
+    required this.createdAt,
+    this.updatedAt,
+  });
+
+  factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    return NotificationModel(
+      id: json['id'],
+      name: json['name'],
+      type: json['type'],
+      data: json['data'],
+      attachment: json['attachment'],
+      recepient: json['recepient'],
+      readStatus: json['readStatus'] ?? false,
+      sentStatus: json['sentStatus'] ?? false,
+      remarks: json['remarks'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'])
+          : null,
+    );
+  }
+}

@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/cartStorage.dart';
-import 'package:grocery/core/constants/localStorageService.dart';
-import 'package:grocery/core/models/userModel.dart';
-import 'package:http/http.dart' as http;
+import 'package:EazySupplies/core/constants/cartStorage.dart';
+import 'package:EazySupplies/core/constants/localStorageService.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 
 import '../../core/components/app_back_button.dart';
 import '../../core/components/buy_now_row_button.dart';
@@ -35,23 +36,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   Future<void> fetchProductDetails() async {
     try {
-      final response = await http.get(
-        Uri.parse('${ApiConfig.products}?productId=${widget.productId}'),
+      final response = await ApiClient.dio.get(
+        ApiConfig.products,
+        queryParameters: {
+          "productId": widget.productId,
+        },
       );
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-        setState(() {
-          product = Product.fromJson(jsonResponse['data']);
-          isLoading = false;
-        });
-      } else {
-        setState(() => isLoading = false);
-        debugPrint('Failed to load product: ${response.statusCode}');
-      }
+      setState(() {
+        product = Product.fromJson(response.data['data']);
+        isLoading = false;
+      });
+    } on DioException catch (e) {
+      setState(() => isLoading = false);
+      debugPrint('Dio error: ${e.message}');
     } catch (e) {
       setState(() => isLoading = false);
-      debugPrint('Error fetching product: $e');
+      debugPrint('Unexpected error: $e');
     }
   }
 
@@ -62,15 +63,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 
   Future<void> _loadCartQuantity() async {
-  final id = widget.productId.toString();
-  final existingQty = await CartStorage.getItemQty(id);
+    final id = widget.productId.toString();
+    final existingQty = await CartStorage.getItemQty(id);
 
-  if (existingQty > 0) {
-    setState(() {
-      quantity = existingQty;
-    });
+    if (existingQty > 0) {
+      setState(() {
+        quantity = existingQty;
+      });
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {

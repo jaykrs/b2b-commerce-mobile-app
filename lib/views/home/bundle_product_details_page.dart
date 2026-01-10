@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/api_config.dart';
-import 'package:grocery/core/constants/cartStorage.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/core/constants/cartStorage.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
@@ -43,17 +44,15 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
 
   Future<void> fetchProductDetails() async {
     try {
-      final response = await http
-          .get(
-            Uri.parse(
-              '${ApiConfig.products}?productId=${widget.productId}',
-            ),
-          )
-          .timeout(ApiConfig.timeout);
+      final response = await ApiClient.dio.get(
+        ApiConfig.products,
+        queryParameters: {
+          "productId": widget.productId
+        }
+      );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-        final data = jsonResponse['data'];
+        final data = response.data['data'];
         setState(() {
           product = Product.fromJson(data);
           isLoading = false;
@@ -146,7 +145,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                             PackDetails(
                               description: product?.description ?? '',
                             ),
-                            const ReviewRowButton(totalStars: 5),
+                           // const ReviewRowButton(totalStars: 5),
                             const Divider(thickness: 0.1),
                             BuyNowRow(
                               onBuyButtonTap: () {
@@ -185,6 +184,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                                 }
                               },
                             ),
+                            
                           ],
                         ),
                       ),

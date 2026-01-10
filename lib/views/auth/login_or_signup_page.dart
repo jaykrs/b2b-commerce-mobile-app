@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/enums/login_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -36,8 +37,10 @@ class _Footer extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(AppDefaults.padding),
             child: ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, AppRoutes.login),
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.login,
+                  arguments: LoginType.email),
               child: const Text('Login With Email'),
+              style: ElevatedButton.styleFrom(foregroundColor: Colors.black),
             ),
           ),
         ),
@@ -50,30 +53,36 @@ class _Footer extends StatelessWidget {
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: AppDefaults.margin),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.appleIcon),
-              iconSize: 48,
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(AppDefaults.padding),
+            child: ElevatedButton(
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.login,
+                  arguments: LoginType.phone),
+              child: const Text('Login With Phone'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.lightGreen
+              ),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.googleIcon),
-              iconSize: 48,
+          ),
+        ),
+        const SizedBox(height: AppDefaults.margin),
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(AppDefaults.padding),
+            child: ElevatedButton(
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.login,
+                  arguments: LoginType.gst),
+              child: const Text('Login With GST'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.lightGreenAccent
+              ),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.twitterIcon),
-              iconSize: 48,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppIcons.facebookIcon),
-              iconSize: 48,
-            ),
-          ],
+          ),
         ),
       ],
     );

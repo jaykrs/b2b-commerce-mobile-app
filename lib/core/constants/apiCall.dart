@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiClients.dart';
-import 'package:grocery/core/constants/api_config.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:grocery/core/routes/app_routes.dart';
+import 'package:EazySupplies/core/routes/app_routes.dart';
 Future<User> getUser() async {
   try {
     final response = await ApiClient.dio
@@ -179,4 +179,45 @@ Future<void> _logout(BuildContext context) async {
       (route) => false,
     );
   }
+
+Future<List<NotificationModel>> getNotifications() async {
+  try {
+    final response = await ApiClient.dio.get('/notifications');
+
+    final List list = response.data['notifications'];
+
+    return list
+        .map((e) => NotificationModel.fromJson(e))
+        .toList();
+  } catch (e) {
+    debugPrint('Notification error: $e');
+    rethrow;
+  }
+}
+
+Future<bool> readNotification(int id) async {
+  try {
+    final response = await ApiClient.dio.put(
+      '/notifications',
+      queryParameters: {'id': id},
+    );
+
+    return response.statusCode == 200;
+  } catch (e) {
+    debugPrint('Read notification error: $e');
+    return false; // ❗ don’t rethrow for UI actions
+  }
+}
+
+Future<bool> logout() async {
+  try {
+    final response = await ApiClient.dio.post('/auth/logout');
+
+    return response.statusCode == 200;
+  } catch (e) {
+    debugPrint('Logout error: $e');
+    return false; // safe for UI actions
+  }
+}
+
 

@@ -1,8 +1,8 @@
-# Flutter Grocery App Template
+# Flutter EazySupplies App Template
 
 ## [Watch Video intro](https://youtu.be/-RjEULM8a4w)
 
-This Flutter app template is designed for building various e-commerce apps but mostly focuses on grocery and vegetable stores. It includes a range of screens 👇
+This Flutter app template is designed for building various e-commerce apps but mostly focuses on EazySupplies and vegetable stores. It includes a range of screens 👇
 
 - **Splash Screen:** A welcoming first view.
 - **Onboarding:** Guides users through the app’s features.

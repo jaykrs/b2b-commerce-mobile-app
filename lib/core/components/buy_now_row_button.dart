@@ -21,11 +21,11 @@ class BuyNowRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          OutlinedButton(
-            onPressed: onCartButtonTap,
-            child: SvgPicture.asset(AppIcons.shoppingCart),
-          ),
-          const SizedBox(width: AppDefaults.padding),
+          // OutlinedButton(
+          //   onPressed: onCartButtonTap,
+          //   child: SvgPicture.asset(AppIcons.shoppingCart),
+          // ),
+          // const SizedBox(width: AppDefaults.padding),
           Expanded(
             child: ElevatedButton(
               onPressed: onCartButtonTap,

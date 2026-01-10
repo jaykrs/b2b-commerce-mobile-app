@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiCall.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/apiCall.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import '../../../core/components/title_and_action_button.dart';
 import 'checkout_address_card.dart';
 import '../../../core/constants/get_bundels.dart';
@@ -97,8 +97,8 @@ class _AddressSelectorState extends State<AddressSelector> {
 
 
 // import 'package:flutter/material.dart';
-// import 'package:grocery/core/constants/apiCall.dart';
-// import 'package:grocery/core/models/userModel.dart';
+// import 'package:EazySupplies/core/constants/apiCall.dart';
+// import 'package:EazySupplies/core/models/userModel.dart';
 // import '../../../core/components/title_and_action_button.dart';
 // import 'checkout_address_card.dart';// make sure this is your Address model
 // import '../../../core/constants/get_bundels.dart'; // where getAddress() is

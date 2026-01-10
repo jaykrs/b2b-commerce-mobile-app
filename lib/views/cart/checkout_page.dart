@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiClients.dart';
-import 'package:grocery/core/constants/api_config.dart';
-import 'package:grocery/core/constants/cartStorage.dart';
-import 'package:grocery/core/models/userModel.dart';
-import 'package:grocery/views/cart/components/checkout_address_selector.dart';
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/core/constants/cartStorage.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
+import 'package:EazySupplies/views/cart/components/checkout_address_selector.dart';
 
 import '../../core/components/app_back_button.dart';
 import '../../core/constants/app_defaults.dart';

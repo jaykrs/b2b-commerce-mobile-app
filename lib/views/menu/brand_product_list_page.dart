@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/api_config.dart';
-import 'package:grocery/core/models/userModel.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';

@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/enums/login_type.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/constants/constants.dart';
@@ -7,22 +8,23 @@ import 'components/login_page_form.dart';
 import 'components/social_logins.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  final LoginType loginType;
+  const LoginPage( {super.key, required this.loginType});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                LoginPageHeader(),
-                LoginPageForm(),
-                SizedBox(height: AppDefaults.padding),
-                SocialLogins(),
-                DontHaveAccountRow(),
+                const LoginPageHeader(),
+                LoginPageForm(loginType: loginType),
+                const SizedBox(height: AppDefaults.padding),
+                 SocialLogins(loginType: loginType),
+                 const DontHaveAccountRow(),
               ],
             ),
           ),

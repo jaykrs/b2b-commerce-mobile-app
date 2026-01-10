@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/apiClients.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/routes/app_routes.dart';
 import 'profile_list_tile.dart';

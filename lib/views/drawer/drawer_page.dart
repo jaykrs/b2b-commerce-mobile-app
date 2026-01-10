@@ -1,3 +1,5 @@
+import 'package:EazySupplies/core/constants/apiCall.dart';
+import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -46,7 +48,7 @@ class DrawerPage extends StatelessWidget {
               label: 'Notification',
               trailing: SvgPicture.asset(AppIcons.right),
               onTap: () =>
-                  Navigator.pushNamed(context, AppRoutes.termsAndConditions),
+                  Navigator.pushNamed(context, AppRoutes.notificationList),
             ),
             AppSettingsListTile(
               label: 'Terms & Conditions',
@@ -66,10 +68,27 @@ class DrawerPage extends StatelessWidget {
             ),
             const SizedBox(height: AppDefaults.padding * 3),
             AppSettingsListTile(
-              label: 'Logout',
-              trailing: SvgPicture.asset(AppIcons.right),
-              onTap: () => Navigator.pushNamed(context, AppRoutes.introLogin),
-            ),
+                label: 'Logout',
+                trailing: SvgPicture.asset(AppIcons.right),
+                //onTap: () => Navigator.pushNamed(context, AppRoutes.introLogin),
+                onTap: () async {
+                  final success = await logout();
+
+                  if (success) {
+                    // Clear local storage if needed
+                    await ApiClient.cookieJar.deleteAll();
+
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.loginOrSignup,
+                      (_) => false,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Logout failed')),
+                    );
+                  }
+                }),
           ],
         ),
       ),

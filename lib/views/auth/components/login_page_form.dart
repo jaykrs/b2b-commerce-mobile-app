@@ -1,8 +1,9 @@
+import 'package:EazySupplies/core/enums/login_type.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:grocery/core/constants/apiClients.dart';
-import 'package:grocery/core/constants/api_config.dart';
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/constants.dart';
@@ -14,9 +15,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LoginPageForm extends StatefulWidget {
-  const LoginPageForm({
-    super.key,
-  });
+  final LoginType loginType;
+  const LoginPageForm({super.key, required this.loginType});
 
   @override
   State<LoginPageForm> createState() => _LoginPageFormState();
@@ -52,13 +52,26 @@ class _LoginPageFormState extends State<LoginPageForm> {
 
     try {
       setState(() => loading = true);
+      Map<String, dynamic> payload = {
+        'password': passwordCtrl.text.trim(),
+      };
 
+      switch (widget.loginType) {
+        case LoginType.email:
+          payload['email'] = emailCtrl.text.trim();
+          break;
+
+        case LoginType.phone:
+          payload['phone'] = emailCtrl.text.trim();
+          break;
+
+        case LoginType.gst:
+          payload['gstn'] = emailCtrl.text.trim();
+          break;
+      }
       final response = await ApiClient.dio.post(
         '/auth/login',
-        data: {
-          'email': emailCtrl.text.trim(),
-          'password': passwordCtrl.text.trim(),
-        },
+        data: payload,
       );
 
       setState(() => loading = false);
@@ -76,44 +89,29 @@ class _LoginPageFormState extends State<LoginPageForm> {
     } on DioException catch (e) {
       setState(() => loading = false);
 
-      // DioException contains requestOptions, response, type, message
-      String errorMsg = e.response != null
-          ? "Login failed: ${e.response?.data}"
-          : "Connection error: ${e.message}";
+      debugPrint('Dio error type: ${e.type}');
+      debugPrint('Dio message: ${e.message}');
+      debugPrint('Dio response: ${e.response}');
+      debugPrint('Request path: ${e.requestOptions.path}');
+
+      final String errorMsg = _dioErrorMessage(e);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(errorMsg)),
       );
     }
 
-    // try {
-    //   final response = await http.post(
-    //     url,
-    //     headers: {"Content-Type": "application/json"},
-    //     body: jsonEncode({
-    //       "email": emailCtrl.text.trim(),
-    //       "password": passwordCtrl.text.trim(),
-    //     }),
-    //   );
+    // } on DioException catch (e) {
+    //   setState(() => loading = false);
 
-    //   setState(() => loading = false);
-    //   if (response.statusCode == 200 || response.statusCode == 201) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       const SnackBar(content: Text("Logged in successfully!")),
-    //     );
-    //     Navigator.pushNamed(context, AppRoutes.entryPoint);
-    //   } else {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //         content: Text("Login failed: ${response.body}"),
-    //       ),
-    //     );
-    //   }
-    // } catch (e) {
-    //   setState(() => loading = false);
+    //   // DioException contains requestOptions, response, type, message
+    //   print(e.response);
+    //   String errorMsg = e.response != null
+    //       ? "Login failed: ${e.response?.data}"
+    //       : "Connection error: ${e.message}";
 
     //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text("Connection error: $e")),
+    //     SnackBar(content: Text(errorMsg)),
     //   );
     // }
   }
@@ -132,14 +130,35 @@ class _LoginPageFormState extends State<LoginPageForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Email Field
-              const Text("Email"),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: emailCtrl,
-                keyboardType: TextInputType.emailAddress,
-                validator: Validators.email.call,
-                textInputAction: TextInputAction.next,
-              ),
+              if (widget.loginType == LoginType.email) ...[
+                const Text("Email"),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: emailCtrl,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: Validators.email.call,
+                  textInputAction: TextInputAction.next,
+                ),
+              ] else if (widget.loginType == LoginType.phone) ...[
+                const Text("Phone"),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: emailCtrl,
+                  keyboardType:
+                      TextInputType.text, // allow text input for phone
+                  validator: Validators.phone,
+                  textInputAction: TextInputAction.next,
+                ),
+              ] else ...[
+                const Text("GST"),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: emailCtrl,
+                  keyboardType: TextInputType.text,
+                  // validator: Validators.gst.call,
+                  textInputAction: TextInputAction.next,
+                )
+              ],
               const SizedBox(height: AppDefaults.padding),
 
               // Password Field
@@ -187,5 +206,27 @@ class _LoginPageFormState extends State<LoginPageForm> {
         ),
       ),
     );
+  }
+}
+
+String _dioErrorMessage(DioException e) {
+  switch (e.type) {
+    case DioExceptionType.connectionTimeout:
+      return 'Connection timeout. Please try again.';
+    case DioExceptionType.sendTimeout:
+      return 'Request timeout. Please try again.';
+    case DioExceptionType.receiveTimeout:
+      return 'Server response timeout.';
+    case DioExceptionType.badCertificate:
+      return 'Invalid SSL certificate.';
+    case DioExceptionType.connectionError:
+      return 'No internet connection or server unreachable.';
+    case DioExceptionType.badResponse:
+      return 'Login failed: ${e.response?.data}';
+    case DioExceptionType.cancel:
+      return 'Request cancelled.';
+    case DioExceptionType.unknown:
+    default:
+      return 'Unable to connect to server. Please try again.';
   }
 }
