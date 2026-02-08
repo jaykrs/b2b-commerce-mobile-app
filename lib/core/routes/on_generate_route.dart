@@ -1,4 +1,5 @@
 import 'package:EazySupplies/views/drawer/notification_page.dart';
+import 'package:EazySupplies/views/profile/order/payment_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
@@ -315,6 +316,8 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const ProfilePage());
       case AppRoutes.notificationList:
         return CupertinoPageRoute(builder: (_) => const NotificationListPage());
+      case AppRoutes.allPaymentPage:
+        return CupertinoPageRoute(builder: (_) => const AllPaymentPage());
 
       default:
         return errorRoute();

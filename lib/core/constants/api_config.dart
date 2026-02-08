@@ -15,6 +15,8 @@ class ApiConfig {
   static const String order = '$baseUrl/orders/getOrder';
   static const String notificationList = '$baseUrl/notifications';
   static const String profileImg = '$baseUrl/file/profileImg';
+  static const String payments = '$baseUrl/payments';
+  static const String orders = '$baseUrl/orders';
 
  
   // Timeouts

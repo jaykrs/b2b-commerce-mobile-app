@@ -14,7 +14,7 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: const [
             ProfileHeader(),        // header (already has vertical spacing)
-            ProfileMenuOptions(),   // menu options
+            // ProfileMenuOptions(),   // menu options
           ],
         ),
       ),

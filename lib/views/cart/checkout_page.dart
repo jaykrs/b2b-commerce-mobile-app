@@ -49,7 +49,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         }
       };
       final response = await ApiClient.dio
-          .post(ApiConfig.order, data: payload)
+          .post(ApiConfig.orders, data: payload)
           .timeout(ApiConfig.timeout);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -218,50 +218,3 @@ class BillingSummary extends StatelessWidget {
     );
   }
 }
-
-// class CheckoutPage extends StatelessWidget {
-//   const CheckoutPage({super.key, required List<Map<String, dynamic>> checkOutList});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         leading: const AppBackButton(),
-//         title: const Text('Checkout'),
-//       ),
-//       body: const SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             AddressSelector(),
-//            // PaymentSystem(),
-//            // CardDetails(),
-//             PayNowButton(),
-//             SizedBox(height: 16),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class PayNowButton extends StatelessWidget {
-//   const PayNowButton({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: double.infinity,
-//       child: Padding(
-//         padding: const EdgeInsets.all(AppDefaults.padding),
-//         child: ElevatedButton(
-//           onPressed: () {
-//             Navigator.pushNamed(context, AppRoutes.orderSuccessfull);
-//           },
-//           child: const Text('Place Order'),
-//         ),
-//       ),
-//     );
-//   }
-// }

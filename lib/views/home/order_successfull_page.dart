@@ -83,18 +83,18 @@ class OrderSuccessfullPage extends StatelessWidget {
                     // ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppDefaults.padding,
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const Text('Track Order'),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(
+                //     horizontal: AppDefaults.padding,
+                //   ),
+                //   child: SizedBox(
+                //     width: double.infinity,
+                //     child: TextButton(
+                //       onPressed: () {},
+                //       child: const Text('Track Order'),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

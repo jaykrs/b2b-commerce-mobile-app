@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
@@ -54,6 +55,19 @@ class _AddressSelectorState extends State<AddressSelector> {
     widget.onAddressSelected(addressList[index]);
   }
 
+  Future<void> _openAddEditPage([Address? address]) async {
+    final result = await Navigator.pushNamed(
+      context,
+      AppRoutes.addEditAddressPage,
+      arguments: address,
+    );
+
+    if (result == true) {
+      // refresh list after add/edit
+      fetchAddresses();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -76,7 +90,7 @@ class _AddressSelectorState extends State<AddressSelector> {
           title: 'Select Delivery Address',
           actionLabel: 'Add New',
           onTap: () {
-            // TODO: Navigate to Add Address Page
+            _openAddEditPage();
           },
           isHeadline: false,
         ),
@@ -94,83 +108,3 @@ class _AddressSelectorState extends State<AddressSelector> {
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:EazySupplies/core/constants/apiCall.dart';
-// import 'package:EazySupplies/core/models/userModel.dart';
-// import '../../../core/components/title_and_action_button.dart';
-// import 'checkout_address_card.dart';// make sure this is your Address model
-// import '../../../core/constants/get_bundels.dart'; // where getAddress() is
-
-// class AddressSelector extends StatefulWidget {
-//   const AddressSelector({super.key});
-
-//   @override
-//   State<AddressSelector> createState() => _AddressSelectorState();
-// }
-
-// class _AddressSelectorState extends State<AddressSelector> {
-//   int _activeIndex = 0;
-//   List<Address> addressList = [];
-//   bool isLoading = true;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchAddresses();
-//   }
-
-//   Future<void> fetchAddresses() async {
-//     try {
-//       final data = await getAddress(); // your API call
-//       setState(() {
-//         addressList = data;
-//         isLoading = false;
-//       });
-//     } catch (e) {
-//       setState(() => isLoading = false);
-//       debugPrint('Error fetching addresses: $e');
-//     }
-//   }
-
-//   void _selectAddress(int index) {
-//     setState(() {
-//       _activeIndex = index;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     if (isLoading) {
-//       return const Center(child: CircularProgressIndicator());
-//     }
-
-//     if (addressList.isEmpty) {
-//       return const Center(child: Text("No addresses found."));
-//     }
-
-//     return Column(
-//       children: [
-//         TitleAndActionButton(
-//           title: 'Select Delivery Address',
-//           actionLabel: 'Add New',
-//           onTap: () {
-//             // handle add new address
-//           },
-//           isHeadline: false,
-//         ),
-//         ...List.generate(addressList.length, (index) {
-//           final address = addressList[index];
-//           return AddressCard(
-//             label: address.name,
-//             phoneNumber: address.zipcode, // replace if you have phone field
-//             address: '${address.address}, ${address.city}',
-//             isActive: _activeIndex == index,
-//             onTap: () => _selectAddress(index),
-//           );
-//         }),
-//       ],
-//     );
-//   }
-// }

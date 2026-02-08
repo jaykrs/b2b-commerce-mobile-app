@@ -5,6 +5,7 @@ import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:EazySupplies/core/routes/app_routes.dart';
+
 Future<User> getUser() async {
   try {
     final response = await ApiClient.dio
@@ -13,10 +14,13 @@ Future<User> getUser() async {
     if (response.statusCode == 200) {
       final Map<String, dynamic> body =
           Map<String, dynamic>.from(response.data);
+
       final data = body['data'];
       if (data == null) {
         return User.empty();
       }
+      final List orders = data['orders'] ?? [];
+      data['ordersCount'] = orders.length;
       return User.fromJson(
         Map<String, dynamic>.from(data),
       );
@@ -147,9 +151,8 @@ Future<List<Address>> getAddress() async {
 
 Future<Object> getOrders() async {
   try {
-    final response = await ApiClient.dio
-        .get(ApiConfig.order)
-        .timeout(ApiConfig.timeout);
+    final response =
+        await ApiClient.dio.get(ApiConfig.order).timeout(ApiConfig.timeout);
     if (response.statusCode == 200) {
       final Map<String, dynamic> body =
           Map<String, dynamic>.from(response.data);
@@ -169,16 +172,16 @@ Future<Object> getOrders() async {
 }
 
 Future<void> _logout(BuildContext context) async {
-    // Clear all cookies
-    await ApiClient.cookieJar.deleteAll();
+  // Clear all cookies
+  await ApiClient.cookieJar.deleteAll();
 
-    // Navigate to login/signup screen and remove all previous routes
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutes.loginOrSignup,
-      (route) => false,
-    );
-  }
+  // Navigate to login/signup screen and remove all previous routes
+  Navigator.pushNamedAndRemoveUntil(
+    context,
+    AppRoutes.loginOrSignup,
+    (route) => false,
+  );
+}
 
 Future<List<NotificationModel>> getNotifications() async {
   try {
@@ -186,9 +189,7 @@ Future<List<NotificationModel>> getNotifications() async {
 
     final List list = response.data['notifications'];
 
-    return list
-        .map((e) => NotificationModel.fromJson(e))
-        .toList();
+    return list.map((e) => NotificationModel.fromJson(e)).toList();
   } catch (e) {
     debugPrint('Notification error: $e');
     rethrow;
@@ -220,4 +221,25 @@ Future<bool> logout() async {
   }
 }
 
+Future<List<Payment>> getPayments() async {
+  try {
+    final response =
+        await ApiClient.dio.get(ApiConfig.payments).timeout(ApiConfig.timeout);
 
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse =
+          response.data as Map<String, dynamic>;
+
+      final List<dynamic> data = jsonResponse['data'];
+
+      final List<Payment> payment =
+          data.map<Payment>((e) => Payment.fromJson(e)).toList();
+
+      return payment;
+    }
+  } catch (e) {
+    debugPrint('Address API error: $e');
+  }
+
+  return <Payment>[]; // empty list of Address
+}

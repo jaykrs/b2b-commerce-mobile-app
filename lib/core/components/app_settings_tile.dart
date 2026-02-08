@@ -8,11 +8,13 @@ class AppSettingsListTile extends StatelessWidget {
     required this.label,
     this.trailing,
     this.onTap,
+    this.icons
   });
 
   final String label;
   final Widget? trailing;
   final void Function()? onTap;
+  final Widget? icons;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,13 @@ class AppSettingsListTile extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  if(icons != null) ...[
+                  icons!,
+                  const SizedBox(width: 12),
+                  ],
+                  if(icons == null) ...[
+                  const SizedBox(width: 12),
+                  ],
                   Text(
                     label,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(

@@ -16,53 +16,54 @@ class User {
   final String? favorite;
   final String? gstn;
   final String? bankDetails;
+  final int ordersCount;
 
-  User({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.roleId,
-    required this.status,
-    this.profileImagePath,
-    this.lastLoginDt,
-    required this.countryCode,
-    required this.phone,
-    required this.otp,
-    required this.createdAt,
-    this.updatedAt,
-    this.createdBy,
-    this.wishlist,
-    this.favorite,
-    this.gstn,
-    this.bankDetails,
-  });
+  User(
+      {required this.id,
+      required this.name,
+      required this.email,
+      required this.roleId,
+      required this.status,
+      this.profileImagePath,
+      this.lastLoginDt,
+      required this.countryCode,
+      required this.phone,
+      required this.otp,
+      required this.createdAt,
+      this.updatedAt,
+      this.createdBy,
+      this.wishlist,
+      this.favorite,
+      this.gstn,
+      this.bankDetails,
+      required this.ordersCount});
 
   // ✅ From API JSON (NULL SAFE)
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      email: json['email'] ?? '',
-      roleId: json['roleId'] ?? 0,
-      status: json['status'] == true,
-      profileImagePath: json['profileImagepath'],
-      lastLoginDt: json['lastLoginDt'] != null
-          ? DateTime.tryParse(json['lastLoginDt'])
-          : null,
-      countryCode: json['countryCode']?.toString() ?? '',
-      phone: json['phone']?.toString() ?? '',
-      otp: json['otp'] ?? 0,
-      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ??
-          DateTime.fromMillisecondsSinceEpoch(0),
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.tryParse(json['updatedAt'])
-          : null,
-      createdBy: json['createdBy'],
-      wishlist: json['wishlist'],
-      favorite: json['favorite'],
-      gstn: json['gstn'],
-      bankDetails: json['bankDetails'],
-    );
+        id: json['id'] ?? 0,
+        name: json['name'] ?? '',
+        email: json['email'] ?? '',
+        roleId: json['roleId'] ?? 0,
+        status: json['status'] == true,
+        profileImagePath: json['profileImagepath'],
+        lastLoginDt: json['lastLoginDt'] != null
+            ? DateTime.tryParse(json['lastLoginDt'])
+            : null,
+        countryCode: json['countryCode']?.toString() ?? '',
+        phone: json['phone']?.toString() ?? '',
+        otp: json['otp'] ?? 0,
+        createdAt: DateTime.tryParse(json['createdAt'] ?? '') ??
+            DateTime.fromMillisecondsSinceEpoch(0),
+        updatedAt: json['updatedAt'] != null
+            ? DateTime.tryParse(json['updatedAt'])
+            : null,
+        createdBy: json['createdBy'],
+        wishlist: json['wishlist'],
+        favorite: json['favorite'],
+        gstn: json['gstn'],
+        bankDetails: json['bankDetails'],
+        ordersCount: json['ordersCount']);
   }
 
   /// ✅ To API JSON
@@ -85,22 +86,23 @@ class User {
       'favorite': favorite,
       'gstn': gstn,
       'bankDetails': bankDetails,
+      'ordersCount': ordersCount
     };
   }
 
   /// ✅ EMPTY USER (FIXED)
   factory User.empty() {
     return User(
-      id: 0,
-      name: '',
-      email: '',
-      roleId: 0,
-      status: false,
-      countryCode: '',
-      phone: '',
-      otp: 0,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(0),
-    );
+        id: 0,
+        name: '',
+        email: '',
+        roleId: 0,
+        status: false,
+        countryCode: '',
+        phone: '',
+        otp: 0,
+        createdAt: DateTime.fromMillisecondsSinceEpoch(0),
+        ordersCount: 0);
   }
 }
 
@@ -258,18 +260,17 @@ class OrderItem {
   /// Optional relation
   final Product? product;
 
-  OrderItem({
-    required this.id,
-    required this.orderId,
-    required this.productId,
-    required this.quantity,
-    this.backlogQuantity,
-    required this.price,
-    required this.createdAt,
-    this.updatedAt,
-    this.product,
-    this.productName
-  });
+  OrderItem(
+      {required this.id,
+      required this.orderId,
+      required this.productId,
+      required this.quantity,
+      this.backlogQuantity,
+      required this.price,
+      required this.createdAt,
+      this.updatedAt,
+      this.product,
+      this.productName});
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic>? productJson;
@@ -278,23 +279,21 @@ class OrderItem {
     }
 
     return OrderItem(
-      id: json['id'] ?? 0,
-      orderId: json['orderId'] ?? 0,
-      productId: json['productId'] ?? 0,
-      quantity: json['quantity'] ?? 0,
-      backlogQuantity: json['backlogquantity'] ?? 0,
-      price: (json['price'] as num?)?.toDouble() ?? 0.0,
-      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ??
-          DateTime.fromMillisecondsSinceEpoch(0),
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.tryParse(json['updatedAt'])
-          : null,
-      product: productJson != null ? Product.fromJson(productJson) : null,
-      productName : json['productName'] ?? ''
-    );
+        id: json['id'] ?? 0,
+        orderId: json['orderId'] ?? 0,
+        productId: json['productId'] ?? 0,
+        quantity: json['quantity'] ?? 0,
+        backlogQuantity: json['backlogquantity'] ?? 0,
+        price: (json['price'] as num?)?.toDouble() ?? 0.0,
+        createdAt: DateTime.tryParse(json['createdAt'] ?? '') ??
+            DateTime.fromMillisecondsSinceEpoch(0),
+        updatedAt: json['updatedAt'] != null
+            ? DateTime.tryParse(json['updatedAt'])
+            : null,
+        product: productJson != null ? Product.fromJson(productJson) : null,
+        productName: json['productName'] ?? '');
   }
 
- 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -412,6 +411,35 @@ class Payment {
     this.user,
     this.order,
   });
+
+   /// ✅ COPY WITH
+  Payment copyWith({
+    int? id,
+    int? userId,
+    int? orderId,
+    double? amount,
+    String? transactionId,
+    String? method,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    User? user,
+    Order? order,
+  }) {
+    return Payment(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      orderId: orderId ?? this.orderId,
+      amount: amount ?? this.amount,
+      transactionId: transactionId ?? this.transactionId,
+      method: method ?? this.method,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      user: user ?? this.user,
+      order: order ?? this.order,
+    );
+  }
 
   factory Payment.fromJson(Map<String, dynamic> json) {
     return Payment(
@@ -888,9 +916,26 @@ class NotificationModel {
       sentStatus: json['sentStatus'] ?? false,
       remarks: json['remarks'],
       createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'])
-          : null,
+      updatedAt:
+          json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
+}
+
+class PaymentMethod {
+  final String name;
+  final String id;
+
+  const PaymentMethod({
+    required this.name,
+    required this.id,
+  });
+
+  static const List<PaymentMethod> values = [
+    PaymentMethod(name: 'Net Banking', id: 'NB'),
+    PaymentMethod(name: 'Debit Card', id: 'DC'),
+    PaymentMethod(name: 'Credit Card', id: 'CC'),
+    PaymentMethod(name: 'UPI (Unified Payments Interface)', id: 'UPI'),
+    PaymentMethod(name: 'Offline', id: 'OFF'),
+  ];
 }

@@ -1,5 +1,6 @@
 import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/views/drawer/components/dashboard.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
@@ -43,7 +44,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
               title: const Text('Profile'),
               elevation: 0,
               backgroundColor: Colors.transparent,
-              automaticallyImplyLeading: false,
+              automaticallyImplyLeading: true,
               titleTextStyle: Theme.of(context)
                   .textTheme
                   .titleLarge
@@ -66,13 +67,19 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                   );
                 }
 
-                return UserData(
-                  user: snapshot.data!,
-                  onProfileUpdated: refreshUser, // ✅ key
+                // return UserData(
+                //   user: snapshot.data!,
+                //   onProfileUpdated: refreshUser, // ✅ key
+                // );
+                return UserDashboard(
+                  name: snapshot.data?.name ?? '',
+                  email: snapshot.data?.email ?? '',
+                  phone: snapshot.data?.phone ?? '',
+                  totalOrders: snapshot.data?.ordersCount ?? 0,
                 );
               },
             ),
-            const ProfileHeaderOptions(),
+            // const ProfileHeaderOptions(),
           ],
         ),
       ],
@@ -222,7 +229,7 @@ class UserData extends StatelessWidget {
                   onProfileUpdated, // refresh callback from parent
                 );
               },
-            ), 
+            ),
             _optionTile(
               icon: Icons.photo_library,
               title: 'Choose from Gallery',

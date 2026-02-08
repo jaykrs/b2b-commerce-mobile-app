@@ -80,4 +80,5 @@ class AppRoutes {
   static const paymentCardAdd = '/paymentCardAdd';
   static const profilePage = '/profilePage';
   static const notificationList = '/notificationList';
+  static const allPaymentPage = 'allPaymentPage';
 }
