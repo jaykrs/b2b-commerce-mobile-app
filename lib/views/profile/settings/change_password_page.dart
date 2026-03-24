@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -35,7 +36,7 @@ class ChangePasswordPage extends StatelessWidget {
               children: [
                 /* <----  Current Password -----> */
                 const Text("Current Password"),
-                const SizedBox(height: 8),
+                SizedBox(height: Responsive.hp(context, 8 / 8)),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,
@@ -47,11 +48,11 @@ class ChangePasswordPage extends StatelessWidget {
                     suffixIconConstraints: const BoxConstraints(),
                   ),
                 ),
-                const SizedBox(height: AppDefaults.padding),
+                SizedBox(height: AppDefaults.padding),
 
                 /* <---- New Password -----> */
                 const Text("New Password"),
-                const SizedBox(height: 8),
+                SizedBox(height: Responsive.hp(context, 8 / 8)),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,
@@ -63,11 +64,11 @@ class ChangePasswordPage extends StatelessWidget {
                     suffixIconConstraints: const BoxConstraints(),
                   ),
                 ),
-                const SizedBox(height: AppDefaults.padding),
+                SizedBox(height: AppDefaults.padding),
 
                 /* <---- Confirm Password-----> */
                 const Text("Confirm Password"),
-                const SizedBox(height: 8),
+                SizedBox(height: Responsive.hp(context, 8 / 8)),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
@@ -79,10 +80,10 @@ class ChangePasswordPage extends StatelessWidget {
                     suffixIconConstraints: const BoxConstraints(),
                   ),
                 ),
-                const SizedBox(height: AppDefaults.padding),
+                SizedBox(height: AppDefaults.padding),
 
                 /* <---- Submit -----> */
-                const SizedBox(height: AppDefaults.padding),
+                SizedBox(height: AppDefaults.padding),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

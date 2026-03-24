@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
@@ -55,7 +56,7 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: AppDefaults.padding / 2),
+            SizedBox(height: AppDefaults.padding / 2),
             CreditCardWidget(
               cardNumber: cardNumber.text,
               expiryDate: expireDate.text,
@@ -120,23 +121,23 @@ class CreditCardForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Card Name"),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           TextFormField(
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             controller: holderName,
             onChanged: onTextChanged,
           ),
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
           const Text("Card Number"),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           TextFormField(
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.next,
             controller: cardNumber,
             onChanged: onTextChanged,
           ),
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
           Row(
             children: [
               Expanded(
@@ -144,7 +145,7 @@ class CreditCardForm extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("Expire Date"),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
@@ -154,13 +155,13 @@ class CreditCardForm extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: AppDefaults.padding),
+              SizedBox(width: AppDefaults.padding),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("CVV"),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
@@ -172,7 +173,7 @@ class CreditCardForm extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
           Row(
             children: [
               Text(
@@ -191,7 +192,7 @@ class CreditCardForm extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -199,7 +200,7 @@ class CreditCardForm extends StatelessWidget {
               child: const Text('Add Card'),
             ),
           ),
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
         ],
       ),
     );

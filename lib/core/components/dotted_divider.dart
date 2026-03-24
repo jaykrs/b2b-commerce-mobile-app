@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class DottedDivider extends StatelessWidget {
@@ -21,8 +22,8 @@ class DottedDivider extends StatelessWidget {
             30,
             (index) => Container(
               margin: const EdgeInsets.all(3),
-              width: 1,
-              height: 8,
+              width: Responsive.wp(context, 1 / 4),
+              height: Responsive.hp(context, 8 / 8),
               color: color ?? Colors.black,
             ),
           ),
@@ -37,8 +38,8 @@ class DottedDivider extends StatelessWidget {
             30,
             (index) => Container(
               margin: const EdgeInsets.all(3),
-              width: 8,
-              height: 0.3,
+              width: Responsive.wp(context, 8 / 4),
+              height: Responsive.hp(context, 0 / 8),
               color: color ?? Colors.black,
             ),
           ),

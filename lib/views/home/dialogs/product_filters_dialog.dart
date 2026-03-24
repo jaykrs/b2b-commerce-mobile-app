@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/constants.dart';
@@ -15,8 +16,8 @@ class ProductFiltersDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 56,
-              height: 3,
+              width: Responsive.wp(context, 56 / 4),
+              height: Responsive.hp(context, 3 / 8),
               decoration: BoxDecoration(
                 color: Colors.black,
                 borderRadius: AppDefaults.borderRadius,
@@ -44,7 +45,7 @@ class ProductFiltersDialog extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: Responsive.hp(context, 16 / 8)),
           ],
         ),
       ),
@@ -77,7 +78,7 @@ class _RatingStar extends StatelessWidget {
                   ),
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           Row(
             children: List.generate(
               /// You cannot add more than 5 star or less than 0 star
@@ -130,7 +131,7 @@ class _BrandSelector extends StatelessWidget {
                   ),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: Responsive.hp(context, 16 / 8)),
           SizedBox(
             width: double.infinity,
             child: Wrap(
@@ -191,7 +192,7 @@ class _CategoriesSelector extends StatelessWidget {
                   ),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: Responsive.hp(context, 16 / 8)),
           SizedBox(
             width: double.infinity,
             child: Wrap(
@@ -313,7 +314,7 @@ class _SortBy extends StatelessWidget {
           const Spacer(),
           DropdownButton(
             value: 'Popularity',
-            underline: const SizedBox(),
+            underline: SizedBox(),
             icon: const Icon(
               Icons.arrow_drop_down,
               color: AppColors.primary,
@@ -345,11 +346,11 @@ class _FilterHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          width: 56,
+          width: Responsive.wp(context, 56 / 4),
           alignment: Alignment.centerLeft,
           child: SizedBox(
-            height: 40,
-            width: 40,
+            height: Responsive.hp(context, 40 / 8),
+            width: Responsive.wp(context, 40 / 4),
             child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
@@ -371,7 +372,7 @@ class _FilterHeader extends StatelessWidget {
               ),
         ),
         SizedBox(
-          width: 56,
+          width: Responsive.wp(context, 56 / 4),
           child: TextButton(
             onPressed: () {},
             child: Text(

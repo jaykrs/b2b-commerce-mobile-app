@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/app_radio.dart';
@@ -47,7 +48,7 @@ class AddressCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppRadio(isActive: isActive),
-                const SizedBox(width: 16),
+                SizedBox(width: Responsive.wp(context, 16 / 4)),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,13 +60,13 @@ class AddressCard extends StatelessWidget {
                             color: Colors.black,
                           ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     Text(
                       phoneNumber,
                       softWrap: true,
                       overflow: TextOverflow.visible,
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     // Wrap the address in Expanded to prevent overflow
                     SizedBox(
                       width: MediaQuery.of(context).size.width -

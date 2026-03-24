@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/app_radio.dart';
 import '../../../core/constants/app_colors.dart';
@@ -35,48 +36,48 @@ class NewAddressPage extends StatelessWidget {
             children: [
               /* <----  Full Name -----> */
               const Text("Full Name"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Phone Number -----> */
               const Text("Phone Number"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Address Line 1 -----> */
               const Text("Address Line 1"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Address Line 2 -----> */
               const Text("Address Line 2"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- City -----> */
               const Text("City"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- State and Zip Code -----> */
               Row(
@@ -86,7 +87,7 @@ class NewAddressPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("State"),
-                        const SizedBox(height: 8),
+                        SizedBox(height: Responsive.hp(context, 8 / 8)),
                         TextFormField(
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
@@ -94,13 +95,13 @@ class NewAddressPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(width: AppDefaults.padding),
+                  SizedBox(width: AppDefaults.padding),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("Zip Code"),
-                        const SizedBox(height: 8),
+                        SizedBox(height: Responsive.hp(context, 8 / 8)),
                         TextFormField(
                           keyboardType: TextInputType.number,
                           textInputAction: TextInputAction.done,
@@ -120,7 +121,7 @@ class NewAddressPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/components/network_image.dart';
@@ -32,7 +33,7 @@ class EmptyCartPage extends StatelessWidget {
                 .titleLarge
                 ?.copyWith(fontWeight: FontWeight.bold, color: Colors.black),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           const Text('Sorry, you have no products in your cart'),
           const Spacer(),
           SizedBox(

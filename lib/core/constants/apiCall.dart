@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:EazySupplies/core/routes/app_routes.dart';
 
 Future<User> getUser() async {
@@ -165,7 +163,7 @@ Future<Object> getOrders() async {
       );
     }
     return Order.empty();
-  } catch (e, stack) {
+  } catch (e) {
     debugPrint('User API error: $e');
     return Order.empty();
   }

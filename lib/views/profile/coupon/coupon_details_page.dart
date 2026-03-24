@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/app_back_button.dart';
@@ -19,7 +20,7 @@ class CouponDetailsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
           CouponCard(
             title: 'Black\nCoffee',
             discounts: '41%',
@@ -79,7 +80,7 @@ class CouponDetailsPage extends StatelessWidget {
                   ),
             ),
           ),
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
         ],
       ),
     );
@@ -134,8 +135,8 @@ class BenefitsTile extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 20,
-              height: 5,
+              width: Responsive.wp(context, 20 / 4),
+              height: Responsive.hp(context, 5 / 8),
               margin: const EdgeInsets.only(right: AppDefaults.padding),
               decoration: const BoxDecoration(color: AppColors.primary),
             ),

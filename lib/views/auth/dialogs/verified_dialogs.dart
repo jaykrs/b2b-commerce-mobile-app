@@ -30,7 +30,7 @@ class VerifiedDialog extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: AppDefaults.padding),
+            SizedBox(height: AppDefaults.padding),
             Text(
               'Verified!',
               style: Theme.of(context)
@@ -38,12 +38,12 @@ class VerifiedDialog extends StatelessWidget {
                   .headlineSmall
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: AppDefaults.padding),
+            SizedBox(height: AppDefaults.padding),
             const Text(
               'Hurrah!!  You have successfully\nverified the account.',
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppDefaults.padding),
+            SizedBox(height: AppDefaults.padding),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

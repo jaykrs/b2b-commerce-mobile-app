@@ -1,13 +1,18 @@
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../constants/app_defaults.dart';
 import 'skeleton.dart';
 
 class NetworkImageWithLoader extends StatelessWidget {
   final BoxFit fit;
+  final String src;
+  final double radius;
+  final BorderRadius? borderRadius;
 
-  /// This widget is used for displaying network image with a placeholder
   const NetworkImageWithLoader(
     this.src, {
     super.key,
@@ -16,17 +21,33 @@ class NetworkImageWithLoader extends StatelessWidget {
     this.borderRadius,
   });
 
-  final String src;
-  final double radius;
-  final BorderRadius? borderRadius;
+  /// ✅ Fallback fetch
+  Future<Uint8List?> fetchImageBytes(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        return response.bodyBytes;
+      }
+    } catch (e) {
+      debugPrint("Image fetch error: $e");
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = Uri.encodeFull(src);
+
     return ClipRRect(
-      borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(radius)),
+      borderRadius: borderRadius ?? BorderRadius.circular(radius),
       child: CachedNetworkImage(
         fit: fit,
-        imageUrl: src,
+        imageUrl: imageUrl,
+        httpHeaders: const {
+          "Accept": "image/*",
+        },
+
+        // ✅ Normal case (fast + cached)
         imageBuilder: (context, imageProvider) => Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -35,8 +56,30 @@ class NetworkImageWithLoader extends StatelessWidget {
             ),
           ),
         ),
+
+        // ✅ Loading skeleton
         placeholder: (context, url) => const Skeleton(),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
+
+        // 🔥 FIX: Fallback when API fails
+        errorWidget: (context, url, error) {
+          return FutureBuilder<Uint8List?>(
+            future: fetchImageBytes(url),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Skeleton();
+              }
+
+              if (snapshot.hasData) {
+                return Image.memory(
+                  snapshot.data!,
+                  fit: fit,
+                );
+              }
+
+              return const Icon(Icons.broken_image);
+            },
+          );
+        },
       ),
     );
   }

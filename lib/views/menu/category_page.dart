@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
-import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
 import '../../core/components/product_tile_square.dart';
@@ -35,7 +33,8 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
 
   Future<void> fetchCategoryProducts() async {
     try {
-      final response = await ApiClient.dio.get(ApiConfig.products, queryParameters: {'categoryId':widget.categoryId});
+      final response = await ApiClient.dio.get(ApiConfig.products,
+          queryParameters: {'categoryId': widget.categoryId});
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['data'];

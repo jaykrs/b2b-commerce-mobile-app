@@ -4,7 +4,6 @@ import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 import '../../../core/components/title_and_action_button.dart';
 import 'checkout_address_card.dart';
-import '../../../core/constants/get_bundels.dart';
 
 class AddressSelector extends StatefulWidget {
   final ValueChanged<Address> onAddressSelected;

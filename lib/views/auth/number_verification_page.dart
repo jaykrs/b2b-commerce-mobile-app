@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -105,12 +106,12 @@ class NumberVerificationHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: AppDefaults.padding),
+        SizedBox(height: AppDefaults.padding),
         Text(
           'Entry Your 4 digit code',
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: AppDefaults.padding),
+        SizedBox(height: AppDefaults.padding),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.4,
           child: const AspectRatio(
@@ -120,7 +121,7 @@ class NumberVerificationHeader extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppDefaults.padding * 3),
+        SizedBox(height: AppDefaults.padding * 3),
       ],
     );
   }
@@ -141,8 +142,8 @@ class OTPTextFields extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           SizedBox(
-            width: 68,
-            height: 68,
+            width: Responsive.wp(context, 68 / 4),
+            height: Responsive.hp(context, 68 / 8),
             child: TextFormField(
               onChanged: (v) {
                 if (v.length == 1) {
@@ -163,8 +164,8 @@ class OTPTextFields extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 68,
-            height: 68,
+            width: Responsive.wp(context, 68 / 4),
+            height: Responsive.hp(context, 68 / 8),
             child: TextFormField(
               onChanged: (v) {
                 if (v.length == 1) {
@@ -185,8 +186,8 @@ class OTPTextFields extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 68,
-            height: 68,
+            width: Responsive.wp(context, 68 / 4),
+            height: Responsive.hp(context, 68 / 8),
             child: TextFormField(
               onChanged: (v) {
                 if (v.length == 1) {
@@ -207,8 +208,8 @@ class OTPTextFields extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 68,
-            height: 68,
+            width: Responsive.wp(context, 68 / 4),
+            height: Responsive.hp(context, 68 / 8),
             child: TextFormField(
               onChanged: (v) {
                 if (v.length == 1) {

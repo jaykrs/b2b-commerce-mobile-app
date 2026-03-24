@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/constants.dart';
@@ -21,13 +22,13 @@ class StarsRow extends StatelessWidget {
       child: Row(
         children: [
           Text(label),
-          const SizedBox(width: 8),
+          SizedBox(width: Responsive.wp(context, 8 / 4)),
           Expanded(
             flex: 5,
             child: ClipRRect(
               borderRadius: AppDefaults.borderRadius,
               child: SizedBox(
-                height: 10,
+                height: Responsive.hp(context, 10 / 8),
                 child: LinearProgressIndicator(
                   value: totalPercentage / 100,
                   color: AppColors.primary,
@@ -36,7 +37,7 @@ class StarsRow extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: Responsive.wp(context, 16 / 4)),
           Expanded(
             flex: 1,
             child: Text(

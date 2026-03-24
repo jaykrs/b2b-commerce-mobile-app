@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 
 import 'package:EazySupplies/core/constants/app_defaults.dart';
 import 'package:EazySupplies/core/constants/app_icons.dart';
@@ -48,15 +49,14 @@ class SocialLogins extends StatelessWidget {
                   children: [
                     SvgPicture.asset(
                       _icon(type),
-                      width: 24,
+                      width: Responsive.wp(context, 24 / 4),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: Responsive.wp(context, 8 / 4)),
                     Text(
                       _label(type),
-                      style:
-                          Theme.of(context).textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ],
                 ),
@@ -93,8 +93,6 @@ class SocialLogins extends StatelessWidget {
   }
 }
 
-
-
 // import 'package:EazySupplies/core/enums/login_type.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_svg/svg.dart';
@@ -128,9 +126,9 @@ class SocialLogins extends StatelessWidget {
 //                 children: [
 //                   SvgPicture.asset(
 //                     AppIcons.googleIconRounded,
-//                     width: 24,
+//                     width: Responsive.wp(context, 24/4),
 //                   ),
-//                   const SizedBox(width: 8),
+//                   SizedBox(width: Responsive.wp(context, 8/4)),
 //                   Text(
 //                     'Email',
 //                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -142,7 +140,7 @@ class SocialLogins extends StatelessWidget {
 //               ),
 //             ),
 //           ),
-//           const SizedBox(width: AppDefaults.margin),
+//           SizedBox(width: AppDefaults.margin),
 //         ],
 //         if(widget.loginType === LoginType.email) ...[
 //           Expanded(
@@ -160,9 +158,9 @@ class SocialLogins extends StatelessWidget {
 //                 children: [
 //                   SvgPicture.asset(
 //                     AppIcons.appleIconRounded,
-//                     width: 24,
+//                     width: Responsive.wp(context, 24/4),
 //                   ),
-//                   const SizedBox(width: 8),
+//                   SizedBox(width: Responsive.wp(context, 8/4)),
 //                   Text(
 //                     'Phone',
 //                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -174,7 +172,7 @@ class SocialLogins extends StatelessWidget {
 //               ),
 //             ),
 //           ),
-//           const SizedBox(width: AppDefaults.margin),
+//           SizedBox(width: AppDefaults.margin),
 //         ],
 //         if(widget.loginType === LoginType.email) ...[
 //           Expanded(
@@ -192,9 +190,9 @@ class SocialLogins extends StatelessWidget {
 //                 children: [
 //                   SvgPicture.asset(
 //                     AppIcons.appleIconRounded,
-//                     width: 24,
+//                     width: Responsive.wp(context, 24/4),
 //                   ),
-//                   const SizedBox(width: 8),
+//                   SizedBox(width: Responsive.wp(context, 8/4)),
 //                   Text(
 //                     'GST',
 //                     style: Theme.of(context).textTheme.labelLarge?.copyWith(

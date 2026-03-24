@@ -4,15 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/themes/app_themes.dart';
 import '../../../core/utils/validators.dart';
 import 'login_button.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class LoginPageForm extends StatefulWidget {
   final LoginType loginType;
@@ -132,7 +129,7 @@ class _LoginPageFormState extends State<LoginPageForm> {
               // Email Field
               if (widget.loginType == LoginType.email) ...[
                 const Text("Email"),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextFormField(
                   controller: emailCtrl,
                   keyboardType: TextInputType.emailAddress,
@@ -141,7 +138,7 @@ class _LoginPageFormState extends State<LoginPageForm> {
                 ),
               ] else if (widget.loginType == LoginType.phone) ...[
                 const Text("Phone"),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextFormField(
                   controller: emailCtrl,
                   keyboardType:
@@ -151,7 +148,7 @@ class _LoginPageFormState extends State<LoginPageForm> {
                 ),
               ] else ...[
                 const Text("GST"),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextFormField(
                   controller: emailCtrl,
                   keyboardType: TextInputType.text,
@@ -159,11 +156,11 @@ class _LoginPageFormState extends State<LoginPageForm> {
                   textInputAction: TextInputAction.next,
                 )
               ],
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               // Password Field
               const Text("Password"),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               TextFormField(
                 controller: passwordCtrl,
                 validator: Validators.password.call,

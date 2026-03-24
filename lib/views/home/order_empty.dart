@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/components/network_image.dart';
@@ -36,7 +37,7 @@ class OrderEmpty extends StatelessWidget {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: Responsive.hp(context, 16 / 8)),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppDefaults.padding),
                 child: Text(

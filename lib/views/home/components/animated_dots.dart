@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/constants.dart';
@@ -20,7 +21,7 @@ class AnimatedDots extends StatelessWidget {
         totalItems,
         (index) => AnimatedContainer(
           duration: AppDefaults.duration,
-          height: 5,
+          height: Responsive.hp(context, 5 / 8),
           margin: const EdgeInsets.symmetric(horizontal: 4),
           width: currentIndex == index ? 25 : 15,
           decoration: BoxDecoration(

@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -23,7 +24,7 @@ class SearchBar extends StatelessWidget {
             suffixIcon: IconButton(
               icon: SvgPicture.asset(
                 AppIcons.search,
-                width: 24,
+                width: Responsive.wp(context, 24 / 4),
                 colorFilter: const ColorFilter.mode(
                   AppColors.placeholder,
                   BlendMode.srcIn,

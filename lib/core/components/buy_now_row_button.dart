@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../constants/constants.dart';
 
@@ -25,14 +24,17 @@ class BuyNowRow extends StatelessWidget {
           //   onPressed: onCartButtonTap,
           //   child: SvgPicture.asset(AppIcons.shoppingCart),
           // ),
-          // const SizedBox(width: AppDefaults.padding),
+          // SizedBox(width: AppDefaults.padding),
           Expanded(
-            child: ElevatedButton(
-              onPressed: onCartButtonTap,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(AppDefaults.padding * 1.2),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 24.0),
+              child: ElevatedButton(
+                onPressed: onCartButtonTap,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(AppDefaults.padding * 1.2),
+                ),
+                child: const Text('Add Cart'),
               ),
-              child: const Text('Add Cart'),
             ),
           ),
         ],

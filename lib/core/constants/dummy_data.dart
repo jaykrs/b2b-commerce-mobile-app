@@ -1,4 +1,3 @@
-import '../models/dummy_bundle_model.dart';
 import '../models/dummy_product_model.dart';
 
 class Dummy {
@@ -29,5 +28,4 @@ class Dummy {
       mainPrice: 18,
     ),
   ];
-
 }

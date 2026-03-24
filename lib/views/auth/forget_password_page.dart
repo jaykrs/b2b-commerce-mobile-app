@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/components/app_back_button.dart';
@@ -42,20 +43,20 @@ class ForgetPasswordPage extends StatelessWidget {
                           .titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: AppDefaults.padding),
+                    SizedBox(height: AppDefaults.padding),
                     const Text(
                       'Please enter your number. We will send a code\nto your phone to reset your password.',
                     ),
-                    const SizedBox(height: AppDefaults.padding * 3),
+                    SizedBox(height: AppDefaults.padding * 3),
                     const Text("Phone Number"),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       autofocus: true,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: AppDefaults.padding),
-                    const SizedBox(height: AppDefaults.padding),
+                    SizedBox(height: AppDefaults.padding),
+                    SizedBox(height: AppDefaults.padding),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(

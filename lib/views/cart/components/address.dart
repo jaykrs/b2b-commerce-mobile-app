@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/constants/app_colors.dart';
@@ -118,7 +119,7 @@ class AddressCardView extends StatelessWidget {
               borderRadius: AppDefaults.borderRadius,
               border: Border.all(
                 color: Colors.grey.shade400,
-                width: 0.7,
+                width: Responsive.wp(context, 0 / 4) * .7,
               ),
             ),
             child: Row(
@@ -136,12 +137,12 @@ class AddressCardView extends StatelessWidget {
                             .bodyLarge
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: Responsive.hp(context, 6 / 8)),
                       Text(
                         phoneNumber,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: Responsive.hp(context, 6 / 8)),
                       Text(
                         address,
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -285,7 +286,7 @@ class AddressCardView extends StatelessWidget {
 //               borderRadius: AppDefaults.borderRadius,
 //               border: Border.all(
 //                 color: Colors.grey.shade400,
-//                 width: 0.7,
+//                 width: Responsive.wp(context, 0/4).7,
 //               ),
 //             ),
 //             child: Row(
@@ -303,12 +304,12 @@ class AddressCardView extends StatelessWidget {
 //                             .bodyLarge
 //                             ?.copyWith(fontWeight: FontWeight.bold),
 //                       ),
-//                       const SizedBox(height: 6),
+//                       SizedBox(height: Responsive.hp(context, 6/8)),
 //                       Text(
 //                         phoneNumber,
 //                         style: Theme.of(context).textTheme.bodyMedium,
 //                       ),
-//                       const SizedBox(height: 6),
+//                       SizedBox(height: Responsive.hp(context, 6/8)),
 //                       Text(
 //                         address,
 //                         style: Theme.of(context).textTheme.bodyMedium,

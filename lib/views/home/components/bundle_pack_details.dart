@@ -1,6 +1,7 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
-import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
 
 class PackDetails extends StatelessWidget {
@@ -28,19 +29,17 @@ class PackDetails extends StatelessWidget {
                   color: Colors.black,
                 ),
           ),
-
           const SizedBox(height: AppDefaults.padding / 2),
 
           /* <---- Description -----> */
-          Text(
-            description,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: Colors.black87),
-          ),
-
-          const SizedBox(height: AppDefaults.padding),
+          Html(
+            data: description,
+            style: {
+              "body": Style(
+                fontSize: FontSize(Responsive.sp(context, 14)),
+              ),
+            },
+          )
         ],
       ),
     );

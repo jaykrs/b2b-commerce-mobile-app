@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -91,15 +92,15 @@ class AppTheme {
     fillColor: AppColors.textInputBackground,
     floatingLabelBehavior: FloatingLabelBehavior.never,
     border: OutlineInputBorder(
-      borderSide: BorderSide(width: 0.1),
+      borderSide: BorderSide(width: 1),
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 0.1),
+      borderSide: BorderSide(width: 1),
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 0.1),
+      borderSide: BorderSide(width: 1),
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
     suffixIconColor: AppColors.placeholder,
@@ -120,15 +121,15 @@ class AppTheme {
   static final otpInputDecorationTheme = InputDecorationTheme(
     floatingLabelBehavior: FloatingLabelBehavior.never,
     border: OutlineInputBorder(
-      borderSide: const BorderSide(width: 0.1),
+      borderSide: const BorderSide(width: 1),
       borderRadius: BorderRadius.circular(25),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(width: 0.1),
+      borderSide: const BorderSide(width: 1),
       borderRadius: BorderRadius.circular(25),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(width: 0.1),
+      borderSide: const BorderSide(width: 1),
       borderRadius: BorderRadius.circular(25),
     ),
   );

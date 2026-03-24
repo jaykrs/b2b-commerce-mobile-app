@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
 
 class CategoryTile extends StatelessWidget {
@@ -63,8 +62,7 @@ class CategoryTile extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 8),
-
+            SizedBox(height: 8),
             SizedBox(
               height: 2 *
                   (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 12) *

@@ -8,7 +8,7 @@ class TitleAndActionButton extends StatelessWidget {
     required this.title,
     this.actionLabel,
     required this.onTap,
-    this.isHeadline = true,
+    this.isHeadline = false,
   });
 
   final String title;
@@ -24,7 +24,7 @@ class TitleAndActionButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            title,
+            title.length > 30 ? '${title.substring(0, 25)} ...' : title,
             style: isHeadline
                 ? Theme.of(context)
                     .textTheme

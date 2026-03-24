@@ -8,8 +8,6 @@ import 'package:EazySupplies/views/cart/components/checkout_address_selector.dar
 import '../../core/components/app_back_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/routes/app_routes.dart';
-import 'components/checkout_card_details.dart';
-import 'components/checkout_payment_systems.dart';
 
 class CheckoutPage extends StatefulWidget {
   final List<Map<String, dynamic>> checkOutList;
@@ -71,7 +69,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     } catch (e) {
       debugPrint('Place order error: $e');
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Failed to place order')));
+          .showSnackBar(const SnackBar(content: Text('Failed to place order')));
     } finally {
       setState(() => isLoading = false);
     }
@@ -97,7 +95,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 selectedAddress: selectedAddress,
                 placeOrder: () => placeOrder(),
                 isLoading: isLoading),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
           ],
         ),
       ),
@@ -162,7 +160,7 @@ class BillingSummary extends StatelessWidget {
             'Billing Summary',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
 
           // Items
           ...checkOutList.map((item) {

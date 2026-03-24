@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
-import 'profile_header_options.dart';
 
 class ProfileHeader extends StatefulWidget {
   const ProfileHeader({super.key});
@@ -120,7 +119,7 @@ class UserData extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: AppDefaults.padding),
+          SizedBox(width: AppDefaults.padding),
           Expanded(
             child: Text(
               user.name,
@@ -395,7 +394,7 @@ void _showUploadingDialog(BuildContext context) {
 //       child: Row(
 //         crossAxisAlignment: CrossAxisAlignment.center,
 //         children: [
-//           const SizedBox(width: AppDefaults.padding),
+//           SizedBox(width: AppDefaults.padding),
 
 //           /// Profile Image
 //           SizedBox(
@@ -411,7 +410,7 @@ void _showUploadingDialog(BuildContext context) {
 //             ),
 //           ),
 
-//           const SizedBox(width: AppDefaults.padding),
+//           SizedBox(width: AppDefaults.padding),
 
 //           /// Text area MUST be Expanded
 //           Expanded(

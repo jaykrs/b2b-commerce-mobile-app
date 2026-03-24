@@ -24,10 +24,10 @@ class _OrderViewPageState extends State<OrderViewPage> {
     final items = widget.orderData.items;
     final note = widget.orderData.jsonData?['note'] ?? '';
     final payment = widget.orderData.payment;
-    debugPrint('........${selectedPaymentMethodId}');
+    debugPrint('........$selectedPaymentMethodId');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order #${widget.orderData.id}'), 
+        title: Text('Order #${widget.orderData.id}'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -42,7 +42,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             _buildInfoRow('Status', widget.orderData.status),
             _buildInfoRow(
                 'Approved', widget.orderData.approved ? 'APPROVED' : 'PENDING'),
@@ -58,7 +58,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             ...items.map((item) {
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 6),
@@ -92,7 +92,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             _buildInfoRow('Address', shipping?.address ?? ''),
             _buildInfoRow('City', shipping?.city ?? ''),
             _buildInfoRow('State', shipping?.state ?? ''),
@@ -110,7 +110,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -120,7 +120,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   _buildInfoRow('Tax', '₹'),
                   _buildInfoRow('Total', '₹'),
 
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -156,7 +156,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity, // full width
                     child: ElevatedButton(
@@ -170,12 +170,12 @@ class _OrderViewPageState extends State<OrderViewPage> {
                     ),
                   ),
                 ] else ...[
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   _buildInfoRow('TransactionId', payment?.transactionId ?? ''),
                   _buildInfoRow('Amount', '₹${payment?.amount ?? 0}'),
                   _buildInfoRow('Method', payment?.method ?? ''),
                   _buildInfoRow('Status', payment?.status ?? ''),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   DropdownButton<String>(
                     value: selectedPaymentMethodId,
                     hint: const Text('Select Payment Method'),
@@ -201,7 +201,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
             // _buildInfoRow('Method', payment?.method ?? ''),
             // _buildInfoRow('Status', payment?.status ?? ''),
 
-            // const SizedBox(height: 12),
+            // SizedBox(height: 12),
             // DropdownButton<String>(
             //   value: selectedPaymentMethodId, // binds to selected ID
             //   hint: const Text('Select Payment Method'),
@@ -276,7 +276,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
 //                   .titleLarge
 //                   ?.copyWith(fontWeight: FontWeight.bold),
 //             ),
-//             const SizedBox(height: 8),
+//             SizedBox(height: 8),
 //             _buildInfoRow('Status', orderData.status),
 //             _buildInfoRow('Created At', orderData.createdAt.toString()),
 //             _buildInfoRow(
@@ -292,7 +292,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
 //                   .titleLarge
 //                   ?.copyWith(fontWeight: FontWeight.bold),
 //             ),
-//             const SizedBox(height: 8),
+//             SizedBox(height: 8),
 //             ...items.map((item) {
 //               return Card(
 //                 margin: const EdgeInsets.symmetric(vertical: 6),
@@ -325,7 +325,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
 //                   .titleLarge
 //                   ?.copyWith(fontWeight: FontWeight.bold),
 //             ),
-//             const SizedBox(height: 8),
+//             SizedBox(height: 8),
 //             _buildInfoRow('Address', shipping?.address ?? ''),
 //             _buildInfoRow('City', shipping?.city ?? ''),
 //             _buildInfoRow('State', shipping?.state ?? ''),
@@ -342,7 +342,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
 //                   .titleLarge
 //                   ?.copyWith(fontWeight: FontWeight.bold),
 //             ),
-//             const SizedBox(height: 8),
+//             SizedBox(height: 8),
 //             _buildInfoRow('TransactionId', '${payment?.transactionId ?? ''}'),
 //             _buildInfoRow('Amount', '₹${payment?.amount ?? 0}'),
 //             _buildInfoRow('Method', payment?.method ?? ''),

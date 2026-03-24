@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constants/constants.dart';
 
@@ -37,7 +36,7 @@ class PriceAndQuantityRow extends StatelessWidget {
                     decoration: TextDecoration.lineThrough,
                   ),
             ),
-            const SizedBox(width: AppDefaults.padding),
+            SizedBox(width: AppDefaults.padding),
             Text(
               '₹${currentPrice.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -67,10 +66,9 @@ class PriceAndQuantityRow extends StatelessWidget {
             //     ),
             //   ],
             // ),
-          
           ],
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
           'Total: ₹${totalPrice.toStringAsFixed(2)}',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -82,4 +80,3 @@ class PriceAndQuantityRow extends StatelessWidget {
     );
   }
 }
-

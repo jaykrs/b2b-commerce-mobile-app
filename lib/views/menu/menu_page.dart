@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
@@ -41,13 +42,13 @@ class _MenuPageState extends State<MenuPage> {
     return WillPopScope(
       onWillPop: () async {
         //Navigator.pushAndRemoveUntil(context, AppRoutes.entryPoint, (route)=> false)
-         Navigator.pushNamed(context, AppRoutes.entryPoint);
+        Navigator.pushNamed(context, AppRoutes.entryPoint);
         return false;
       },
       child: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 32),
+            SizedBox(height: Responsive.hp(context, 32 / 8)),
             Text(
               'Choose a category',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -55,7 +56,7 @@ class _MenuPageState extends State<MenuPage> {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: Responsive.hp(context, 16 / 8)),
             Expanded(
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())

@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -45,45 +46,43 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
     super.dispose();
   }
 
-Future<void> _submitForm() async {
-  if (!_formKey.currentState!.validate()) return;
+  Future<void> _submitForm() async {
+    if (!_formKey.currentState!.validate()) return;
 
-  final payload = {
-    if (widget.existingAddress != null)
-      "id": widget.existingAddress!.id,
-    "name": _nameCtrl.text.trim(),
-    "address": _streetCtrl.text.trim(),
-    "city": _cityCtrl.text.trim(),
-    "zipcode": _postalCtrl.text.trim(),
-  };
+    final payload = {
+      if (widget.existingAddress != null) "id": widget.existingAddress!.id,
+      "name": _nameCtrl.text.trim(),
+      "address": _streetCtrl.text.trim(),
+      "city": _cityCtrl.text.trim(),
+      "zipcode": _postalCtrl.text.trim(),
+    };
 
-  try {
-    // Use jsonEncode to ensure proper JSON
-    final data = jsonEncode(payload);
+    try {
+      // Use jsonEncode to ensure proper JSON
+      final data = jsonEncode(payload);
 
-    if (widget.existingAddress != null) {
-      await ApiClient.dio.put(
-        ApiConfig.addressPost,
-        data: data,
-        options: Options(headers: {"Content-Type": "application/json"}),
-      );
-    } else {
-      await ApiClient.dio.post(
-        ApiConfig.addressPost,
-        data: data,
-        options: Options(headers: {"Content-Type": "application/json"}),
+      if (widget.existingAddress != null) {
+        await ApiClient.dio.put(
+          ApiConfig.addressPost,
+          data: data,
+          options: Options(headers: {"Content-Type": "application/json"}),
+        );
+      } else {
+        await ApiClient.dio.post(
+          ApiConfig.addressPost,
+          data: data,
+          options: Options(headers: {"Content-Type": "application/json"}),
+        );
+      }
+
+      Navigator.pop(context, true);
+    } catch (e) {
+      debugPrint("Address save error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to save address")),
       );
     }
-
-    Navigator.pop(context, true);
-  } catch (e) {
-    debugPrint("Address save error: $e");
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Failed to save address")),
-    );
   }
-}
-
 
   // Future<void> _submitForm() async {
   //   if (!_formKey.currentState!.validate()) return;
@@ -139,36 +138,29 @@ Future<void> _submitForm() async {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-
-              const SizedBox(height: 16),
-
+              SizedBox(height: Responsive.hp(context, 16 / 8)),
               _buildTextField(
                 label: "Name",
                 hint: "Enter full name",
                 controller: _nameCtrl,
               ),
-
               _buildTextField(
                 label: "Street Address",
                 hint: "House no, street, area",
                 controller: _streetCtrl,
               ),
-
               _buildTextField(
                 label: "City",
                 hint: "Enter city",
                 controller: _cityCtrl,
               ),
-
               _buildTextField(
                 label: "Postal Code",
                 hint: "Enter postal code",
                 controller: _postalCtrl,
                 keyboard: TextInputType.number,
               ),
-
-              const SizedBox(height: 24),
-
+              SizedBox(height: Responsive.hp(context, 24 / 8)),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -198,13 +190,13 @@ Future<void> _submitForm() async {
           /// Label
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 14,
+            style: TextStyle(
+              fontSize: Responsive.sp(context, 14),
               fontWeight: FontWeight.w600,
             ),
           ),
 
-          const SizedBox(height: 6),
+          SizedBox(height: Responsive.hp(context, 6 / 8)),
 
           /// Input
           TextFormField(
@@ -226,4 +218,3 @@ Future<void> _submitForm() async {
     );
   }
 }
-

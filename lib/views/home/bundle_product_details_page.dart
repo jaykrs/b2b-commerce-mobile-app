@@ -1,21 +1,16 @@
-import 'dart:convert';
 import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
 import 'package:EazySupplies/core/constants/cartStorage.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
-import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
 import '../../core/components/buy_now_row_button.dart';
 import '../../core/components/price_and_quantity.dart';
 import '../../core/components/product_images_slider.dart';
-import '../../core/components/review_row_button.dart';
 import '../../core/constants/constants.dart';
-import '../../core/models/dummy_bundle_model.dart';
 import 'components/bundle_meta_data.dart';
 import 'components/bundle_pack_details.dart';
-import '../../core/constants/localStorageService.dart';
 
 class BundleProductDetailsPage extends StatefulWidget {
   final int productId;
@@ -34,7 +29,15 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
   Product? product;
   bool isLoading = true;
   int quantity = 1;
+  static const String baseUrl = "https://api.eazysupplies.com/api/file?file=";
 
+  late final imageUrls = product?.productImage
+          ?.split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .map((e) => baseUrl + e) // 👈 add this line
+          .toList() ??
+      [];
   @override
   void initState() {
     super.initState();
@@ -44,12 +47,8 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
 
   Future<void> fetchProductDetails() async {
     try {
-      final response = await ApiClient.dio.get(
-        ApiConfig.products,
-        queryParameters: {
-          "productId": widget.productId
-        }
-      );
+      final response = await ApiClient.dio.get(ApiConfig.products,
+          queryParameters: {"productId": widget.productId});
 
       if (response.statusCode == 200) {
         final data = response.data['data'];
@@ -98,9 +97,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                   child: Column(
                     children: [
                       ProductImagesSlider(
-                        images: [
-                          product!.productImage ?? '',
-                        ],
+                        images: imageUrls,
                       ),
 
                       /// Product Data
@@ -132,8 +129,9 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                               onQuantityIncrease: () =>
                                   onQuantityChanged(quantity + 1),
                               onQuantityDecrease: () {
-                                if (quantity > 1)
+                                if (quantity > 1) {
                                   onQuantityChanged(quantity - 1);
+                                }
                               },
                             ),
                             const SizedBox(height: AppDefaults.padding / 2),
@@ -145,7 +143,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                             PackDetails(
                               description: product?.description ?? '',
                             ),
-                           // const ReviewRowButton(totalStars: 5),
+                            // const ReviewRowButton(totalStars: 5),
                             const Divider(thickness: 0.1),
                             BuyNowRow(
                               onBuyButtonTap: () {
@@ -155,7 +153,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                               //   debugPrint('Add to cart: ${product!.id}');
                               // },
                               onCartButtonTap: () async {
-                                final id = product?.id?.toString();
+                                final id = product?.id.toString();
                                 if (id == null) return;
 
                                 final isInCart = await CartStorage.isInCart(id);
@@ -184,7 +182,6 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                                 }
                               },
                             ),
-                            
                           ],
                         ),
                       ),

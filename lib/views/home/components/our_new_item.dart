@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../core/components/product_tile_square.dart';
 import '../../../core/components/title_and_action_button.dart';
@@ -33,6 +31,7 @@ class _OurNewItemState extends State<OurNewItem> {
       isLoading = false;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,7 +41,7 @@ class _OurNewItemState extends State<OurNewItem> {
           title: 'Top Products',
           onTap: () => Navigator.pushNamed(context, AppRoutes.newItems),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         isLoading
             ? const Center(child: CircularProgressIndicator())
             : products.isEmpty

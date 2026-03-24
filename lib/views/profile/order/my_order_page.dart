@@ -6,10 +6,6 @@ import 'package:EazySupplies/core/routes/app_routes.dart';
 
 import '../../../core/components/app_back_button.dart';
 import '../../../core/constants/app_colors.dart';
-import 'components/custom_tab_label.dart';
-import 'components/tab_all.dart';
-import 'components/tab_completed.dart';
-import 'components/tab_running.dart';
 
 class AllOrderPage extends StatefulWidget {
   const AllOrderPage({super.key});
@@ -42,7 +38,7 @@ class _AllOrderPageState extends State<AllOrderPage> {
         return ordersJson.map((json) {
           try {
             return Order.fromJson(Map<String, dynamic>.from(json));
-          } catch (e, s) {
+          } catch (e) {
             rethrow;
           }
         }).toList();
@@ -81,13 +77,12 @@ class _AllOrderPageState extends State<AllOrderPage> {
                   child: Text('No orders found'),
                 );
               }
-         
+
               final orders = snapshot.data!;
               return ListView.separated(
                 padding: const EdgeInsets.all(16),
                 itemCount: orders.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 16),
+                separatorBuilder: (context, index) => SizedBox(height: 16),
                 itemBuilder: (context, index) {
                   final order = orders[index];
                   return OrderCard(order: order);
@@ -103,7 +98,7 @@ class _AllOrderPageState extends State<AllOrderPage> {
 
 class OrderCard extends StatelessWidget {
   final Order order;
-  
+
   const OrderCard({super.key, required this.order});
 
   @override
@@ -126,19 +121,20 @@ class OrderCard extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.remove_red_eye), // View icon
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.orderView ,arguments: order);
+                    Navigator.pushNamed(context, AppRoutes.orderView,
+                        arguments: order);
                   },
                 ),
               ],
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text('Status: ${order.status}'),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text('Created At: ${order.createdAt.toLocal()}'),
-            const SizedBox(height: 8),
-            Text(
+            SizedBox(height: 8),
+            const Text(
               'Items:',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             ...order.items.map((item) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
@@ -150,11 +146,9 @@ class OrderCard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8),
                 child: Text('User: ${order.user!.name}'),
               ),
-            
           ],
         ),
       ),
     );
   }
-
 }

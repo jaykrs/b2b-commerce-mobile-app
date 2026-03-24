@@ -1,6 +1,5 @@
 import 'package:EazySupplies/core/enums/login_type.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../core/components/network_image.dart';
 import '../../core/constants/constants.dart';
@@ -39,12 +38,12 @@ class _Footer extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => Navigator.pushNamed(context, AppRoutes.login,
                   arguments: LoginType.email),
-              child: const Text('Login With Email'),
               style: ElevatedButton.styleFrom(foregroundColor: Colors.black),
+              child: const Text('Login With Email'),
             ),
           ),
         ),
-        const SizedBox(height: AppDefaults.margin),
+        SizedBox(height: AppDefaults.margin),
         Text(
           'OR',
           style: Theme.of(context)
@@ -52,7 +51,7 @@ class _Footer extends StatelessWidget {
               .titleLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: AppDefaults.margin),
+        SizedBox(height: AppDefaults.margin),
         SizedBox(
           width: double.infinity,
           child: Padding(
@@ -60,15 +59,14 @@ class _Footer extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => Navigator.pushNamed(context, AppRoutes.login,
                   arguments: LoginType.phone),
-              child: const Text('Login With Phone'),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.lightGreen
-              ),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.lightGreen),
+              child: const Text('Login With Phone'),
             ),
           ),
         ),
-        const SizedBox(height: AppDefaults.margin),
+        SizedBox(height: AppDefaults.margin),
         SizedBox(
           width: double.infinity,
           child: Padding(
@@ -76,11 +74,10 @@ class _Footer extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => Navigator.pushNamed(context, AppRoutes.login,
                   arguments: LoginType.gst),
-              child: const Text('Login With GST'),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.lightGreenAccent
-              ),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.lightGreenAccent),
+              child: const Text('Login With GST'),
             ),
           ),
         ),

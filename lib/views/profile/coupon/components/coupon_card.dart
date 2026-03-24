@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/components/dotted_divider.dart';
@@ -26,7 +27,7 @@ class CouponCard extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          height: 162,
+          height: Responsive.hp(context, 162 / 8),
           child: Container(
             margin: const EdgeInsets.symmetric(
               vertical: AppDefaults.padding / 2,
@@ -79,8 +80,8 @@ class CouponCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 160,
+                    SizedBox(
+                      height: Responsive.hp(context, 160 / 8),
                       child:
                           DottedDivider(isVertical: true, color: Colors.white),
                     ),
@@ -156,8 +157,8 @@ class CouponCard extends StatelessWidget {
           top: 0,
           bottom: 0,
           child: Container(
-            height: 32,
-            width: 32,
+            height: Responsive.hp(context, 32 / 8),
+            width: Responsive.wp(context, 32 / 4),
             decoration: const BoxDecoration(
               color: AppColors.scaffoldBackground,
               shape: BoxShape.circle,

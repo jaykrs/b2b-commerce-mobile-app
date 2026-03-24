@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
@@ -19,8 +20,8 @@ class AppRadio extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: Container(
-        width: 16,
-        height: 16,
+        width: Responsive.wp(context, 16 / 4),
+        height: Responsive.hp(context, 16 / 8),
         margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           color: isActive ? AppColors.primary : AppColors.textInputBackground,

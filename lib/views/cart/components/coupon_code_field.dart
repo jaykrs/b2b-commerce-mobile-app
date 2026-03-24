@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/constants.dart';
@@ -54,7 +55,7 @@ class _CouponCodeFieldState extends State<CouponCodeField> {
                   ?.copyWith(fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: Responsive.hp(context, 16 / 8)),
           Row(
             children: [
               Expanded(
@@ -69,7 +70,7 @@ class _CouponCodeFieldState extends State<CouponCodeField> {
                   controller: controller,
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: Responsive.wp(context, 16 / 4)),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.3,
                 child: ElevatedButton(

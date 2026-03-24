@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -14,13 +15,13 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            _SearchPageHeader(),
-            SizedBox(height: 8),
-            _RecentSearchList(),
+            const _SearchPageHeader(),
+            SizedBox(height: Responsive.hp(context, 8 / 8)),
+            const _RecentSearchList(),
           ],
         ),
       ),
@@ -77,7 +78,7 @@ class _SearchPageHeader extends StatelessWidget {
       child: Row(
         children: [
           const AppBackButton(),
-          const SizedBox(width: 16),
+          SizedBox(width: Responsive.wp(context, 16 / 4)),
           Expanded(
             child: Stack(
               children: [
@@ -110,9 +111,9 @@ class _SearchPageHeader extends StatelessWidget {
                 ),
                 Positioned(
                   right: 0,
-                  height: 56,
+                  height: Responsive.hp(context, 56 / 8),
                   child: SizedBox(
-                    width: 56,
+                    width: Responsive.wp(context, 56 / 4),
                     child: ElevatedButton(
                       onPressed: () {
                         UiUtil.openBottomSheet(

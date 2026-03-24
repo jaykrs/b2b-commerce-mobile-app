@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class BundleMetaData extends StatelessWidget {
@@ -23,14 +24,12 @@ class BundleMetaData extends StatelessWidget {
             label: 'Category',
             value: category,
           ),
-          const SizedBox(height: 8),
-
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           _MetaRow(
             label: 'Brand',
             value: brand,
           ),
-          const SizedBox(height: 8),
-
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           _MetaRow(
             label: 'Stock',
             value: stock > 0 ? 'In Stock ($stock)' : 'Out of Stock',
@@ -60,7 +59,7 @@ class _MetaRow extends StatelessWidget {
       children: [
         /// Label
         SizedBox(
-          width: 80,
+          width: Responsive.wp(context, 80 / 4),
           child: Text(
             '$label:',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -163,7 +162,7 @@ class _MetaRow extends StatelessWidget {
                 
 //               ),
 //         ),
-//         const SizedBox(height: 4),
+//         SizedBox(height: Responsive.hp(context, 4/8)),
 //         Text(
 //           label,
 //           textAlign: TextAlign.center,

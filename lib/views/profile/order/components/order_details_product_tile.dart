@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/components/network_image.dart';
@@ -16,7 +17,7 @@ class OrderDetailsProductTile extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          height: 80,
+          height: Responsive.hp(context, 80 / 8),
           child: AspectRatio(
             aspectRatio: 1 / 1,
             child: NetworkImageWithLoader(
@@ -25,7 +26,7 @@ class OrderDetailsProductTile extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: Responsive.wp(context, 16 / 4)),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +38,7 @@ class OrderDetailsProductTile extends StatelessWidget {
                       color: Colors.black,
                     ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               Text(data.weight)
             ],
           ),
@@ -49,7 +50,7 @@ class OrderDetailsProductTile extends StatelessWidget {
               '\$${data.price.toInt()}',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: Responsive.hp(context, 8 / 8)),
             Text(
               '3x',
               style: Theme.of(context).textTheme.bodySmall,

@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:EazySupplies/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,7 @@ class UserDashboard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
 
           /// Counter Section
           Row(
@@ -60,7 +61,7 @@ class UserDashboard extends StatelessWidget {
                           size: 40,
                           color: Colors.green,
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: Responsive.wp(context, 16 / 4)),
                         InkWell(
                           onTap: () {
                             // Navigate to your desired page
@@ -78,9 +79,10 @@ class UserDashboard extends StatelessWidget {
                                     .titleLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(height: 4),
+                              SizedBox(height: Responsive.hp(context, 4 / 8)),
                               const Text(
-                                'Total Orders', style: TextStyle(color: Colors.green),
+                                'Total Orders',
+                                style: TextStyle(color: Colors.green),
                               ),
                             ],
                           ),
@@ -93,7 +95,7 @@ class UserDashboard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: Responsive.hp(context, 24 / 8)),
 
           /// Account Information
           _sectionCard(
@@ -105,7 +107,7 @@ class UserDashboard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: Responsive.hp(context, 16 / 8)),
 
           /// Login Details
           _sectionCard(

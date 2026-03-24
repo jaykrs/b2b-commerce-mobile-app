@@ -4,8 +4,6 @@ import 'package:EazySupplies/core/routes/app_routes.dart';
 
 import '../../core/components/network_image.dart';
 import '../../core/constants/app_defaults.dart';
-import '../../core/utils/ui_util.dart';
-import '../cart/dialogs/delivered_successfull.dart';
 
 class OrderSuccessfullPage extends StatelessWidget {
   const OrderSuccessfullPage({super.key});
@@ -41,7 +39,7 @@ class OrderSuccessfullPage extends StatelessWidget {
                       ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 const Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: AppDefaults.padding),

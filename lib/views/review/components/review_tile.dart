@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -33,8 +34,8 @@ class ReviewTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 60,
-            height: 60,
+            width: Responsive.wp(context, 60 / 4),
+            height: Responsive.hp(context, 60 / 8),
             child: ClipOval(
               child: AspectRatio(
                 aspectRatio: 1 / 1,
@@ -42,7 +43,7 @@ class ReviewTile extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: AppDefaults.padding),
+          SizedBox(width: AppDefaults.padding),
           Expanded(
             child: Column(
               children: [
@@ -62,11 +63,11 @@ class ReviewTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: Responsive.hp(context, 4 / 8)),
                 const ReviewStars(starsGiven: 3),
-                const SizedBox(height: 8),
+                SizedBox(height: Responsive.hp(context, 8 / 8)),
                 Text(review),
-                const SizedBox(height: AppDefaults.padding),
+                SizedBox(height: AppDefaults.padding),
                 Row(
                   children: [
                     Row(
@@ -74,15 +75,15 @@ class ReviewTile extends StatelessWidget {
                         isFavourite
                             ? SvgPicture.asset(AppIcons.heartActive)
                             : SvgPicture.asset(AppIcons.heartOutlined),
-                        const SizedBox(width: AppDefaults.padding / 2),
+                        SizedBox(width: AppDefaults.padding / 2),
                         Text('$totalLikes Like')
                       ],
                     ),
-                    const SizedBox(width: AppDefaults.padding),
+                    SizedBox(width: AppDefaults.padding),
                     Row(
                       children: [
                         SvgPicture.asset(AppIcons.reply),
-                        const SizedBox(width: AppDefaults.padding / 2),
+                        SizedBox(width: AppDefaults.padding / 2),
                         const Text('Reply')
                       ],
                     )

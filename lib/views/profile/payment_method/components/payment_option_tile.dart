@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/components/network_image.dart';
@@ -30,14 +31,16 @@ class PaymentOptionTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(AppDefaults.padding),
           decoration: BoxDecoration(
-            border: Border.all(width: 0.1, color: AppColors.placeholder),
+            border: Border.all(
+                width: Responsive.wp(context, 0 / 4) * .1,
+                color: AppColors.placeholder),
             borderRadius: AppDefaults.borderRadius,
           ),
           child: Row(
             children: [
               SizedBox(
-                width: 60,
-                height: 60,
+                width: Responsive.wp(context, 60 / 4),
+                height: Responsive.hp(context, 60 / 8),
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: NetworkImageWithLoader(icon),

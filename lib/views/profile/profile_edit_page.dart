@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/components/app_back_button.dart';
@@ -33,63 +34,63 @@ class ProfileEditPage extends StatelessWidget {
             children: [
               /* <----  First Name -----> */
               const Text("First Name"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Last Name -----> */
               const Text("Last Name"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Phone Number -----> */
               const Text("Phone Number"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Gender -----> */
               const Text("Gender"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Birthday -----> */
               const Text("Birthday"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Password -----> */
 
               /* <---- Birthday -----> */
               const Text("Password"),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               TextFormField(
                 keyboardType: TextInputType.visiblePassword,
                 textInputAction: TextInputAction.next,
                 obscureText: true,
               ),
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
 
               /* <---- Submit -----> */
-              const SizedBox(height: AppDefaults.padding),
+              SizedBox(height: AppDefaults.padding),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

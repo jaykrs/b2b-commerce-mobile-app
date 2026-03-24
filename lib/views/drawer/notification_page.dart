@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
@@ -58,7 +59,7 @@ class _NotificationListPageState extends State<NotificationListPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Failed to load notifications'),
-            const SizedBox(height: 12),
+            SizedBox(height: Responsive.hp(context, 12 / 8)),
             ElevatedButton(
               onPressed: fetchNotifications,
               child: const Text('Retry'),
@@ -69,10 +70,10 @@ class _NotificationListPageState extends State<NotificationListPage> {
     }
 
     if (notifications.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
           'No notifications',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: Responsive.sp(context, 16)),
         ),
       );
     }
@@ -125,14 +126,14 @@ class NotificationTile extends StatelessWidget {
             children: [
               /// Unread indicator (SAFE)
               Container(
-                width: 4,
-                height: 48, // ✅ FIXED height
+                width: Responsive.wp(context, 4 / 4),
+                height: Responsive.hp(context, 48 / 8), // ✅ FIXED height
                 decoration: BoxDecoration(
                   color: isRead ? Colors.transparent : Colors.blue,
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: Responsive.wp(context, 12 / 4)),
 
               /// Icon
               CircleAvatar(
@@ -145,7 +146,7 @@ class NotificationTile extends StatelessWidget {
                   color: isRead ? Colors.grey : Colors.blue,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: Responsive.wp(context, 12 / 4)),
 
               /// Content
               Expanded(
@@ -160,7 +161,7 @@ class NotificationTile extends StatelessWidget {
                           ),
                     ),
                     if (notification.remarks != null) ...[
-                      const SizedBox(height: 6),
+                      SizedBox(height: Responsive.hp(context, 6 / 8)),
                       Text(
                         notification.remarks!,
                         maxLines: 2,
@@ -168,7 +169,7 @@ class NotificationTile extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     Text(
                       _formatDate(notification.createdAt),
                       style: Theme.of(context)

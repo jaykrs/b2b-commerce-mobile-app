@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -81,8 +82,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       begin: 0, end: (1 / items.length) * (currentPage + 1)),
                   curve: Curves.easeInOutBack,
                   builder: (context, double value, _) => SizedBox(
-                    height: 70,
-                    width: 70,
+                    height: Responsive.hp(context, 70 / 8),
+                    width: Responsive.wp(context, 70 / 4),
                     child: CircularProgressIndicator(
                       value: value,
                       strokeWidth: 6,
@@ -104,7 +105,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ),
               ],
             ),
-            const SizedBox(height: AppDefaults.padding),
+            SizedBox(height: AppDefaults.padding),
           ],
         ),
       ),

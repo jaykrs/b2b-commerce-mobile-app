@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -43,7 +44,7 @@ class BottomActionBar extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: Responsive.wp(context, 8 / 4)),
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,

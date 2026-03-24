@@ -10,7 +10,6 @@ import '../cart/cart_page.dart';
 import '../home/home_page.dart';
 import '../menu/menu_page.dart';
 import '../profile/profile_page.dart';
-import '../save/save_page.dart';
 import 'components/app_navigation_bar.dart';
 
 /// This page will contain all the bottom navigation tabs
@@ -96,4 +95,3 @@ class _EntryPointUIState extends State<EntryPointUI> {
     );
   }
 }
-

@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/network_image.dart';
@@ -33,7 +34,7 @@ class DeliverySuccessfullDialog extends StatelessWidget {
               'Hurrah!!  we just deliverred your',
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: Responsive.hp(context, 4 / 8)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -47,7 +48,7 @@ class DeliverySuccessfullDialog extends StatelessWidget {
                 const Text(' order Successfully.')
               ],
             ),
-            const SizedBox(height: AppDefaults.padding),
+            SizedBox(height: AppDefaults.padding),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -57,7 +58,7 @@ class DeliverySuccessfullDialog extends StatelessWidget {
                 child: const Text('Rate The Product'),
               ),
             ),
-            const SizedBox(height: AppDefaults.padding),
+            SizedBox(height: AppDefaults.padding),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(

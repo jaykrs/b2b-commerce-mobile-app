@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/app_back_button.dart';
@@ -34,24 +35,24 @@ class ChangePhoneNumberPage extends StatelessWidget {
               children: [
                 /* <----  New Phone Number -----> */
                 const Text("New Phone Number"),
-                const SizedBox(height: 8),
+                SizedBox(height: Responsive.hp(context, 8 / 8)),
                 TextFormField(
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                 ),
-                const SizedBox(height: AppDefaults.padding),
+                SizedBox(height: AppDefaults.padding),
 
                 /* <---- Retype Phone Number -----> */
                 const Text("Retype Phone Number"),
-                const SizedBox(height: 8),
+                SizedBox(height: Responsive.hp(context, 8 / 8)),
                 TextFormField(
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.done,
                 ),
-                const SizedBox(height: AppDefaults.padding),
+                SizedBox(height: AppDefaults.padding),
 
                 /* <---- Submit -----> */
-                const SizedBox(height: AppDefaults.padding),
+                SizedBox(height: AppDefaults.padding),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

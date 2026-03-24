@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -14,7 +15,7 @@ class TotalOrderProductDetails extends StatelessWidget {
       padding: const EdgeInsets.all(AppDefaults.padding),
       child: Column(
         children: [
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -25,7 +26,7 @@ class TotalOrderProductDetails extends StatelessWidget {
                   ),
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           ListView.separated(
             itemBuilder: (context, index) {
               return OrderDetailsProductTile(data: Dummy.products[index]);

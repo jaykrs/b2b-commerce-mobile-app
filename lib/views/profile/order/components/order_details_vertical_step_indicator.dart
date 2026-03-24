@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -27,25 +28,25 @@ class VerticalStepIndicator extends StatelessWidget {
           if (!isStart)
             Container(
               height: height / 2,
-              width: 3,
+              width: Responsive.wp(context, 3 / 4),
               decoration: BoxDecoration(
                 color: isActive ? AppColors.primary : Colors.grey,
               ),
             ),
           Container(
-            width: 14,
-            height: 14,
+            width: Responsive.wp(context, 14 / 4),
+            height: Responsive.hp(context, 14 / 8),
             decoration: BoxDecoration(
               border: Border.all(
                 color: isActive ? AppColors.primary : Colors.grey,
-                width: 3,
+                width: Responsive.wp(context, 3 / 4),
               ),
               shape: BoxShape.circle,
             ),
           ),
           Container(
             height: !isStart ? height / 2 : height,
-            width: 3,
+            width: Responsive.wp(context, 3 / 4),
             decoration: BoxDecoration(
               color: isActive ? AppColors.primary : Colors.grey,
               borderRadius: isEnd ? AppDefaults.borderRadius : null,

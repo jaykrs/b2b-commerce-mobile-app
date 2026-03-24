@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -40,7 +41,7 @@ class OrderPreviewTile extends StatelessWidget {
                 Row(
                   children: [
                     const Text('Order ID:'),
-                    const SizedBox(width: 5),
+                    SizedBox(width: Responsive.wp(context, 5 / 4)),
                     Text(
                       '2324252627',
                       style: Theme.of(context)

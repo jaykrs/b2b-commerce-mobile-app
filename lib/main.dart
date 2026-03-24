@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
-
+import 'dart:io';
 import 'core/routes/app_routes.dart';
 import 'core/routes/on_generate_route.dart';
 import 'core/themes/app_themes.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ApiClient.init();
-
+  HttpOverrides.global = MyHttpOverrides();
   final bool isLoggedIn = await _checkAuth();
 
   runApp(
     MyApp(
-      initialRoute:
-          isLoggedIn ? AppRoutes.entryPoint : AppRoutes.onboarding,
+      initialRoute: isLoggedIn ? AppRoutes.entryPoint : AppRoutes.onboarding,
     ),
   );
 }

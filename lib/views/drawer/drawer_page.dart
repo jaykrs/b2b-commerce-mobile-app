@@ -54,7 +54,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   } else if (snapshot.hasError) {
                     return const Text('Failed to load user');
                   } else if (!snapshot.hasData) {
-                    return const SizedBox.shrink();
+                    return SizedBox.shrink();
                   } else {
                     final user = snapshot.data!;
                     return Padding(
@@ -96,7 +96,7 @@ class _DrawerPageState extends State<DrawerPage> {
                               // : null,
                               ),
 
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,12 +108,10 @@ class _DrawerPageState extends State<DrawerPage> {
                                       .titleMedium
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                if (user.email != null)
-                                  Text(
-                                    user.email!,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
+                                Text(
+                                  user.email,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
                               ],
                             ),
                           ),
@@ -148,7 +146,8 @@ class _DrawerPageState extends State<DrawerPage> {
                 label: 'Payments',
                 trailing: SvgPicture.asset(AppIcons.right),
                 icons: SvgPicture.asset(AppIcons.profilePayment),
-                onTap: () => Navigator.pushNamed(context, AppRoutes.allPaymentPage),
+                onTap: () =>
+                    Navigator.pushNamed(context, AppRoutes.allPaymentPage),
               ),
               AppSettingsListTile(
                 label: 'Saved Address',
@@ -174,7 +173,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 icons: SvgPicture.asset(AppIcons.contactMap),
                 onTap: () => Navigator.pushNamed(context, AppRoutes.contactUs),
               ),
-              const SizedBox(height: AppDefaults.padding * 3),
+              SizedBox(height: AppDefaults.padding * 3),
               AppSettingsListTile(
                 label: 'Logout',
                 trailing: SvgPicture.asset(AppIcons.right),
@@ -221,7 +220,7 @@ class _DrawerPageState extends State<DrawerPage> {
   //               } else if (snapshot.hasError) {
   //                 return const Text('Failed to load user');
   //               } else if (!snapshot.hasData) {
-  //                 return const SizedBox.shrink();
+  //                 return SizedBox.shrink();
   //               } else {
   //                 final user = snapshot.data!;
   //                 return Padding(
@@ -237,7 +236,7 @@ class _DrawerPageState extends State<DrawerPage> {
   //                             : const NetworkImage(
   //                                 'https://www.pngkit.com/png/detail/281-2812821_user-account-management-logo-user-icon-png.png'),
   //                       ),
-  //                       const SizedBox(width: 16),
+  //                       SizedBox(width: 16),
   //                       Expanded(
   //                         child: Column(
   //                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,7 +313,7 @@ class _DrawerPageState extends State<DrawerPage> {
   //             icons: SvgPicture.asset(AppIcons.contactMap),
   //             onTap: () => Navigator.pushNamed(context, AppRoutes.contactUs),
   //           ),
-  //           const SizedBox(height: AppDefaults.padding * 3),
+  //           SizedBox(height: AppDefaults.padding * 3),
   //           AppSettingsListTile(
   //               label: 'Logout',
   //               trailing: SvgPicture.asset(AppIcons.right),

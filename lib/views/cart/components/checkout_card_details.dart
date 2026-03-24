@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,23 +18,23 @@ class CardDetails extends StatelessWidget {
         children: [
           // Name Field
           const Text("Card Name"),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           TextFormField(
             keyboardType: TextInputType.number,
             // validator: Validators.requiredWithFieldName('Card'),
             textInputAction: TextInputAction.next,
           ),
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
 
           // Number Field
           const Text("Card Number"),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.hp(context, 8 / 8)),
           TextFormField(
             keyboardType: TextInputType.number,
             // validator: Validators.requiredWithFieldName('Card Number'),
             textInputAction: TextInputAction.next,
           ),
-          const SizedBox(height: AppDefaults.padding),
+          SizedBox(height: AppDefaults.padding),
 
           /* <---- Expiration Date And CVV -----> */
           Row(
@@ -44,30 +45,30 @@ class CardDetails extends StatelessWidget {
                   children: [
                     // Number Field
                     const Text("Expiration Date"),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       keyboardType: TextInputType.number,
                       // validator: Validators.requiredWithFieldName('Card'),
                       textInputAction: TextInputAction.next,
                     ),
-                    const SizedBox(height: AppDefaults.padding),
+                    SizedBox(height: AppDefaults.padding),
                   ],
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: Responsive.wp(context, 16 / 4)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Number Field
                     const Text("CVV"),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       keyboardType: TextInputType.number,
                       // validator: Validators.requiredWithFieldName('Card'),
                       textInputAction: TextInputAction.next,
                     ),
-                    const SizedBox(height: AppDefaults.padding),
+                    SizedBox(height: AppDefaults.padding),
                   ],
                 ),
               ),

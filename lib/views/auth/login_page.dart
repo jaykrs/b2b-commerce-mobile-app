@@ -9,7 +9,7 @@ import 'components/social_logins.dart';
 
 class LoginPage extends StatelessWidget {
   final LoginType loginType;
-  const LoginPage( {super.key, required this.loginType});
+  const LoginPage({super.key, required this.loginType});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,9 @@ class LoginPage extends StatelessWidget {
               children: [
                 const LoginPageHeader(),
                 LoginPageForm(loginType: loginType),
-                const SizedBox(height: AppDefaults.padding),
-                 SocialLogins(loginType: loginType),
-                 const DontHaveAccountRow(),
+                SizedBox(height: AppDefaults.padding),
+                SocialLogins(loginType: loginType),
+                const DontHaveAccountRow(),
               ],
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -82,7 +83,7 @@ class AddressTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppRadio(isActive: isActive),
-          const SizedBox(width: AppDefaults.padding),
+          SizedBox(width: AppDefaults.padding),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -92,9 +93,9 @@ class AddressTile extends StatelessWidget {
                       color: Colors.black,
                     ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: Responsive.hp(context, 4 / 8)),
               Text(address),
-              const SizedBox(height: 4),
+              SizedBox(height: Responsive.hp(context, 4 / 8)),
               Text(
                 number,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -112,7 +113,7 @@ class AddressTile extends StatelessWidget {
                 constraints: const BoxConstraints(),
                 iconSize: 14,
               ),
-              const SizedBox(height: AppDefaults.margin / 2),
+              SizedBox(height: AppDefaults.margin / 2),
               IconButton(
                 onPressed: () {},
                 icon: SvgPicture.asset(AppIcons.deleteOutline),

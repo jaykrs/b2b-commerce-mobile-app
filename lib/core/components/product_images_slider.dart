@@ -57,6 +57,7 @@ class _ProductImagesSliderState extends State<ProductImagesSlider> {
                     setState(() {});
                   },
                   itemBuilder: (context, index) {
+                    Text("ttt");
                     return Padding(
                       padding: const EdgeInsets.all(AppDefaults.padding),
                       child: AspectRatio(

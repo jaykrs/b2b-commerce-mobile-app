@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -30,8 +31,8 @@ class PaymentCardTile extends StatelessWidget {
           onTap: onTap,
           borderRadius: AppDefaults.borderRadius,
           child: Container(
-            height: 66,
-            width: 135,
+            height: Responsive.hp(context, 66 / 8),
+            width: Responsive.wp(context, 135 / 4),
             padding: const EdgeInsets.symmetric(),
             decoration: BoxDecoration(
               borderRadius: AppDefaults.borderRadius,
@@ -44,7 +45,7 @@ class PaymentCardTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(icon),
-                const SizedBox(height: 8),
+                SizedBox(height: Responsive.hp(context, 8 / 8)),
                 Text(
                   label,
                   style: Theme.of(context)

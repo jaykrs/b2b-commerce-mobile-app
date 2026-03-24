@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/network_image.dart';
@@ -24,8 +25,8 @@ class ProductAvatarWithQuanitty extends StatelessWidget {
             color: Colors.white,
             shape: BoxShape.circle,
           ),
-          width: 50,
-          height: 50,
+          width: Responsive.wp(context, 50 / 4),
+          height: Responsive.hp(context, 50 / 8),
           child: AspectRatio(
             aspectRatio: 1 / 1,
             child: NetworkImageWithLoader(productImage, fit: BoxFit.contain),
@@ -39,7 +40,9 @@ class ProductAvatarWithQuanitty extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.primary, width: 2),
+                border: Border.all(
+                    color: AppColors.primary,
+                    width: Responsive.wp(context, 2 / 4)),
               ),
               child: Text(
                 'x$quantity',

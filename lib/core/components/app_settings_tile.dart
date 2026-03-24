@@ -1,15 +1,11 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/app_defaults.dart';
 
 class AppSettingsListTile extends StatelessWidget {
-  const AppSettingsListTile({
-    super.key,
-    required this.label,
-    this.trailing,
-    this.onTap,
-    this.icons
-  });
+  const AppSettingsListTile(
+      {super.key, required this.label, this.trailing, this.onTap, this.icons});
 
   final String label;
   final Widget? trailing;
@@ -31,12 +27,12 @@ class AppSettingsListTile extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  if(icons != null) ...[
-                  icons!,
-                  const SizedBox(width: 12),
+                  if (icons != null) ...[
+                    icons!,
+                    SizedBox(width: Responsive.wp(context, 12 / 4)),
                   ],
-                  if(icons == null) ...[
-                  const SizedBox(width: 12),
+                  if (icons == null) ...[
+                    SizedBox(width: Responsive.wp(context, 12 / 4)),
                   ],
                   Text(
                     label,

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/constants/cartStorage.dart';
-import 'package:EazySupplies/core/constants/get_bundels.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 
 import '../../core/components/app_back_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/routes/app_routes.dart';
-import 'components/coupon_code_field.dart';
 import 'components/items_totals_price.dart';
 import 'components/single_cart_item_tile.dart';
 
@@ -122,64 +120,64 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) return const Center(child: CircularProgressIndicator());
-    if (mergedCartItems.isEmpty)
+    if (mergedCartItems.isEmpty) {
       return const Center(child: Text('Your cart is empty'));
+    }
 
     final totalPrice = getTotalPrice();
 
-return WillPopScope(
-  onWillPop: () async {
-    // Always redirect to entryPoint if user presses back
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutes.entryPoint,
-      (route) => false, // remove all previous routes
-    );
-    return false; // prevent default back action
-  },
-  child: Scaffold(
-    appBar: widget.isHomePage
-        ? null
-        : AppBar(
-            leading: const AppBackButton(),
-            title: const Text('Cart Page'),
-          ),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ...mergedCartItems.map((item) {
-              final product = item['product'] as Product;
-              final qty = item['quantity'] as int;
-
-              return SingleCartItemTile(
-                productId: product.id.toString(),
-                name: product.name,
-                quantity: qty,
-                price: product.price,
-                imageUrl: product.productImage ?? '',
-                onQuantityChanged: onQuantityChanged,
-                onRemove: removeItem,
-              );
-            }).toList(),
-            ItemTotalsAndPrice(totalPrice: totalPrice),
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(AppDefaults.padding),
-                child: ElevatedButton(
-                  onPressed: AddCheckOut,
-                  child: const Text('Checkout'),
-                ),
+    return WillPopScope(
+      onWillPop: () async {
+        // Always redirect to entryPoint if user presses back
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.entryPoint,
+          (route) => false, // remove all previous routes
+        );
+        return false; // prevent default back action
+      },
+      child: Scaffold(
+        appBar: widget.isHomePage
+            ? null
+            : AppBar(
+                leading: const AppBackButton(),
+                title: const Text('Cart Page'),
               ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ...mergedCartItems.map((item) {
+                  final product = item['product'] as Product;
+                  final qty = item['quantity'] as int;
+
+                  return SingleCartItemTile(
+                    productId: product.id.toString(),
+                    name: product.name,
+                    quantity: qty,
+                    price: product.price,
+                    imageUrl: product.productImage ?? '',
+                    onQuantityChanged: onQuantityChanged,
+                    onRemove: removeItem,
+                  );
+                }),
+                ItemTotalsAndPrice(totalPrice: totalPrice),
+                SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppDefaults.padding),
+                    child: ElevatedButton(
+                      onPressed: AddCheckOut,
+                      child: const Text('Checkout'),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
-    ),
-  ),
-);
-
+    );
 
     // return WillPopScope(
     //   onWillPop: () async {
@@ -227,6 +225,5 @@ return WillPopScope(
     //     ),
     //   ),
     // );
- 
   }
 }

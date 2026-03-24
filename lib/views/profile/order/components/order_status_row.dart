@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -52,7 +53,7 @@ class OrderStatusRow extends StatelessWidget {
                       color: Colors.black,
                     ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: Responsive.hp(context, 4 / 8)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

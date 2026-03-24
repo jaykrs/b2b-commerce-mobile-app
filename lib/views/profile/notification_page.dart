@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/components/app_back_button.dart';
@@ -120,9 +121,9 @@ class NotificationTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: 4),
+                  SizedBox(height: Responsive.hp(context, 4 / 8)),
                   Text(subtitle),
-                  const SizedBox(height: 4),
+                  SizedBox(height: Responsive.hp(context, 4 / 8)),
                   Text(
                     time,
                     style: Theme.of(context).textTheme.bodySmall,

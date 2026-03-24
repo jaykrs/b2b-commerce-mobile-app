@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../core/constants/app_icons.dart';
 
-import '../../core/constants/app_defaults.dart';
 import '../../core/routes/app_routes.dart';
 import 'components/ad_space.dart';
-import 'components/our_new_item.dart';
 import 'components/popular_packs.dart';
 
 class HomePage extends StatelessWidget {

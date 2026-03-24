@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../core/components/bundle_tile_square.dart';
 import '../../../core/components/title_and_action_button.dart';
@@ -57,11 +55,13 @@ class _PopularPacksState extends State<PopularPacks> {
                           TitleAndActionButton(
                             title: tag.name,
                             onTap: () {
-                              Navigator.pushNamed(context, AppRoutes.popularItems, arguments: tag);
+                              Navigator.pushNamed(
+                                  context, AppRoutes.popularItems,
+                                  arguments: tag);
                             },
                           ),
 
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 4),
 
                           /// 🔹 TAG PRODUCTS
                           SingleChildScrollView(
@@ -79,7 +79,7 @@ class _PopularPacksState extends State<PopularPacks> {
                             ),
                           ),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 12),
                         ],
                       );
                     }).toList(),
@@ -88,4 +88,3 @@ class _PopularPacksState extends State<PopularPacks> {
     );
   }
 }
-

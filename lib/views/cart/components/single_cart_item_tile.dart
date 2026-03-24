@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:EazySupplies/core/routes/app_routes.dart';
@@ -38,7 +39,7 @@ class SingleCartItemTile extends StatelessWidget {
             children: [
               // Thumbnail
               // SizedBox(
-              //   width: 70,
+              //   width: Responsive.wp(context, 70/4),
               //   child: AspectRatio(
               //     aspectRatio: 1 / 1,
               //     child: NetworkImageWithLoader(
@@ -48,7 +49,7 @@ class SingleCartItemTile extends StatelessWidget {
               //   ),
               // ),
               SizedBox(
-                width: 70,
+                width: Responsive.wp(context, 70 / 4),
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: InkWell(
@@ -69,7 +70,7 @@ class SingleCartItemTile extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(width: 16),
+              SizedBox(width: Responsive.wp(context, 16 / 4)),
 
               // Quantity and Name
               Column(
@@ -126,7 +127,7 @@ class SingleCartItemTile extends StatelessWidget {
                     onPressed: () => onRemove(productId),
                     icon: SvgPicture.asset(AppIcons.delete),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: Responsive.hp(context, 16 / 8)),
                   Text('₹${(price * quantity).toStringAsFixed(2)}'),
                 ],
               )
@@ -156,8 +157,8 @@ class SingleCartItemTile extends StatelessWidget {
 //           Row(
 //             children: [
 //               /// Thumbnail
-//               const SizedBox(
-//                 width: 70,
+//               SizedBox(
+//                 width: Responsive.wp(context, 70/4),
 //                 child: AspectRatio(
 //                   aspectRatio: 1 / 1,
 //                   child: NetworkImageWithLoader(
@@ -166,7 +167,7 @@ class SingleCartItemTile extends StatelessWidget {
 //                   ),
 //                 ),
 //               ),
-//               const SizedBox(width: 16),
+//               SizedBox(width: Responsive.wp(context, 16/4)),
 
 //               /// Quantity and Name
 //               Column(
@@ -228,7 +229,7 @@ class SingleCartItemTile extends StatelessWidget {
 //                     onPressed: () {},
 //                     icon: SvgPicture.asset(AppIcons.delete),
 //                   ),
-//                   const SizedBox(height: 16),
+//                   SizedBox(height: Responsive.hp(context, 16/8)),
 //                   const Text('\$20'),
 //                 ],
 //               )

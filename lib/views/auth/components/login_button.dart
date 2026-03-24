@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class LoginButton extends StatelessWidget {
@@ -19,10 +20,10 @@ class LoginButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: loading ? null : onPressed,
         child: loading
-            ? const SizedBox(
-                height: 22,
-                width: 22,
-                child: CircularProgressIndicator(
+            ? SizedBox(
+                height: Responsive.hp(context, 22 / 8),
+                width: Responsive.wp(context, 22 / 4),
+                child: const CircularProgressIndicator(
                   strokeWidth: 2,
                   color: Colors.white,
                 ),

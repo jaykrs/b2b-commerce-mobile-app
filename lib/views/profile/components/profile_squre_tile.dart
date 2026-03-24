@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -27,7 +28,7 @@ class ProfileSqureTile extends StatelessWidget {
           child: Column(
             children: [
               SvgPicture.asset(icon),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.hp(context, 8 / 8)),
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(

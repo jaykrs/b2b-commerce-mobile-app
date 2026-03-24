@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../core/components/network_image.dart';
 
@@ -30,9 +31,9 @@ class SubmitReviewPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(
-                width: 100,
-                height: 100,
+              SizedBox(
+                width: Responsive.wp(context, 100 / 4),
+                height: Responsive.hp(context, 100 / 8),
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child:
@@ -60,7 +61,7 @@ class SubmitReviewPage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: AppDefaults.padding * 3),
+              SizedBox(height: AppDefaults.padding * 3),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -71,11 +72,11 @@ class SubmitReviewPage extends StatelessWidget {
                       ),
                 ),
               ),
-              const SizedBox(height: AppDefaults.padding * 2),
+              SizedBox(height: AppDefaults.padding * 2),
               const TextField(
                 maxLines: 10,
               ),
-              const SizedBox(height: AppDefaults.padding * 2),
+              SizedBox(height: AppDefaults.padding * 2),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/constants/cartStorage.dart';
-import 'package:EazySupplies/core/constants/localStorageService.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 
 import '../../core/components/app_back_button.dart';
@@ -13,6 +12,7 @@ import '../../core/components/product_images_slider.dart';
 import '../../core/components/review_row_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/constants/api_config.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final int productId; // receive productId
@@ -75,10 +75,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    const String baseUrl = "https://api.eazysupplies.com/api/file?file=";
+
     final imageUrls = product?.productImage
-            ?.split(',') // split by comma
-            .map((e) => e.trim()) // remove spaces
-            .where((e) => e.isNotEmpty) // ignore empty strings
+            ?.split(',')
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .map((e) => baseUrl + e) // 👈 add this line
             .toList() ??
         [];
 
@@ -98,7 +101,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   onBuyButtonTap: () {},
                   //onCartButtonTap: () {},
                   onCartButtonTap: () async {
-                    final id = product?.id?.toString();
+                    final id = product?.id.toString();
                     if (id == null) return;
 
                     final isInCart = await CartStorage.isInCart(id);
@@ -192,19 +195,27 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       color: Colors.black),
                             ),
                             const SizedBox(height: 8),
-                            Text(product!.description ??
-                                "No description available."),
+                            Html(
+                              data: product!.description ??
+                                  "No description available.",
+                              style: {
+                                "body": Style(
+                                  fontSize:
+                                      FontSize(Responsive.sp(context, 14)),
+                                ),
+                              },
+                            )
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
                             horizontal: AppDefaults.padding),
                         child: Column(
                           children: [
-                            const Divider(thickness: 0.1),
+                            Divider(thickness: 0.1),
                             ReviewRowButton(totalStars: 0),
-                            const Divider(thickness: 0.1),
+                            Divider(thickness: 0.1),
                           ],
                         ),
                       ),

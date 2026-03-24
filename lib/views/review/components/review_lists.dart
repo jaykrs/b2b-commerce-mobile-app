@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import 'review_tile.dart';
@@ -24,9 +25,9 @@ class ReviewLists extends StatelessWidget {
           );
         },
         itemCount: 7,
-        separatorBuilder: (context, index) => const Divider(
+        separatorBuilder: (context, index) => Divider(
           thickness: 0.1,
-          height: 0,
+          height: Responsive.hp(context, 0 / 8),
         ),
       ),
     );

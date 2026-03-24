@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/review_stars.dart';
@@ -24,7 +25,7 @@ class OverallStars extends StatelessWidget {
                 ),
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: Responsive.hp(context, 8 / 8)),
         Text(
           '320 Reviews',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(

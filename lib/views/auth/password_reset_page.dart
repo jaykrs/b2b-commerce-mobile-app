@@ -1,3 +1,4 @@
+import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../core/routes/app_routes.dart';
 
@@ -41,20 +42,20 @@ class PasswordResetPage extends StatelessWidget {
                           .titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: AppDefaults.padding * 3),
+                    SizedBox(height: AppDefaults.padding * 3),
                     const Text("New Password"),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       autofocus: true,
                       textInputAction: TextInputAction.next,
                     ),
-                    const SizedBox(height: AppDefaults.padding),
+                    SizedBox(height: AppDefaults.padding),
                     const Text("Confirm Password"),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       textInputAction: TextInputAction.next,
                     ),
-                    const SizedBox(height: AppDefaults.padding * 2),
+                    SizedBox(height: AppDefaults.padding * 2),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
