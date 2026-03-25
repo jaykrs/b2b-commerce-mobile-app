@@ -14,8 +14,26 @@ class ProductTileSquare extends StatelessWidget {
 
   final Product data;
 
+  static const String baseUrl = Config.ImagebaseUrl;
+
+  /// ✅ Extract first image and append base URL
+  String getFirstImageUrl(String? images) {
+    if (images == null || images.isEmpty) return '';
+
+    final list = images
+        .split(',')
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
+
+    if (list.isEmpty) return '';
+
+    return baseUrl + list.first;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final imageUrl = getFirstImageUrl(data.productImage);
     return Material(
       borderRadius: AppDefaults.borderRadius,
       color: AppColors.scaffoldBackground,
@@ -44,7 +62,7 @@ class ProductTileSquare extends StatelessWidget {
               SizedBox(
                 height: Responsive.hp(context, 100 / 8),
                 child: NetworkImageWithLoader(
-                  data.productImage ?? "",
+                  imageUrl,
                   fit: BoxFit.contain,
                 ),
               ),

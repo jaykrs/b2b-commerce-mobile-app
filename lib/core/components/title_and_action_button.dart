@@ -24,7 +24,9 @@ class TitleAndActionButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            title.length > 30 ? '${title.substring(0, 25)} ...' : title,
+            title.length > 30
+                ? '${title.substring(0, 25).toUpperCase()} ...'
+                : title,
             style: isHeadline
                 ? Theme.of(context)
                     .textTheme

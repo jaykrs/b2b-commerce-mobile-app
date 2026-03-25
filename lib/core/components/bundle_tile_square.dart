@@ -13,7 +13,7 @@ class BundleTileSquare extends StatelessWidget {
 
   final Product data;
 
-  static const String baseUrl = "https://api.eazysupplies.com/api/file?file=";
+  static const String baseUrl = Config.ImagebaseUrl;
 
   /// ✅ Extract first image and append base URL
   String getFirstImageUrl(String? images) {

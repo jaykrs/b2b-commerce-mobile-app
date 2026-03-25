@@ -1,5 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:EazySupplies/core/enums/login_type.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:EazySupplies/core/constants/apiClients.dart';
@@ -10,6 +15,7 @@ import '../../../core/routes/app_routes.dart';
 import '../../../core/themes/app_themes.dart';
 import '../../../core/utils/validators.dart';
 import 'login_button.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPageForm extends StatefulWidget {
   final LoginType loginType;
@@ -39,33 +45,85 @@ class _LoginPageFormState extends State<LoginPageForm> {
     setState(() => isPasswordShown = !isPasswordShown);
   }
 
+  void sendOtp() async {
+    String phone = emailCtrl.text.trim();
+
+    final result = await generateOtp(phone);
+
+    if (result != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("OTP Sent on WhatsApp.")),
+      );
+      if (kDebugMode) {
+        print("OTP Sent Successfully: $result");
+      }
+    } else {
+      if (kDebugMode) {
+        print("Failed to send OTP");
+      }
+    }
+  }
+
+  Future<Map<String, dynamic>?> generateOtp(String phoneNumber) async {
+    final String url =
+        "${Config.HostUrlssl}auth/login?action=generateotp&phone=$phoneNumber";
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data; // return parsed response
+      } else {
+        if (kDebugMode) {
+          print("Error: ${response.statusCode}");
+          print("Response: ${response.body}");
+        }
+
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Exception: $e");
+      }
+      return null;
+    }
+  }
+
   Future<void> onLogin() async {
     final bool isFormOkay = _key.currentState?.validate() ?? false;
     if (!isFormOkay) return;
 
     setState(() => loading = true);
 
-    final url = Uri.parse(ApiConfig.login);
+    Uri.parse(ApiConfig.login);
 
     try {
       setState(() => loading = true);
-      Map<String, dynamic> payload = {
-        'password': passwordCtrl.text.trim(),
-      };
+      Map<String, dynamic> payload = {};
 
       switch (widget.loginType) {
         case LoginType.email:
-          payload['email'] = emailCtrl.text.trim();
-          break;
-
+          {
+            payload['email'] = emailCtrl.text.trim();
+            payload['password'] = passwordCtrl.text.trim();
+            break;
+          }
         case LoginType.phone:
-          payload['phone'] = emailCtrl.text.trim();
-          break;
-
+          {
+            payload['phone'] = emailCtrl.text.trim().toString();
+            payload['otp'] = passwordCtrl.text.trim().toString();
+            break;
+          }
         case LoginType.gst:
-          payload['gstn'] = emailCtrl.text.trim();
-          break;
+          {
+            payload['gstn'] = emailCtrl.text.trim();
+            payload['password'] = passwordCtrl.text.trim();
+            break;
+          }
       }
+      print("tt");
+      print(payload);
       final response = await ApiClient.dio.post(
         '/auth/login',
         data: payload,
@@ -97,20 +155,6 @@ class _LoginPageFormState extends State<LoginPageForm> {
         SnackBar(content: Text(errorMsg)),
       );
     }
-
-    // } on DioException catch (e) {
-    //   setState(() => loading = false);
-
-    //   // DioException contains requestOptions, response, type, message
-    //   print(e.response);
-    //   String errorMsg = e.response != null
-    //       ? "Login failed: ${e.response?.data}"
-    //       : "Connection error: ${e.message}";
-
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text(errorMsg)),
-    //   );
-    // }
   }
 
   @override
@@ -129,7 +173,7 @@ class _LoginPageFormState extends State<LoginPageForm> {
               // Email Field
               if (widget.loginType == LoginType.email) ...[
                 const Text("Email"),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 TextFormField(
                   controller: emailCtrl,
                   keyboardType: TextInputType.emailAddress,
@@ -137,8 +181,8 @@ class _LoginPageFormState extends State<LoginPageForm> {
                   textInputAction: TextInputAction.next,
                 ),
               ] else if (widget.loginType == LoginType.phone) ...[
-                const Text("Phone"),
-                SizedBox(height: 8),
+                const Text("Phone WhatsApp"),
+                const SizedBox(height: 8),
                 TextFormField(
                   controller: emailCtrl,
                   keyboardType:
@@ -146,9 +190,18 @@ class _LoginPageFormState extends State<LoginPageForm> {
                   validator: Validators.phone,
                   textInputAction: TextInputAction.next,
                 ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      sendOtp();
+                    },
+                    child: const Text('Send OTP'),
+                  ),
+                ),
               ] else ...[
                 const Text("GST"),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 TextFormField(
                   controller: emailCtrl,
                   keyboardType: TextInputType.text,
@@ -156,11 +209,11 @@ class _LoginPageFormState extends State<LoginPageForm> {
                   textInputAction: TextInputAction.next,
                 )
               ],
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               // Password Field
               const Text("Password"),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextFormField(
                 controller: passwordCtrl,
                 validator: Validators.password.call,
@@ -185,15 +238,6 @@ class _LoginPageFormState extends State<LoginPageForm> {
                   child: const Text('Forget Password?'),
                 ),
               ),
-
-              // Login Button
-              // LoginButton(
-              //   onPressed: loading ? null : onLogin,
-              //   loading: loading
-              //       ? const CircularProgressIndicator(color: Colors.white)
-              //       : const Text("Login"),
-              // ),
-
               LoginButton(
                 onPressed: onLogin,
                 loading: loading,

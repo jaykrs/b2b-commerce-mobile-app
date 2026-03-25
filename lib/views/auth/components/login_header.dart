@@ -15,7 +15,7 @@ class LoginPageHeader extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.3,
           child: const AspectRatio(
-            aspectRatio: 1 / 1,
+            aspectRatio: 2 / 1,
             child: NetworkImageWithLoader(AppImages.roundedLogo),
           ),
         ),

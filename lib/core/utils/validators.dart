@@ -7,9 +7,11 @@ class Validators {
   /// Password Validator
   static final password = MultiValidator([
     RequiredValidator(errorText: 'Password is required'),
-    MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
-    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-        errorText: 'Passwords must have at least one special character')
+    MinLengthValidator(6, errorText: 'Password must be at least 6 digits long'),
+    PatternValidator(
+      r'^(\d{4,6}|(?=.*?[#?!@$%^&*-]).{6,})$',
+      errorText: 'Enter valid OTP or strong password',
+    )
   ]);
 
   /// Required Validator with Optional Field Name
@@ -29,7 +31,8 @@ class Validators {
   static String? gst(String? value) {
     if (value == null || value.isEmpty) return 'GST number is required';
     // GST regex: 2 digits state code, 10 chars PAN, 1 char entity, 1 char Z by default, 1 check digit
-    final gstRegex = RegExp(r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}[Z]{1}[A-Z0-9]{1}$');
+    final gstRegex = RegExp(
+        r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}[Z]{1}[A-Z0-9]{1}$');
     if (!gstRegex.hasMatch(value)) return 'Enter a valid GST number';
     return null;
   }
