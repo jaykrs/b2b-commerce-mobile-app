@@ -106,12 +106,12 @@ class NumberVerificationHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: AppDefaults.padding),
+        const SizedBox(height: AppDefaults.padding),
         Text(
           'Entry Your 4 digit code',
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        SizedBox(height: AppDefaults.padding),
+        const SizedBox(height: AppDefaults.padding),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.4,
           child: const AspectRatio(
@@ -121,7 +121,7 @@ class NumberVerificationHeader extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: AppDefaults.padding * 3),
+        const SizedBox(height: AppDefaults.padding * 3),
       ],
     );
   }

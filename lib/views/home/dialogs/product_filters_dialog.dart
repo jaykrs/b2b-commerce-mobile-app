@@ -314,7 +314,7 @@ class _SortBy extends StatelessWidget {
           const Spacer(),
           DropdownButton(
             value: 'Popularity',
-            underline: SizedBox(),
+            underline: const SizedBox(),
             icon: const Icon(
               Icons.arrow_drop_down,
               color: AppColors.primary,

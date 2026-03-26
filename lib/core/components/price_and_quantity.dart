@@ -36,7 +36,7 @@ class PriceAndQuantityRow extends StatelessWidget {
                     decoration: TextDecoration.lineThrough,
                   ),
             ),
-            SizedBox(width: AppDefaults.padding),
+            const SizedBox(width: AppDefaults.padding),
             Text(
               '₹${currentPrice.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -68,7 +68,7 @@ class PriceAndQuantityRow extends StatelessWidget {
             // ),
           ],
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           'Total: ₹${totalPrice.toStringAsFixed(2)}',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(

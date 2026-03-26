@@ -49,7 +49,7 @@ class IntroPageBodyArea extends StatelessWidget {
                     child: const Text('Continue with Email or Phone'),
                   ),
                 ),
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

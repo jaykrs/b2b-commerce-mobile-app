@@ -20,7 +20,7 @@ class CouponDetailsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
           CouponCard(
             title: 'Black\nCoffee',
             discounts: '41%',
@@ -80,7 +80,7 @@ class CouponDetailsPage extends StatelessWidget {
                   ),
             ),
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
         ],
       ),
     );

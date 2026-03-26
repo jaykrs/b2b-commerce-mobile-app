@@ -43,7 +43,7 @@ class ReviewTile extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: AppDefaults.padding),
+          const SizedBox(width: AppDefaults.padding),
           Expanded(
             child: Column(
               children: [
@@ -67,7 +67,7 @@ class ReviewTile extends StatelessWidget {
                 const ReviewStars(starsGiven: 3),
                 SizedBox(height: Responsive.hp(context, 8 / 8)),
                 Text(review),
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
                 Row(
                   children: [
                     Row(
@@ -75,15 +75,15 @@ class ReviewTile extends StatelessWidget {
                         isFavourite
                             ? SvgPicture.asset(AppIcons.heartActive)
                             : SvgPicture.asset(AppIcons.heartOutlined),
-                        SizedBox(width: AppDefaults.padding / 2),
+                        const SizedBox(width: AppDefaults.padding / 2),
                         Text('$totalLikes Like')
                       ],
                     ),
-                    SizedBox(width: AppDefaults.padding),
+                    const SizedBox(width: AppDefaults.padding),
                     Row(
                       children: [
                         SvgPicture.asset(AppIcons.reply),
-                        SizedBox(width: AppDefaults.padding / 2),
+                        const SizedBox(width: AppDefaults.padding / 2),
                         const Text('Reply')
                       ],
                     )

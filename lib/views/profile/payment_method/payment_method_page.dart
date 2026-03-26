@@ -19,7 +19,7 @@ class PaymentMethodPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
           const AddNewCardRow(),
           const PaymentDefaultCard(),
           Align(

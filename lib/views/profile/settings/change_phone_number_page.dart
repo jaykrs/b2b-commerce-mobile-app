@@ -40,7 +40,7 @@ class ChangePhoneNumberPage extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                 ),
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
 
                 /* <---- Retype Phone Number -----> */
                 const Text("Retype Phone Number"),
@@ -49,10 +49,10 @@ class ChangePhoneNumberPage extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.done,
                 ),
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
 
                 /* <---- Submit -----> */
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

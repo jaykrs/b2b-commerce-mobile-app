@@ -39,7 +39,7 @@ class ProfileEditPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Last Name -----> */
               const Text("Last Name"),
@@ -48,7 +48,7 @@ class ProfileEditPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Phone Number -----> */
               const Text("Phone Number"),
@@ -57,7 +57,7 @@ class ProfileEditPage extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Gender -----> */
               const Text("Gender"),
@@ -66,7 +66,7 @@ class ProfileEditPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Birthday -----> */
               const Text("Birthday"),
@@ -75,7 +75,7 @@ class ProfileEditPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Password -----> */
 
@@ -87,10 +87,10 @@ class ProfileEditPage extends StatelessWidget {
                 textInputAction: TextInputAction.next,
                 obscureText: true,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Submit -----> */
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

@@ -32,7 +32,7 @@ class NotificationSettingsPage extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.6,
           child: Column(
             children: [
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
               AppSettingsListTile(
                 label: 'App Notification',
                 trailing: Transform.scale(

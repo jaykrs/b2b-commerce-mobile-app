@@ -41,7 +41,7 @@ class _OurNewItemState extends State<OurNewItem> {
           title: 'Top Products',
           onTap: () => Navigator.pushNamed(context, AppRoutes.newItems),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         isLoading
             ? const Center(child: CircularProgressIndicator())
             : products.isEmpty

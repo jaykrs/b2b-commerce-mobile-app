@@ -41,7 +41,7 @@ class NewAddressPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Phone Number -----> */
               const Text("Phone Number"),
@@ -50,7 +50,7 @@ class NewAddressPage extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Address Line 1 -----> */
               const Text("Address Line 1"),
@@ -59,7 +59,7 @@ class NewAddressPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- Address Line 2 -----> */
               const Text("Address Line 2"),
@@ -68,7 +68,7 @@ class NewAddressPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- City -----> */
               const Text("City"),
@@ -77,7 +77,7 @@ class NewAddressPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
 
               /* <---- State and Zip Code -----> */
               Row(
@@ -95,7 +95,7 @@ class NewAddressPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: AppDefaults.padding),
+                  const SizedBox(width: AppDefaults.padding),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +121,7 @@ class NewAddressPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

@@ -14,7 +14,7 @@ class TopQuestions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: AppDefaults.padding / 2),
+        const SizedBox(height: AppDefaults.padding / 2),
         Text(
           'Top Questions',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -22,7 +22,7 @@ class TopQuestions extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
         ),
-        SizedBox(height: AppDefaults.padding / 2),
+        const SizedBox(height: AppDefaults.padding / 2),
         AppSettingsListTile(
           label: 'How do I return my Items',
           trailing: SvgPicture.asset(AppIcons.right),

@@ -48,7 +48,7 @@ class DeliverySuccessfullDialog extends StatelessWidget {
                 const Text(' order Successfully.')
               ],
             ),
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -58,7 +58,7 @@ class DeliverySuccessfullDialog extends StatelessWidget {
                 child: const Text('Rate The Product'),
               ),
             ),
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(

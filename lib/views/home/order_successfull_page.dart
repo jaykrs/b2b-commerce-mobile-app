@@ -39,7 +39,7 @@ class OrderSuccessfullPage extends StatelessWidget {
                       ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 const Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: AppDefaults.padding),

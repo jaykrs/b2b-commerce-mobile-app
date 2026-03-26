@@ -54,7 +54,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   } else if (snapshot.hasError) {
                     return const Text('Failed to load user');
                   } else if (!snapshot.hasData) {
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   } else {
                     final user = snapshot.data!;
                     return Padding(
@@ -96,7 +96,7 @@ class _DrawerPageState extends State<DrawerPage> {
                               // : null,
                               ),
 
-                          SizedBox(width: 16),
+                          const SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +173,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 icons: SvgPicture.asset(AppIcons.contactMap),
                 onTap: () => Navigator.pushNamed(context, AppRoutes.contactUs),
               ),
-              SizedBox(height: AppDefaults.padding * 3),
+              const SizedBox(height: AppDefaults.padding * 3),
               AppSettingsListTile(
                 label: 'Logout',
                 trailing: SvgPicture.asset(AppIcons.right),

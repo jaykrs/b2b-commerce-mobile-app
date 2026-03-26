@@ -53,7 +53,8 @@ class _AllPaymentPageState extends State<AllPaymentPage> {
               return ListView.separated(
                 padding: const EdgeInsets.all(16),
                 itemCount: orders.length,
-                separatorBuilder: (context, index) => SizedBox(height: 16),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
                 itemBuilder: (context, index) {
                   final order = orders[index];
                   return OrderCard(order: order);
@@ -98,11 +99,11 @@ class OrderCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text('Status: ${order.status}'),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text('Created At: ${order.createdAt.toLocal()}'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             // Text(
             //   'Items:',
             //   style: const TextStyle(fontWeight: FontWeight.bold),

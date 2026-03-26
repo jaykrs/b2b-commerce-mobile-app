@@ -62,7 +62,7 @@ class CategoryTile extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             SizedBox(
               height: 2 *
                   (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 12) *

@@ -119,7 +119,7 @@ class UserData extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: AppDefaults.padding),
+          const SizedBox(width: AppDefaults.padding),
           Expanded(
             child: Text(
               user.name,

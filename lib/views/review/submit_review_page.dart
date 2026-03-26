@@ -34,7 +34,7 @@ class SubmitReviewPage extends StatelessWidget {
               SizedBox(
                 width: Responsive.wp(context, 100 / 4),
                 height: Responsive.hp(context, 100 / 8),
-                child: AspectRatio(
+                child: const AspectRatio(
                   aspectRatio: 1 / 1,
                   child:
                       NetworkImageWithLoader('https://i.imgur.com/aMo2GQb.png'),
@@ -61,7 +61,7 @@ class SubmitReviewPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: AppDefaults.padding * 3),
+              const SizedBox(height: AppDefaults.padding * 3),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -72,11 +72,11 @@ class SubmitReviewPage extends StatelessWidget {
                       ),
                 ),
               ),
-              SizedBox(height: AppDefaults.padding * 2),
+              const SizedBox(height: AppDefaults.padding * 2),
               const TextField(
                 maxLines: 10,
               ),
-              SizedBox(height: AppDefaults.padding * 2),
+              const SizedBox(height: AppDefaults.padding * 2),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

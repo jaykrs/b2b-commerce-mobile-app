@@ -32,7 +32,7 @@ class TitleAndParagraph extends StatelessWidget {
                       color: Colors.black,
                     ),
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
           Text(paragraph)
         ],
       ),

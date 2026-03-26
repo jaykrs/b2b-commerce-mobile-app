@@ -105,7 +105,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ),
               ],
             ),
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
           ],
         ),
       ),

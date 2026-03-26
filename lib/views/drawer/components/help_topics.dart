@@ -14,7 +14,7 @@ class HelpTopics extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: AppDefaults.padding),
+        const SizedBox(height: AppDefaults.padding),
         Text(
           'Topics',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -22,7 +22,7 @@ class HelpTopics extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
         ),
-        SizedBox(height: AppDefaults.padding / 2),
+        const SizedBox(height: AppDefaults.padding / 2),
         AppSettingsListTile(
           label: 'My Account',
           trailing: SvgPicture.asset(AppIcons.right),

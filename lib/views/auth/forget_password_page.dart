@@ -43,11 +43,11 @@ class ForgetPasswordPage extends StatelessWidget {
                           .titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: AppDefaults.padding),
+                    const SizedBox(height: AppDefaults.padding),
                     const Text(
                       'Please enter your number. We will send a code\nto your phone to reset your password.',
                     ),
-                    SizedBox(height: AppDefaults.padding * 3),
+                    const SizedBox(height: AppDefaults.padding * 3),
                     const Text("Phone Number"),
                     SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
@@ -55,8 +55,8 @@ class ForgetPasswordPage extends StatelessWidget {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: AppDefaults.padding),
-                    SizedBox(height: AppDefaults.padding),
+                    const SizedBox(height: AppDefaults.padding),
+                    const SizedBox(height: AppDefaults.padding),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(

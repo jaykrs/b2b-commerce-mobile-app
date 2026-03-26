@@ -43,7 +43,7 @@ class _Footer extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: AppDefaults.margin),
+        const SizedBox(height: AppDefaults.margin),
         Text(
           'OR',
           style: Theme.of(context)
@@ -51,7 +51,7 @@ class _Footer extends StatelessWidget {
               .titleLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: AppDefaults.margin),
+        const SizedBox(height: AppDefaults.margin),
         SizedBox(
           width: double.infinity,
           child: Padding(
@@ -66,7 +66,7 @@ class _Footer extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: AppDefaults.margin),
+        const SizedBox(height: AppDefaults.margin),
         SizedBox(
           width: double.infinity,
           child: Padding(

@@ -48,7 +48,7 @@ class ChangePasswordPage extends StatelessWidget {
                     suffixIconConstraints: const BoxConstraints(),
                   ),
                 ),
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
 
                 /* <---- New Password -----> */
                 const Text("New Password"),
@@ -64,7 +64,7 @@ class ChangePasswordPage extends StatelessWidget {
                     suffixIconConstraints: const BoxConstraints(),
                   ),
                 ),
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
 
                 /* <---- Confirm Password-----> */
                 const Text("Confirm Password"),
@@ -80,10 +80,10 @@ class ChangePasswordPage extends StatelessWidget {
                     suffixIconConstraints: const BoxConstraints(),
                   ),
                 ),
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
 
                 /* <---- Submit -----> */
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

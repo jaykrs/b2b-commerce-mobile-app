@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
               children: [
                 const LoginPageHeader(),
                 LoginPageForm(loginType: loginType),
-                SizedBox(height: AppDefaults.padding),
+                const SizedBox(height: AppDefaults.padding),
                 SocialLogins(loginType: loginType),
                 const DontHaveAccountRow(),
               ],

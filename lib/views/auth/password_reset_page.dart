@@ -42,20 +42,20 @@ class PasswordResetPage extends StatelessWidget {
                           .titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: AppDefaults.padding * 3),
+                    const SizedBox(height: AppDefaults.padding * 3),
                     const Text("New Password"),
                     SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       autofocus: true,
                       textInputAction: TextInputAction.next,
                     ),
-                    SizedBox(height: AppDefaults.padding),
+                    const SizedBox(height: AppDefaults.padding),
                     const Text("Confirm Password"),
                     SizedBox(height: Responsive.hp(context, 8 / 8)),
                     TextFormField(
                       textInputAction: TextInputAction.next,
                     ),
-                    SizedBox(height: AppDefaults.padding * 2),
+                    const SizedBox(height: AppDefaults.padding * 2),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(

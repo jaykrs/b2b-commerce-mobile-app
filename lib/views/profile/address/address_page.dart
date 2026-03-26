@@ -83,7 +83,7 @@ class AddressTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppRadio(isActive: isActive),
-          SizedBox(width: AppDefaults.padding),
+          const SizedBox(width: AppDefaults.padding),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -113,7 +113,7 @@ class AddressTile extends StatelessWidget {
                 constraints: const BoxConstraints(),
                 iconSize: 14,
               ),
-              SizedBox(height: AppDefaults.margin / 2),
+              const SizedBox(height: AppDefaults.margin / 2),
               IconButton(
                 onPressed: () {},
                 icon: SvgPicture.asset(AppIcons.deleteOutline),

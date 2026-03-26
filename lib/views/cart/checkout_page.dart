@@ -95,7 +95,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 selectedAddress: selectedAddress,
                 placeOrder: () => placeOrder(),
                 isLoading: isLoading),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -160,7 +160,7 @@ class BillingSummary extends StatelessWidget {
             'Billing Summary',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
 
           // Items
           ...checkOutList.map((item) {

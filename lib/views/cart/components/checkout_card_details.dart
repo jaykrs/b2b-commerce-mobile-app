@@ -24,7 +24,7 @@ class CardDetails extends StatelessWidget {
             // validator: Validators.requiredWithFieldName('Card'),
             textInputAction: TextInputAction.next,
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
 
           // Number Field
           const Text("Card Number"),
@@ -34,7 +34,7 @@ class CardDetails extends StatelessWidget {
             // validator: Validators.requiredWithFieldName('Card Number'),
             textInputAction: TextInputAction.next,
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
 
           /* <---- Expiration Date And CVV -----> */
           Row(
@@ -51,7 +51,7 @@ class CardDetails extends StatelessWidget {
                       // validator: Validators.requiredWithFieldName('Card'),
                       textInputAction: TextInputAction.next,
                     ),
-                    SizedBox(height: AppDefaults.padding),
+                    const SizedBox(height: AppDefaults.padding),
                   ],
                 ),
               ),
@@ -68,7 +68,7 @@ class CardDetails extends StatelessWidget {
                       // validator: Validators.requiredWithFieldName('Card'),
                       textInputAction: TextInputAction.next,
                     ),
-                    SizedBox(height: AppDefaults.padding),
+                    const SizedBox(height: AppDefaults.padding),
                   ],
                 ),
               ),

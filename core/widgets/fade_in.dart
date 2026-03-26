@@ -11,7 +11,7 @@ class FadeIn extends StatelessWidget {
       tween: Tween(begin: 0.0, end: 1.0),
       duration: const Duration(milliseconds: 400),
       builder: (context, value, child) {
-        return Opacity(opacity: value as double, child: child);
+        return Opacity(opacity: value, child: child);
       },
       child: child,
     );

@@ -56,7 +56,7 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: AppDefaults.padding / 2),
+            const SizedBox(height: AppDefaults.padding / 2),
             CreditCardWidget(
               cardNumber: cardNumber.text,
               expiryDate: expireDate.text,
@@ -128,7 +128,7 @@ class CreditCardForm extends StatelessWidget {
             controller: holderName,
             onChanged: onTextChanged,
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
           const Text("Card Number"),
           SizedBox(height: Responsive.hp(context, 8 / 8)),
           TextFormField(
@@ -137,7 +137,7 @@ class CreditCardForm extends StatelessWidget {
             controller: cardNumber,
             onChanged: onTextChanged,
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
           Row(
             children: [
               Expanded(
@@ -155,7 +155,7 @@ class CreditCardForm extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: AppDefaults.padding),
+              const SizedBox(width: AppDefaults.padding),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +173,7 @@ class CreditCardForm extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
           Row(
             children: [
               Text(
@@ -192,7 +192,7 @@ class CreditCardForm extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -200,7 +200,7 @@ class CreditCardForm extends StatelessWidget {
               child: const Text('Add Card'),
             ),
           ),
-          SizedBox(height: AppDefaults.padding),
+          const SizedBox(height: AppDefaults.padding),
         ],
       ),
     );

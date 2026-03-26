@@ -36,7 +36,7 @@ class OrderDetailsPage extends StatelessWidget {
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
               ),
-              SizedBox(height: AppDefaults.padding),
+              const SizedBox(height: AppDefaults.padding),
               const OrderStatusColumn(),
               const TotalOrderProductDetails(),
               const TotalAmountAndPaidData(),

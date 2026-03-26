@@ -34,7 +34,7 @@ class ContactUsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
 
               /// Title
               Text(
@@ -130,7 +130,7 @@ class ContactUsPage extends StatelessWidget {
               SizedBox(height: padding),
 
               /// Map Image
-              SizedBox(
+              const SizedBox(
                 width: double.infinity,
                 child: AspectRatio(
                   aspectRatio: 3 / 2,

@@ -82,8 +82,8 @@ class CouponCard extends StatelessWidget {
                     ),
                     SizedBox(
                       height: Responsive.hp(context, 160 / 8),
-                      child:
-                          DottedDivider(isVertical: true, color: Colors.white),
+                      child: const DottedDivider(
+                          isVertical: true, color: Colors.white),
                     ),
                     Expanded(
                       flex: 5,

@@ -102,33 +102,33 @@ class _SignUpFormState extends State<SignUpForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text("Name"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               controller: nameCtrl,
               validator: Validators.requiredWithFieldName('Name').call,
               textInputAction: TextInputAction.next,
             ),
 
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
             const Text("Email"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               controller: emailCtrl,
               validator: Validators.email.call,
               textInputAction: TextInputAction.next,
             ),
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
             const Text("GST No"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               controller: gstCtrl,
               validator: Validators.requiredWithFieldName('GstNo').call,
               textInputAction: TextInputAction.next,
             ),
 
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
             const Text("Phone Number"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               controller: phoneCtrl,
               validator: Validators.required.call,
@@ -137,9 +137,9 @@ class _SignUpFormState extends State<SignUpForm> {
               textInputAction: TextInputAction.next,
             ),
 
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
             const Text("Password"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               controller: passwordCtrl,
               validator: Validators.password.call,
@@ -156,9 +156,9 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
             ),
 
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
             const Text("Confirm Password"),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               controller: confirmPasswordCtrl,
               validator: Validators.required.call,
@@ -175,7 +175,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
             ),
 
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
 
             // 🔥 Keep your button, but connect API
             SizedBox(
@@ -189,7 +189,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
 
             const AlreadyHaveAnAccount(),
-            SizedBox(height: AppDefaults.padding),
+            const SizedBox(height: AppDefaults.padding),
           ],
         ),
       ),
