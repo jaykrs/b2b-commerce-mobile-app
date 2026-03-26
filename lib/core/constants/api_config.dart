@@ -6,7 +6,7 @@ class ApiConfig {
   // Endpoints
   static const String products = '$baseUrl/products';
   static const String categories = '$baseUrl/categories';
-    static const String brands = '$baseUrl/brands';
+  static const String brands = '$baseUrl/brands';
   static const String login = '$baseUrl/auth/login';
   static const String tagTogetProduct = '$baseUrl/tags?isAllTagOfProducts=ALL';
   static const String address = '$baseUrl/address/getAddress';
@@ -17,8 +17,8 @@ class ApiConfig {
   static const String profileImg = '$baseUrl/file/profileImg';
   static const String payments = '$baseUrl/payments';
   static const String orders = '$baseUrl/orders';
+  static const String benepay = '$baseUrl/payments/benePay/getUrl';
 
- 
   // Timeouts
-  static const Duration timeout = Duration(seconds: 10);
+  static const Duration timeout = Duration(seconds: 15);
 }

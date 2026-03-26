@@ -1,3 +1,7 @@
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:EazySupplies/core/routes/app_routes.dart';
@@ -11,11 +15,94 @@ class OrderViewPage extends StatefulWidget {
   State<OrderViewPage> createState() => _OrderViewPageState();
 }
 
+Future<void> getPaymentUrl({
+  required String orderId,
+  required double amount,
+  required List<String> method,
+  required String reasonForCollection,
+}) async {
+  try {
+    // Prepare the data map to match your cURL --data-raw
+    final payload = {
+      "orderId": int.parse(orderId),
+      "amount": amount,
+      "method": method,
+      "reasonForCollection": reasonForCollection,
+    };
+    if (kDebugMode) {
+      print(payload);
+    }
+    final response = await ApiClient.dio
+        .post(ApiConfig.benepay, data: payload)
+        .timeout(ApiConfig.timeout);
+
+    if (response.statusCode == 200) {
+      const AlertDialog(title: Text('Check Email for Payment process.'));
+      if (kDebugMode) {
+        print('Success: ${response.data}');
+      }
+      // Handle your response logic here (e.g., navigate to the URL)
+    } else {
+      if (kDebugMode) {
+        print('Server Error: ${response.statusCode}');
+      }
+    }
+  } on DioException catch (e) {
+    // Detailed error logging
+    if (kDebugMode) {
+      print('Request failed: ${e.message}');
+    }
+    if (e.response != null) {
+      if (kDebugMode) {
+        print('Error Data: ${e.response?.data}');
+      }
+    }
+  }
+}
+
+// This method bridges your UI and the API logic
+Future<void> handlePaymentProcess({
+  required Order orderData,
+  required String selectedMethod,
+  required double calculatedAmount,
+}) async {
+  try {
+    // 1. You could add a loading indicator here (e.g., EasyLoading.show())
+
+    await getPaymentUrl(
+      orderId: orderData.id.toString(),
+      amount: calculatedAmount,
+      method: [selectedMethod],
+      reasonForCollection: "product buy Mobile Order ${orderData.id}",
+    );
+
+    // 2. Handle success (e.g., show a success snackbar or navigate)
+    if (kDebugMode) {
+      print("Payment URL fetched successfully");
+    }
+  } catch (e) {
+    // 3. Handle any unexpected errors that bubbled up
+    if (kDebugMode) {
+      print("Error in payment process: $e");
+    }
+  } finally {
+    // 4. Hide loading indicator here
+  }
+}
+
 class _OrderViewPageState extends State<OrderViewPage> {
   String? selectedPaymentMethodId;
+  late bool _b = false;
   @override
   void initState() {
     super.initState();
+  }
+
+  double get totalCalculatedAmount {
+    return widget.orderData.items.fold(0.0, (sum, item) {
+      // Ensure item.price is treated as a double
+      return sum + (double.tryParse(item.price.toString()) ?? 0.0);
+    });
   }
 
   @override
@@ -42,10 +129,10 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _buildInfoRow('Status', widget.orderData.status),
             _buildInfoRow(
-                'Approved', widget.orderData.approved ? 'APPROVED' : 'PENDING'),
+                'Approved', widget.orderData.approved ? 'YES' : 'PENDING'),
             if (note.isNotEmpty) _buildInfoRow('Note', note),
 
             const Divider(height: 32),
@@ -58,7 +145,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             ...items.map((item) {
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 6),
@@ -92,7 +179,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _buildInfoRow('Address', shipping?.address ?? ''),
             _buildInfoRow('City', shipping?.city ?? ''),
             _buildInfoRow('State', shipping?.state ?? ''),
@@ -110,7 +197,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -118,9 +205,9 @@ class _OrderViewPageState extends State<OrderViewPage> {
                   // Show subtotal, tax, total
                   _buildInfoRow('Subtotal', '₹'),
                   _buildInfoRow('Tax', '₹'),
-                  _buildInfoRow('Total', '₹'),
+                  _buildInfoRow('Total', '₹$totalCalculatedAmount'),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -137,6 +224,8 @@ class _OrderViewPageState extends State<OrderViewPage> {
                             isExpanded:
                                 true, // make dropdown fill the available space
                             value: selectedPaymentMethodId,
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.grey),
                             hint: const Text('Select Payment Method'),
                             items: PaymentMethod.values.map((method) {
                               return DropdownMenuItem<String>(
@@ -148,7 +237,9 @@ class _OrderViewPageState extends State<OrderViewPage> {
                               setState(() {
                                 selectedPaymentMethodId = value;
                               });
-                              print('Selected Payment Method ID: $value');
+                              if (kDebugMode) {
+                                print('Selected Payment Method ID: $value');
+                              }
                             },
                           ),
                         ),
@@ -156,26 +247,37 @@ class _OrderViewPageState extends State<OrderViewPage> {
                     ),
                   ),
 
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   SizedBox(
-                    width: double.infinity, // full width
-                    child: ElevatedButton(
-                      onPressed: selectedPaymentMethodId == null
-                          ? null
-                          : () {
-                              print(
-                                  'Proceed to pay with ID: $selectedPaymentMethodId');
-                            },
-                      child: const Text('Proceed to Pay'),
-                    ),
-                  ),
+                      width: double.infinity, // full width
+                      child: _b
+                          ? const ElevatedButton(
+                              onPressed: null,
+                              child: Text('Check Email for Payment'))
+                          : ElevatedButton(
+                              onPressed: selectedPaymentMethodId == null
+                                  ? null
+                                  : () async {
+                                      // CALL THE HANDLER HERE
+                                      await handlePaymentProcess(
+                                        orderData: widget.orderData,
+                                        selectedMethod:
+                                            selectedPaymentMethodId!,
+                                        calculatedAmount: totalCalculatedAmount,
+                                      );
+                                      setState(() {
+                                        _b = true;
+                                      });
+                                    },
+                              child: const Text('Proceed to Pay'))),
+                  const SizedBox(height: 42),
                 ] else ...[
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   _buildInfoRow('TransactionId', payment?.transactionId ?? ''),
                   _buildInfoRow('Amount', '₹${payment?.amount ?? 0}'),
                   _buildInfoRow('Method', payment?.method ?? ''),
                   _buildInfoRow('Status', payment?.status ?? ''),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   DropdownButton<String>(
                     value: selectedPaymentMethodId,
                     hint: const Text('Select Payment Method'),
@@ -192,6 +294,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                       print('Selected Payment Method ID: $value');
                     },
                   ),
+                  const SizedBox(height: 42),
                 ],
               ],
             )
