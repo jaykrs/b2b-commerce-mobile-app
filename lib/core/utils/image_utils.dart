@@ -2,6 +2,8 @@ class ImageUtils {
   static const String baseUrl =
       "https://api.eazysupplies.com/api/file?file=";
 
+  ImageUtils(String imageUrl);
+
   static List<String> getImageList(String? images) {
     if (images == null || images.isEmpty) return [];
 

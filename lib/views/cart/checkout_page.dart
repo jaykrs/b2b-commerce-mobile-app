@@ -41,7 +41,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         "shipping": {
           "address": selectedAddress!.address,
           "city": selectedAddress!.city,
-          "state": "KA",
+          "state": "DL",
           "postalCode": selectedAddress!.zipcode,
           "country": "IN"
         }
@@ -51,9 +51,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
           .timeout(ApiConfig.timeout);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final Map<String, dynamic> jsonResponse =
-            response.data as Map<String, dynamic>;
         CartStorage.clearCart();
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Order placed successfully!'),
@@ -63,11 +62,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
         // Navigate after a short delay if you want
         Future.delayed(const Duration(seconds: 1), () {
+          // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, AppRoutes.orderSuccessfull);
         });
       }
     } catch (e) {
       debugPrint('Place order error: $e');
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Failed to place order')));
     } finally {
@@ -95,7 +96,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 selectedAddress: selectedAddress,
                 placeOrder: () => placeOrder(),
                 isLoading: isLoading),
-            const SizedBox(height: 16),
+            const Text('Happy Shopping'),
+            const SizedBox(height: 20),
           ],
         ),
       ),

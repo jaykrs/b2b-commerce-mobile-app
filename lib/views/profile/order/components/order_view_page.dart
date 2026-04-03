@@ -98,11 +98,21 @@ class _OrderViewPageState extends State<OrderViewPage> {
     super.initState();
   }
 
-  double get totalCalculatedAmount {
-    return widget.orderData.items.fold(0.0, (sum, item) {
-      // Ensure item.price is treated as a double
-      return sum + (double.tryParse(item.price.toString()) ?? 0.0);
-    });
+  double? get totalCalculatedAmount {
+    print(widget.orderData.jsonOrderData);
+    List<dynamic>? data = widget.orderData.jsonOrderData;
+    return data?.fold(0.0, (sum, item) => sum! + (item['totalprice'] as num));
+  }
+
+  double? get totaltaxAmount {
+    List<dynamic>? data = widget.orderData.jsonOrderData;
+    return data?.fold(0.0, (sum, item) => sum! + (item['taxamt'] as num));
+  }
+
+  double? get totalDiscountAmount {
+    List<dynamic>? data = widget.orderData.jsonOrderData;
+    return data?.fold(
+        0.0, (sum, item) => sum! + (item['_discountAmount'] as num));
   }
 
   @override
@@ -203,8 +213,8 @@ class _OrderViewPageState extends State<OrderViewPage> {
               children: [
                 if (widget.orderData.status == 'APPROVED') ...[
                   // Show subtotal, tax, total
-                  _buildInfoRow('Subtotal', '₹'),
-                  _buildInfoRow('Tax', '₹'),
+                  _buildInfoRow('SellingPrice', '₹'),
+                  _buildInfoRow('Tax', '₹$totaltaxAmount'),
                   _buildInfoRow('Total', '₹$totalCalculatedAmount'),
 
                   const SizedBox(height: 8),
@@ -263,7 +273,8 @@ class _OrderViewPageState extends State<OrderViewPage> {
                                         orderData: widget.orderData,
                                         selectedMethod:
                                             selectedPaymentMethodId!,
-                                        calculatedAmount: totalCalculatedAmount,
+                                        calculatedAmount:
+                                            totalCalculatedAmount!,
                                       );
                                       setState(() {
                                         _b = true;

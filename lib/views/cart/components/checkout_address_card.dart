@@ -70,7 +70,7 @@ class AddressCard extends StatelessWidget {
                     // Wrap the address in Expanded to prevent overflow
                     SizedBox(
                       width: MediaQuery.of(context).size.width -
-                          100, // adjust padding & radio width
+                          120, // adjust padding & radio width
                       child: Text(
                         address,
                         softWrap: true,

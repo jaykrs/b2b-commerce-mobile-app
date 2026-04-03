@@ -5,6 +5,7 @@ import 'package:EazySupplies/core/routes/app_routes.dart';
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
+import '../../../core/utils/image_utils.dart';
 
 class SingleCartItemTile extends StatelessWidget {
   const SingleCartItemTile({
@@ -25,7 +26,7 @@ class SingleCartItemTile extends StatelessWidget {
   final String imageUrl;
   final void Function(String productId, int newQty) onQuantityChanged;
   final void Function(String productId) onRemove;
-
+  String get prodImg => ImageUtils.getFirstImage(imageUrl);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,17 +38,6 @@ class SingleCartItemTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              // Thumbnail
-              // SizedBox(
-              //   width: Responsive.wp(context, 70/4),
-              //   child: AspectRatio(
-              //     aspectRatio: 1 / 1,
-              //     child: NetworkImageWithLoader(
-              //       imageUrl,
-              //       fit: BoxFit.contain,
-              //     ),
-              //   ),
-              // ),
               SizedBox(
                 width: Responsive.wp(context, 70 / 4),
                 child: AspectRatio(
@@ -63,7 +53,7 @@ class SingleCartItemTile extends StatelessWidget {
                       );
                     },
                     child: NetworkImageWithLoader(
-                      imageUrl,
+                      prodImg,
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -76,16 +66,23 @@ class SingleCartItemTile extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.black),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.5,
+                    child: Text(
+                      name,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.justify,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(color: Colors.black),
+                    ),
                   ),
                   Row(
                     children: [
                       IconButton(
+                        iconSize: 4.0,
                         onPressed: () =>
                             onQuantityChanged(productId, quantity + 1),
                         icon: SvgPicture.asset(AppIcons.addQuantity),
@@ -96,13 +93,14 @@ class SingleCartItemTile extends StatelessWidget {
                         child: Text(
                           '$quantity',
                           style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
                         ),
                       ),
                       IconButton(
+                        iconSize: 4.0,
                         onPressed: () {
                           if (quantity > 1) {
                             onQuantityChanged(productId, quantity - 1);

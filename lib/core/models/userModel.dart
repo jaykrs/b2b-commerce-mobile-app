@@ -159,6 +159,7 @@ class Order {
   final DateTime? updatedAt;
   final int? deliveryAgent;
   final Map<String, dynamic>? jsonData;
+  final List<dynamic>? jsonOrderData;
   final String? deliveryAgentAssets;
 
   /// Optional relations
@@ -176,6 +177,7 @@ class Order {
     this.updatedAt,
     this.deliveryAgent,
     this.jsonData,
+    this.jsonOrderData,
     this.deliveryAgentAssets,
     this.user,
     this.shipping,
@@ -198,6 +200,9 @@ class Order {
       deliveryAgent: json['deliveryAgent'],
       jsonData: json['jsonData'] != null
           ? Map<String, dynamic>.from(json['jsonData'])
+          : null,
+      jsonOrderData: json['jsonOrderData'] != null
+          ? List<dynamic>.from(json['jsonOrderData'])
           : null,
       deliveryAgentAssets: json['deliveryAgentAssets']?.toString(),
       user: json['user'] != null
@@ -229,6 +234,7 @@ class Order {
       'updatedAt': updatedAt?.toIso8601String(),
       'deliveryAgent': deliveryAgent,
       'jsonData': jsonData,
+      'jsonOrderData': jsonOrderData,
       'deliveryAgentAssets': deliveryAgentAssets,
       'items': items.map((e) => e.toJson()).toList(),
     };
@@ -412,7 +418,7 @@ class Payment {
     this.order,
   });
 
-   /// ✅ COPY WITH
+  /// ✅ COPY WITH
   Payment copyWith({
     int? id,
     int? userId,

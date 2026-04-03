@@ -99,6 +99,7 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   void AddCheckOut() async {
     List<Map<String, dynamic>> checkOutItem = mergedCartItems.map((item) {
       final product = item['product'] as Product;
@@ -126,6 +127,7 @@ class _CartPageState extends State<CartPage> {
 
     final totalPrice = getTotalPrice();
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         // Always redirect to entryPoint if user presses back
@@ -147,6 +149,7 @@ class _CartPageState extends State<CartPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                const Text('Product Cart'),
                 ...mergedCartItems.map((item) {
                   final product = item['product'] as Product;
                   final qty = item['quantity'] as int;
