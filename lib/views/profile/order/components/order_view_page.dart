@@ -99,7 +99,9 @@ class _OrderViewPageState extends State<OrderViewPage> {
   }
 
   double? get totalCalculatedAmount {
-    print(widget.orderData.jsonOrderData);
+    if (kDebugMode) {
+      print(widget.orderData.jsonOrderData);
+    }
     List<dynamic>? data = widget.orderData.jsonOrderData;
     return data?.fold(0.0, (sum, item) => sum! + (item['totalprice'] as num));
   }
@@ -213,7 +215,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
               children: [
                 if (widget.orderData.status == 'APPROVED') ...[
                   // Show subtotal, tax, total
-                  _buildInfoRow('SellingPrice', '₹'),
+                  _buildInfoRow('Discount', '₹$totalDiscountAmount'),
                   _buildInfoRow('Tax', '₹$totaltaxAmount'),
                   _buildInfoRow('Total', '₹$totalCalculatedAmount'),
 
