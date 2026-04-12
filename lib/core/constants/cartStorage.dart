@@ -49,6 +49,10 @@ class CartStorage {
     return cart.any((item) => item['id'] == productId);
   }
 
+  static Future<bool> isNotInCart(String productId) async {
+    return !(await isInCart(productId));
+  }
+
   static Future<int> getItemQty(String productId) async {
     final cart = await getCartItems();
     final item = cart.firstWhere(

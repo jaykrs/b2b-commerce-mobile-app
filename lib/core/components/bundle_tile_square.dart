@@ -1,11 +1,13 @@
+import 'package:EazySupplies/core/constants/cartStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../constants/constants.dart';
 import '../routes/app_routes.dart';
 import 'network_image.dart';
 
-class BundleTileSquare extends StatelessWidget {
+class BundleTileSquare extends StatefulWidget {
   const BundleTileSquare({
     super.key,
     required this.data,
@@ -13,9 +15,59 @@ class BundleTileSquare extends StatelessWidget {
 
   final Product data;
 
+  @override
+  State<BundleTileSquare> createState() => _BundleTileSquareState();
+}
+
+class _BundleTileSquareState extends State<BundleTileSquare> {
   static const String baseUrl = Config.ImagebaseUrl;
 
-  /// ✅ Extract first image and append base URL
+  int quantity = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    loadQuantity();
+  }
+
+  /// ✅ Load initial quantity
+  void loadQuantity() async {
+    final qty = await CartStorage.getItemQty(widget.data.id.toString());
+
+    setState(() {
+      quantity = qty;
+    });
+  }
+
+  /// ✅ Update quantity
+  void onQuantityChanged(int newQty) async {
+    if (await CartStorage.isInCart(widget.data.id.toString())) {
+      await CartStorage.updateCartQty(widget.data.id.toString(), newQty);
+    } else if (await CartStorage.isNotInCart(widget.data.id.toString()) &&
+        newQty > 0) {
+      await CartStorage.addToCart(widget.data.id.toString(), newQty);
+    } else if (await CartStorage.isInCart(widget.data.id.toString()) &&
+        newQty == 0) {
+      await CartStorage.removeFromCart(widget.data.id.toString());
+    }
+
+    setState(() {
+      quantity = newQty;
+    });
+  }
+
+  /// ✅ Remove item
+  void removeItem() async {
+    if (await CartStorage.isInCart(widget.data.id.toString())) {
+      await CartStorage.removeFromCart(widget.data.id.toString());
+    }
+
+    setState(() {
+      quantity = 0;
+    });
+  }
+
+  /// ✅ Extract first image
   String getFirstImageUrl(String? images) {
     if (images == null || images.isEmpty) return '';
 
@@ -32,7 +84,7 @@ class BundleTileSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = getFirstImageUrl(data.productImage);
+    final imageUrl = getFirstImageUrl(widget.data.productImage);
 
     return Material(
       color: AppColors.scaffoldBackground,
@@ -43,13 +95,13 @@ class BundleTileSquare extends StatelessWidget {
             context,
             AppRoutes.bundleProduct,
             arguments: {
-              'productId': data.id,
+              'productId': widget.data.id,
             },
           );
         },
         borderRadius: AppDefaults.borderRadius,
         child: Container(
-          width: 176,
+          width: MediaQuery.of(context).size.width * 0.42,
           padding: const EdgeInsets.symmetric(
             horizontal: AppDefaults.padding,
           ),
@@ -63,6 +115,7 @@ class BundleTileSquare extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              /// Image
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -78,37 +131,81 @@ class BundleTileSquare extends StatelessWidget {
                       : const Icon(Icons.image_not_supported),
                 ),
               ),
+
               const SizedBox(height: 8),
+
+              /// Name
               Text(
-                data.name,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
+                widget.data.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.black,
+                      fontSize: 12,
+                    ),
               ),
+
               const SizedBox(height: 8),
+
+              /// Price
               Row(
                 children: [
                   Text(
-                    '₹${data.price.toStringAsFixed(0)}',
+                    '₹${widget.data.price.toStringAsFixed(0)}',
                     style: Theme.of(context)
                         .textTheme
-                        .titleLarge
+                        .titleSmall
                         ?.copyWith(color: Colors.black),
                   ),
-                  const SizedBox(width: 2),
+                  const SizedBox(width: 4),
                   Text(
-                    '₹${data.price.toStringAsFixed(0)}',
+                    '₹${widget.data.price.toStringAsFixed(0)}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           decoration: TextDecoration.lineThrough,
                         ),
                   ),
-                  const Spacer(),
                 ],
               ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 8),
+
+              /// Quantity Controls
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      onQuantityChanged(quantity + 1);
+                    },
+                    icon: SvgPicture.asset(
+                      AppIcons.addQuantity,
+                      width: 24,
+                      height: 24,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Text(
+                      '$quantity',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (quantity > 1) {
+                        onQuantityChanged(quantity - 1);
+                      } else {
+                        removeItem();
+                      }
+                    },
+                    icon: SvgPicture.asset(AppIcons.removeQuantity,
+                        width: 24, height: 24),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 1),
             ],
           ),
         ),
