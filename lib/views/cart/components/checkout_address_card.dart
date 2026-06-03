@@ -12,6 +12,8 @@ class AddressCard extends StatelessWidget {
     required this.address,
     required this.isActive,
     required this.onTap,
+    this.onEdit,
+    this.onDelete,
   });
 
   final String label;
@@ -19,13 +21,15 @@ class AddressCard extends StatelessWidget {
   final String address;
   final bool isActive;
   final void Function() onTap;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppDefaults.padding,
-        vertical: AppDefaults.padding / 2,
+        vertical: AppDefaults.padding / 4,
       ),
       child: Material(
         color: isActive
@@ -40,44 +44,64 @@ class AddressCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: AppDefaults.borderRadius,
               border: Border.all(
-                color: isActive ? AppColors.primary : Colors.grey,
-                width: isActive ? 1 : 0.3,
+                color: isActive ? AppColors.primary : Colors.grey.shade300,
+                width: isActive ? 1.5 : 0.5,
               ),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppRadio(isActive: isActive),
-                SizedBox(width: Responsive.wp(context, 16 / 4)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: AppRadio(isActive: isActive),
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            label,
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                           ),
-                    ),
-                    SizedBox(height: Responsive.hp(context, 8 / 8)),
-                    Text(
-                      phoneNumber,
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
-                    ),
-                    SizedBox(height: Responsive.hp(context, 8 / 8)),
-                    // Wrap the address in Expanded to prevent overflow
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width -
-                          120, // adjust padding & radio width
-                      child: Text(
+                          Row(
+                            children: [
+                              IconButton(
+                                constraints: const BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: const Icon(Icons.edit_outlined, size: 20, color: Colors.blue),
+                                onPressed: onEdit,
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
+                                constraints: const BoxConstraints(),
+                                padding: EdgeInsets.zero,
+                                icon: const Icon(Icons.delete_outline, size: 20, color: Colors.red),
+                                onPressed: onDelete,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        phoneNumber,
+                        style: const TextStyle(color: Colors.grey, fontSize: 13),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
                         address,
                         softWrap: true,
-                        overflow: TextOverflow.visible,
+                        style: const TextStyle(fontSize: 14),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

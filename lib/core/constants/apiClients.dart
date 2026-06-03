@@ -27,13 +27,37 @@ class ApiClient {
     );
 
     // 🔴 SSL BYPASS (DEV ONLY)
-    (dio.httpClientAdapter as IOHttpClientAdapter)
-        .onHttpClientCreate = (HttpClient client) {
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
       return client;
     };
 
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final cookies = await cookieJar.loadForRequest(options.uri);
+          Cookie? authCookie;
+
+          for (final cookie in cookies) {
+            if (cookie.name == 'authToken' && cookie.value.isNotEmpty) {
+              authCookie = cookie;
+              break;
+            }
+          }
+
+          if (authCookie != null &&
+              !options.headers.containsKey(HttpHeaders.authorizationHeader) &&
+              !options.headers.containsKey('Authorization')) {
+            options.headers[HttpHeaders.authorizationHeader] =
+                'Bearer ${authCookie.value}';
+          }
+
+          handler.next(options);
+        },
+      ),
+    );
     dio.interceptors.add(CookieManager(cookieJar));
   }
 }

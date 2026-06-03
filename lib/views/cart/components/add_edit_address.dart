@@ -1,5 +1,5 @@
+import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/utils/responsive.dart';
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -24,17 +24,23 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
   late TextEditingController _streetCtrl;
   late TextEditingController _cityCtrl;
   late TextEditingController _postalCtrl;
+  User? currentUser;
 
   @override
   void initState() {
     super.initState();
-
+    _loadUser();
     _nameCtrl = TextEditingController(text: widget.existingAddress?.name ?? '');
     _streetCtrl =
         TextEditingController(text: widget.existingAddress?.address ?? '');
     _cityCtrl = TextEditingController(text: widget.existingAddress?.city ?? '');
     _postalCtrl =
         TextEditingController(text: widget.existingAddress?.zipcode ?? '');
+  }
+
+  Future<void> _loadUser() async {
+    final user = await getUser();
+    if (mounted) setState(() => currentUser = user);
   }
 
   @override
@@ -49,8 +55,16 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
   Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
 
+    if (currentUser == null || currentUser!.id <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please login again to save address')),
+      );
+      return;
+    }
+
     final payload = {
       if (widget.existingAddress != null) "id": widget.existingAddress!.id,
+      "userId": currentUser!.id,
       "name": _nameCtrl.text.trim(),
       "address": _streetCtrl.text.trim(),
       "city": _cityCtrl.text.trim(),
@@ -58,29 +72,34 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
     };
 
     try {
-      // Use jsonEncode to ensure proper JSON
-      final data = jsonEncode(payload);
+      debugPrint("Saving address with payload: $payload");
 
       if (widget.existingAddress != null) {
         await ApiClient.dio.put(
           ApiConfig.addressPost,
-          data: data,
-          options: Options(headers: {"Content-Type": "application/json"}),
+          queryParameters: {'id': widget.existingAddress!.id},
+          data: payload,
         );
       } else {
         await ApiClient.dio.post(
           ApiConfig.addressPost,
-          data: data,
-          options: Options(headers: {"Content-Type": "application/json"}),
+          data: payload,
         );
       }
 
-      Navigator.pop(context, true);
+      if (mounted) Navigator.pop(context, true);
     } catch (e) {
       debugPrint("Address save error: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Failed to save address")),
-      );
+      String errorMsg = "Failed to save address";
+      if (e is DioException) {
+        debugPrint("Server error response: ${e.response?.data}");
+        errorMsg = "${e.response?.data?['error'] ?? e.message}";
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMsg)),
+        );
+      }
     }
   }
 
@@ -121,6 +140,12 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.existingAddress != null;
+
+    if (currentUser == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(

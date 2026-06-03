@@ -1,10 +1,12 @@
 import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/core/constants/app_colors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:EazySupplies/core/routes/app_routes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderViewPage extends StatefulWidget {
   final Order orderData;
@@ -98,23 +100,63 @@ class _OrderViewPageState extends State<OrderViewPage> {
     super.initState();
   }
 
-  double? get totalCalculatedAmount {
+  bool get _isApproved =>
+      widget.orderData.approved ||
+      widget.orderData.status.toUpperCase() == 'APPROVED';
+
+  double get totalCalculatedAmount {
     if (kDebugMode) {
       print(widget.orderData.jsonOrderData);
     }
-    List<dynamic>? data = widget.orderData.jsonOrderData;
-    return data?.fold(0.0, (sum, item) => sum! + (item['totalprice'] as num));
+    final data = widget.orderData.jsonOrderData;
+    if (data != null && data.isNotEmpty) {
+      return data.fold(0.0, (sum, item) {
+        if (item is Map && item['totalprice'] is num) {
+          return sum + (item['totalprice'] as num).toDouble();
+        }
+        return sum;
+      });
+    }
+
+    return widget.orderData.items.fold(
+      0.0,
+      (sum, item) => sum + (item.price * item.quantity),
+    );
   }
 
-  double? get totaltaxAmount {
-    List<dynamic>? data = widget.orderData.jsonOrderData;
-    return data?.fold(0.0, (sum, item) => sum! + (item['taxamt'] as num));
+  double get totaltaxAmount {
+    final data = widget.orderData.jsonOrderData;
+    if (data == null) return 0;
+
+    return data.fold(0.0, (sum, item) {
+      if (item is Map && item['taxamt'] is num) {
+        return sum + (item['taxamt'] as num).toDouble();
+      }
+      return sum;
+    });
   }
 
-  double? get totalDiscountAmount {
-    List<dynamic>? data = widget.orderData.jsonOrderData;
-    return data?.fold(
-        0.0, (sum, item) => sum! + (item['_discountAmount'] as num));
+  double get totalDiscountAmount {
+    final data = widget.orderData.jsonOrderData;
+    if (data == null) return 0;
+
+    return data.fold(0.0, (sum, item) {
+      if (item is Map && item['_discountAmount'] is num) {
+        return sum + (item['_discountAmount'] as num).toDouble();
+      }
+      return sum;
+    });
+  }
+
+  Future<void> _openInvoice() async {
+    final url = Uri.parse(ApiConfig.invoice(widget.orderData.id));
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not launch invoice')),
+      );
+    }
   }
 
   @override
@@ -125,24 +167,63 @@ class _OrderViewPageState extends State<OrderViewPage> {
     final payment = widget.orderData.payment;
     debugPrint('........$selectedPaymentMethodId');
     return Scaffold(
+      backgroundColor: AppColors.cardColor,
       appBar: AppBar(
         title: Text('Order #${widget.orderData.id}'),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        actions: [
+          if (_isApproved)
+            IconButton(
+              icon: const Icon(Icons.receipt_long),
+              onPressed: _openInvoice,
+              tooltip: 'View Invoice',
+            ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Order Details
-            Text(
-              'Order Details',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
+            // Order Status Banner
+            Card(
+              color: AppColors.primary,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    const Icon(Icons.shopping_bag_outlined,
+                        color: Colors.white, size: 32),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Order ${widget.orderData.status}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            'Placed on ${widget.orderData.createdAt.day} ${_getMonth(widget.orderData.createdAt.month)}',
+                            style: const TextStyle(color: Colors.white70),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 8),
-            _buildInfoRow('Status', widget.orderData.status),
+            const SizedBox(height: 16),
             _buildInfoRow(
                 'Approved', widget.orderData.approved ? 'YES' : 'PENDING'),
             if (note.isNotEmpty) _buildInfoRow('Note', note),
@@ -213,7 +294,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (widget.orderData.status == 'APPROVED') ...[
+                if (_isApproved) ...[
                   // Show subtotal, tax, total
                   _buildInfoRow('Discount', '₹$totalDiscountAmount'),
                   _buildInfoRow('Tax', '₹$totaltaxAmount'),
@@ -275,8 +356,7 @@ class _OrderViewPageState extends State<OrderViewPage> {
                                         orderData: widget.orderData,
                                         selectedMethod:
                                             selectedPaymentMethodId!,
-                                        calculatedAmount:
-                                            totalCalculatedAmount!,
+                                        calculatedAmount: totalCalculatedAmount,
                                       );
                                       setState(() {
                                         _b = true;
@@ -304,7 +384,9 @@ class _OrderViewPageState extends State<OrderViewPage> {
                       setState(() {
                         selectedPaymentMethodId = value;
                       });
-                      print('Selected Payment Method ID: $value');
+                      if (kDebugMode) {
+                        print('Selected Payment Method ID: $value');
+                      }
                     },
                   ),
                   const SizedBox(height: 42),
@@ -355,6 +437,24 @@ class _OrderViewPageState extends State<OrderViewPage> {
         ],
       ),
     );
+  }
+
+  String _getMonth(int month) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    return months[month - 1];
   }
 }
 

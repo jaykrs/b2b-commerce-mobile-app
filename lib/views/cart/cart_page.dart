@@ -109,7 +109,8 @@ class _CartPageState extends State<CartPage> {
         'productId': product.id,
         'quantity': qty,
         'price': product.price,
-        'name': product.name
+        'name': product.name,
+        'tax': product.tax ?? 0,
       };
     }).toList();
 

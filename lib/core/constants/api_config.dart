@@ -18,6 +18,7 @@ class ApiConfig {
   static const String payments = '$baseUrl/payments';
   static const String orders = '$baseUrl/orders';
   static const String benepay = '$baseUrl/payments/benePay/getUrl';
+  static String invoice(int orderId) => '$baseUrl/invoice/$orderId';
 
   // Timeouts
   static const Duration timeout = Duration(seconds: 15);

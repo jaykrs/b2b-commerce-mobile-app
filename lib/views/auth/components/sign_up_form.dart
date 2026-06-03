@@ -53,7 +53,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
     setState(() => loading = true);
     final url =
-        Uri.parse('http://api.eazysupplies.com/api/auth/user'); // correct HTTPS
+        Uri.parse('https://api.eazysupplies.com/api/auth/user'); // correct HTTPS
     try {
       final response = await http.post(
         url,

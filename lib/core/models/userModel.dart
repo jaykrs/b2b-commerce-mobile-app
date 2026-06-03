@@ -189,8 +189,9 @@ class Order {
     return Order(
       id: json['id'] ?? 0,
       userId: json['userId'] ?? 0,
-      //approved: json['approved'] == null ? false : json['approved'] ?? false,
-      approved: json['approved'] == true,
+      approved: json['approved'] == true ||
+          json['approved'] == 1 ||
+          json['approved']?.toString().toLowerCase() == 'true',
       status: json['status'] ?? '',
       createdAt: DateTime.tryParse(json['createdAt'] ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0),
