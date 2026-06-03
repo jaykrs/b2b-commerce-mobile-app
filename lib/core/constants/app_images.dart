@@ -2,6 +2,9 @@ class AppImages {
   static const roundedLogo =
       'https://api.eazysupplies.com/assets/images/logo.png';
 
+  /* <---- Placeholder Images -----> */
+  static const categoryPlaceholder = 'assets/images/placeholder_image.webp';
+
   /* <---- Homepage banner -----> */
   static const homePageBanner = 'https://i.imgur.com/8hBIsS5.png';
 

@@ -44,19 +44,11 @@ class CategoryTile extends StatelessWidget {
                 width: 45,
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300, // background color
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      getAbbreviation(label),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                        color: Colors.black,
-                      ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: _CategoryImage(
+                      imageLink: imageLink,
+                      label: label,
                     ),
                   ),
                 ),
@@ -86,6 +78,47 @@ class CategoryTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CategoryImage extends StatelessWidget {
+  const _CategoryImage({
+    required this.imageLink,
+    required this.label,
+  });
+
+  final String imageLink;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final resolvedImageLink = imageLink.trim();
+
+    if (resolvedImageLink.isEmpty) {
+      return _placeholderImage();
+    }
+
+    if (resolvedImageLink.startsWith('assets/')) {
+      return Image.asset(
+        resolvedImageLink,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => _placeholderImage(),
+      );
+    }
+
+    return Image.network(
+      resolvedImageLink,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => _placeholderImage(),
+    );
+  }
+
+  Widget _placeholderImage() {
+    return Image.asset(
+      AppImages.categoryPlaceholder,
+      fit: BoxFit.cover,
+      semanticLabel: '$label placeholder image',
     );
   }
 }

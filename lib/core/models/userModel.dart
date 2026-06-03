@@ -649,6 +649,7 @@ class Category {
   final int id;
   final String name;
   final String slug;
+  final String imageUrl;
   final String createdAt;
   final String updatedAt;
 
@@ -656,6 +657,7 @@ class Category {
     required this.id,
     required this.name,
     required this.slug,
+    this.imageUrl = '',
     required this.createdAt,
     required this.updatedAt,
   });
@@ -665,6 +667,7 @@ class Category {
       id: json['id'] as int,
       name: json['name'] as String,
       slug: json['slug'] as String,
+      imageUrl: _readCategoryImageUrl(json),
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
     );
@@ -673,11 +676,22 @@ class Category {
         'id': id,
         'name': name,
         'slug': slug,
+        'imageUrl': imageUrl,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
       };
 
   static empty() {}
+}
+
+String _readCategoryImageUrl(Map<String, dynamic> json) {
+  final value = json['imageUrl'] ??
+      json['image'] ??
+      json['imageLink'] ??
+      json['icon'] ??
+      json['thumbnail'];
+
+  return value is String ? value : '';
 }
 
 class Brand {

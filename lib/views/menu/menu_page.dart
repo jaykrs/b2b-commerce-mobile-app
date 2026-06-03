@@ -76,7 +76,7 @@ class _MenuPageState extends State<MenuPage> {
                           itemBuilder: (context, index) {
                             final category = categories[index];
                             return CategoryTile(
-                              imageLink: "", // add category.image if available
+                              imageLink: category.imageUrl,
                               label: category.name,
                               backgroundColor: AppColors.primary,
                               onTap: () {
