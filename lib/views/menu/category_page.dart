@@ -34,10 +34,10 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
   Future<void> fetchCategoryProducts() async {
     try {
       final response = await ApiClient.dio.get(ApiConfig.products,
-          queryParameters: {'categoryId': widget.categoryId});
+          queryParameters: {'status': 1, 'category_ids': widget.categoryId, 'paginate': 100});
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['data'];
+        final List<dynamic> data = response.data['data'] ?? [];
 
         setState(() {
           products = data.map((e) => Product.fromJson(e)).toList();
@@ -68,15 +68,14 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: AppDefaults.padding),
                   child: GridView.builder(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppDefaults.padding),
+                    padding: const EdgeInsets.symmetric(vertical: AppDefaults.padding),
                     itemCount: products.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 16,
                       crossAxisSpacing: 16,
-                      childAspectRatio: 0.65, // adjust lower to reduce overflow
+                      childAspectRatio: 0.68,
                     ),
                     itemBuilder: (context, index) {
                       return ProductTileSquare(data: products[index]);
