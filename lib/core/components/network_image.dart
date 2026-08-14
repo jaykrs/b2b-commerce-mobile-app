@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants/app_defaults.dart';
+import '../constants/app_colors.dart';
 import 'skeleton.dart';
 
 class NetworkImageWithLoader extends StatelessWidget {
@@ -36,11 +37,17 @@ class NetworkImageWithLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = Uri.encodeFull(src);
+    final imageUrl = src.trim().isEmpty ? '' : Uri.encodeFull(src);
 
     return ClipRRect(
       borderRadius: borderRadius ?? BorderRadius.circular(radius),
-      child: CachedNetworkImage(
+      child: imageUrl.isEmpty
+          ? Container(
+              color: AppColors.scaffoldWithBoxBackground,
+              alignment: Alignment.center,
+              child: const Icon(Icons.inventory_2_outlined, color: AppColors.placeholder, size: 42),
+            )
+          : CachedNetworkImage(
         fit: fit,
         imageUrl: imageUrl,
         httpHeaders: const {
@@ -76,7 +83,11 @@ class NetworkImageWithLoader extends StatelessWidget {
                 );
               }
 
-              return const Icon(Icons.broken_image);
+              return Container(
+                color: AppColors.scaffoldWithBoxBackground,
+                alignment: Alignment.center,
+                child: const Icon(Icons.inventory_2_outlined, color: AppColors.placeholder, size: 42),
+              );
             },
           );
         },

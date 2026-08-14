@@ -28,15 +28,16 @@ class PriceAndQuantityRow extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
-              '₹${orginalPrice.toStringAsFixed(2)}',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.lineThrough,
-                  ),
-            ),
-            const SizedBox(width: AppDefaults.padding),
+            if (orginalPrice > currentPrice) ...[
+              Text(
+                '₹${orginalPrice.toStringAsFixed(2)}',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.black54,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+              ),
+              const SizedBox(width: AppDefaults.padding),
+            ],
             Text(
               '₹${currentPrice.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
