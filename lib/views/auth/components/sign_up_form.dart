@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/constants/constants.dart';
+import '../../../core/constants/api_config.dart';
 import '../../../core/utils/validators.dart';
 import 'already_have_accout.dart';
 import '../../../core/routes/app_routes.dart';
@@ -52,37 +53,50 @@ class _SignUpFormState extends State<SignUpForm> {
     }
 
     setState(() => loading = true);
-    final url =
-        Uri.parse('http://api.eazysupplies.com/api/auth/user'); // correct HTTPS
+    final url = Uri.parse(ApiConfig.userProfile);
     try {
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          "name": nameCtrl.text,
-          "email": emailCtrl.text,
-          "phone": phoneCtrl.text,
+          "name": nameCtrl.text.trim(),
+          "email": emailCtrl.text.trim(),
+          "phone": phoneCtrl.text.trim(),
+          "countryCode": "91",
           "password": passwordCtrl.text,
-          "gstn": gstCtrl.text
+          "gstn": gstCtrl.text.trim().toUpperCase(),
         }),
       );
 
-      setState(() => loading = false);
+      if (!mounted) return;
       if (response.statusCode == 200 || response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               content: Text("Your account registered successfully!")),
         );
-        Navigator.pushNamed(context, AppRoutes.login);
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Error: ${response.body}")));
+        var message = 'Registration failed. Please try again.';
+        try {
+          final body = jsonDecode(response.body);
+          if (body is Map<String, dynamic>) {
+            message = (body['message'] ?? body['error'] ?? message).toString();
+          }
+        } catch (_) {}
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
       }
     } catch (e) {
-      setState(() => loading = false);
-      print("Error: $e");
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Failed: $e")));
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Unable to create the account. Check your connection and try again.'),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => loading = false);
     }
   }
 
@@ -122,7 +136,8 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(height: 8),
             TextFormField(
               controller: gstCtrl,
-              validator: Validators.requiredWithFieldName('GstNo').call,
+              validator: Validators.gst,
+              textCapitalization: TextCapitalization.characters,
               textInputAction: TextInputAction.next,
             ),
 
@@ -131,9 +146,13 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(height: 8),
             TextFormField(
               controller: phoneCtrl,
-              validator: Validators.required.call,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              validator: Validators.phone,
+              keyboardType: TextInputType.phone,
+              maxLength: 10,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(10),
+              ],
               textInputAction: TextInputAction.next,
             ),
 
@@ -181,7 +200,7 @@ class _SignUpFormState extends State<SignUpForm> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: registerUser,
+                onPressed: loading ? null : registerUser,
                 child: loading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text("Sign Up"),

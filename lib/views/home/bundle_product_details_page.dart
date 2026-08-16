@@ -9,6 +9,7 @@ import '../../core/components/buy_now_row_button.dart';
 import '../../core/components/price_and_quantity.dart';
 import '../../core/components/product_images_slider.dart';
 import '../../core/constants/constants.dart';
+import '../../core/utils/product_image_url.dart';
 import 'components/bundle_meta_data.dart';
 import 'components/bundle_pack_details.dart';
 
@@ -29,15 +30,6 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
   Product? product;
   bool isLoading = true;
   int quantity = 1;
-  static const String baseUrl = "https://api.eazysupplies.com/api/file?file=";
-
-  late final imageUrls = product?.productImage
-          ?.split(',')
-          .map((e) => e.trim())
-          .where((e) => e.isNotEmpty)
-          .map((e) => baseUrl + e) // 👈 add this line
-          .toList() ??
-      [];
   @override
   void initState() {
     super.initState();
@@ -84,6 +76,10 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final imageUrls = buildProductImageUrls(
+      product?.productImage,
+      version: product?.updatedAt,
+    );
     return Scaffold(
       appBar: AppBar(
         leading: const AppBackButton(),

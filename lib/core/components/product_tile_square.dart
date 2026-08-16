@@ -4,6 +4,7 @@ import 'package:EazySupplies/core/models/userModel.dart';
 
 import '../constants/constants.dart';
 import '../routes/app_routes.dart';
+import '../utils/product_image_url.dart';
 import 'network_image.dart';
 
 class ProductTileSquare extends StatelessWidget {
@@ -14,28 +15,13 @@ class ProductTileSquare extends StatelessWidget {
 
   final Product data;
 
-  static const String baseUrl = Config.ImagebaseUrl;
-
-  /// ✅ Extract first image and append base URL
-  String getFirstImageUrl(String? images) {
-    if (images == null || images.isEmpty) return '';
-
-    final list = images
-        .split(',')
-        .map((e) => e.trim())
-        .where((e) => e.isNotEmpty)
-        .toList();
-
-    if (list.isEmpty) return '';
-
-    final first = list.first;
-    if (first.startsWith('http://') || first.startsWith('https://')) return first;
-    return baseUrl + first;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final imageUrl = getFirstImageUrl(data.productImage);
+    final imageUrls = buildProductImageUrls(
+      data.productImage,
+      version: data.updatedAt,
+    );
+    final imageUrl = imageUrls.isEmpty ? '' : imageUrls.first;
     return Material(
       borderRadius: AppDefaults.borderRadius,
       color: Colors.white,
@@ -118,7 +104,11 @@ class ProductTileSquare extends StatelessWidget {
               ),
               if ((data.pkgUnit ?? '').trim().isNotEmpty) ...[
                 const SizedBox(height: 4),
-                Text('/${data.pkgUnit}', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.black54)),
+                Text('/${data.pkgUnit}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Colors.black54)),
               ],
             ],
           ),

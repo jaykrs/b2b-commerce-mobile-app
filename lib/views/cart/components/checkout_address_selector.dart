@@ -77,9 +77,19 @@ class _AddressSelectorState extends State<AddressSelector> {
     }
 
     if (addressList.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(16),
-        child: Center(child: Text("No addresses found.")),
+      return Column(
+        children: [
+          TitleAndActionButton(
+            title: 'Delivery Address',
+            actionLabel: 'Add New',
+            onTap: () => _openAddEditPage(),
+            isHeadline: false,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(child: Text('Add a delivery address to place your order.')),
+          ),
+        ],
       );
     }
 
