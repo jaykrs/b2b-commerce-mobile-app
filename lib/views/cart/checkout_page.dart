@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
 import 'package:EazySupplies/core/constants/cartStorage.dart';
@@ -31,7 +32,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Future<void> placeOrder() async {
-    if (selectedAddress == null) return;
+    final address = selectedAddress;
+    final hasCompleteAddress = address != null &&
+        address.address.trim().isNotEmpty &&
+        address.city.trim().isNotEmpty &&
+        address.zipcode.trim().isNotEmpty;
+    if (!hasCompleteAddress) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please add and select a complete delivery address.'),
+        ),
+      );
+      return;
+    }
     setState(() => isLoading = true);
     try {
       final payload = {
@@ -39,10 +52,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
         "status": "PENDING",
         "items": widget.checkOutList,
         "shipping": {
-          "address": selectedAddress!.address,
-          "city": selectedAddress!.city,
+          "address": address.address.trim(),
+          "city": address.city.trim(),
           "state": "DL",
-          "postalCode": selectedAddress!.zipcode,
+          "postalCode": address.zipcode.trim(),
           "country": "IN"
         }
       };
@@ -68,11 +81,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
       }
     } catch (e) {
       debugPrint('Place order error: $e');
-      // ignore: use_build_context_synchronously
+      final apiMessage = e is DioException && e.response?.data is Map
+          ? e.response?.data['error']?.toString()
+          : null;
+      if (!mounted) return;
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Failed to place order')));
+          .showSnackBar(SnackBar(content: Text(apiMessage ?? 'Failed to place order')));
     } finally {
-      setState(() => isLoading = false);
+      if (mounted) setState(() => isLoading = false);
     }
   }
 
@@ -107,7 +123,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
 class PayNowButton extends StatelessWidget {
   final Address? selectedAddress;
-  final bool isLoading = false;
+  final bool isLoading;
 
   ///final VoidCallback placeOrder;
   final Future<void> Function() placeOrder;
@@ -115,7 +131,7 @@ class PayNowButton extends StatelessWidget {
       {super.key,
       required this.selectedAddress,
       required this.placeOrder,
-      required isLoading});
+      required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +140,9 @@ class PayNowButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(AppDefaults.padding),
         child: ElevatedButton(
-          onPressed:
-              selectedAddress == null ? null : () async => await placeOrder(),
+          onPressed: selectedAddress == null || isLoading
+              ? null
+              : () async => await placeOrder(),
           child: isLoading
               ? const CircularProgressIndicator(color: Colors.white)
               : const Text('Place Order'),

@@ -12,6 +12,7 @@ import '../../core/components/product_images_slider.dart';
 import '../../core/components/review_row_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/constants/api_config.dart';
+import '../../core/utils/product_image_url.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -75,15 +76,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    const String baseUrl = "https://api.eazysupplies.com/api/file?file=";
-
-    final imageUrls = product?.productImage
-            ?.split(',')
-            .map((e) => e.trim())
-            .where((e) => e.isNotEmpty)
-            .map((e) => baseUrl + e) // 👈 add this line
-            .toList() ??
-        [];
+    final imageUrls = buildProductImageUrls(
+      product?.productImage,
+      version: product?.updatedAt,
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

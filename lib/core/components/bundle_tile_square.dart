@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../constants/constants.dart';
 import '../routes/app_routes.dart';
+import '../utils/product_image_url.dart';
 import 'network_image.dart';
 
 class BundleTileSquare extends StatefulWidget {
@@ -20,8 +21,6 @@ class BundleTileSquare extends StatefulWidget {
 }
 
 class _BundleTileSquareState extends State<BundleTileSquare> {
-  static const String baseUrl = Config.ImagebaseUrl;
-
   int quantity = 0;
 
   @override
@@ -67,24 +66,13 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
     });
   }
 
-  /// ✅ Extract first image
-  String getFirstImageUrl(String? images) {
-    if (images == null || images.isEmpty) return '';
-
-    final list = images
-        .split(',')
-        .map((e) => e.trim())
-        .where((e) => e.isNotEmpty)
-        .toList();
-
-    if (list.isEmpty) return '';
-
-    return baseUrl + list.first;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final imageUrl = getFirstImageUrl(widget.data.productImage);
+    final imageUrls = buildProductImageUrls(
+      widget.data.productImage,
+      version: widget.data.updatedAt,
+    );
+    final imageUrl = imageUrls.isEmpty ? '' : imageUrls.first;
 
     return Material(
       color: AppColors.scaffoldBackground,
