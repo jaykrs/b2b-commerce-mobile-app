@@ -1,7 +1,6 @@
-class ImageUtils {
-  static const String baseUrl =
-      "https://api.eazysupplies.com/api/file?file=";
+import 'product_image_url.dart';
 
+class ImageUtils {
   ImageUtils(String imageUrl);
 
   static List<String> getImageList(String? images) {
@@ -11,7 +10,7 @@ class ImageUtils {
         .split(',')
         .map((img) => img.trim())
         .where((img) => img.isNotEmpty)
-        .map((img) => baseUrl + img)
+        .map(buildProductImageUrl)
         .toList();
   }
 

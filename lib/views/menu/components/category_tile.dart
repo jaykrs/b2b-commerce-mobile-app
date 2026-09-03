@@ -27,40 +27,32 @@ class CategoryTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(AppDefaults.padding * 1),
-              // decoration: BoxDecoration(
-              //   color: backgroundColor ?? AppColors.textInputBackground,
-              //   shape: BoxShape.circle,
-              // ),
+              width: 88,
+              height: 72,
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: backgroundColor ?? AppColors.textInputBackground,
-                //shape: BoxShape.circle,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: Colors.grey.shade400, // border color
-                  width: 1.5, // border width
+                  color: Colors.grey.shade300,
+                  width: 1,
                 ),
-              ),
-              child: SizedBox(
-                width: 45,
-                child: AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300, // background color
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      getAbbreviation(label),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                        color: Colors.black,
-                      ),
-                    ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x12000000),
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
                   ),
-                ),
+                ],
               ),
+              child: imageLink.isEmpty
+                  ? _BrandFallback(label: label)
+                  : Image.network(
+                      imageLink,
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) =>
+                          _BrandFallback(label: label),
+                    ),
             ),
             const SizedBox(height: 8),
             SizedBox(
@@ -84,6 +76,32 @@ class CategoryTile extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BrandFallback extends StatelessWidget {
+  const _BrandFallback({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Center(
+        child: Text(
+          getAbbreviation(label),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+            color: Colors.black87,
+          ),
         ),
       ),
     );

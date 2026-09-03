@@ -6,6 +6,7 @@ import 'package:EazySupplies/core/models/userModel.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/routes/app_routes.dart';
+import '../../core/utils/brand_image_url.dart';
 import 'components/category_tile.dart';
 
 class BrandPage extends StatefulWidget {
@@ -77,7 +78,7 @@ class _BrandPageState extends State<BrandPage> {
                         itemBuilder: (context, index) {
                           final brand = Brands[index];
                           return CategoryTile(
-                            imageLink: "", // add category.image if available
+                            imageLink: buildBrandImageUrl(brand.image),
                             label: brand.name,
                             backgroundColor: AppColors.primary,
                             onTap: () {

@@ -1,15 +1,19 @@
 import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/brand_image_url.dart';
+
 class BundleMetaData extends StatelessWidget {
   final String category;
   final String brand;
+  final String? brandImage;
   final int stock;
 
   const BundleMetaData({
     super.key,
     required this.category,
     required this.brand,
+    this.brandImage,
     required this.stock,
   });
 
@@ -25,9 +29,9 @@ class BundleMetaData extends StatelessWidget {
             value: category,
           ),
           SizedBox(height: Responsive.hp(context, 8 / 8)),
-          _MetaRow(
-            label: 'Brand',
-            value: brand,
+          _BrandMetaRow(
+            name: brand,
+            imageUrl: buildBrandImageUrl(brandImage),
           ),
           SizedBox(height: Responsive.hp(context, 8 / 8)),
           _MetaRow(
@@ -37,6 +41,64 @@ class BundleMetaData extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _BrandMetaRow extends StatelessWidget {
+  const _BrandMetaRow({required this.name, required this.imageUrl});
+
+  final String name;
+  final String imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: Responsive.wp(context, 80 / 4),
+          child: Text(
+            'Brand:',
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(fontWeight: FontWeight.w600),
+          ),
+        ),
+        if (imageUrl.isNotEmpty)
+          Container(
+            width: 64,
+            height: 40,
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) => Center(
+                child: Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 10),
+                ),
+              ),
+            ),
+          )
+        else
+          Expanded(
+            child: Text(
+              name,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w500),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -84,7 +146,6 @@ class _MetaRow extends StatelessWidget {
     );
   }
 }
-
 
 // class BundleMetaData extends StatelessWidget {
 //   final String category;
@@ -159,7 +220,7 @@ class _MetaRow extends StatelessWidget {
 //           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
 //                 fontWeight: FontWeight.bold,
 //                 color: valueColor ?? Colors.black,
-                
+
 //               ),
 //         ),
 //         SizedBox(height: Responsive.hp(context, 4/8)),
@@ -172,4 +233,3 @@ class _MetaRow extends StatelessWidget {
 //     );
 //   }
 // }
-

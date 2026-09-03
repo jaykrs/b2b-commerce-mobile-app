@@ -134,6 +134,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                             BundleMetaData(
                               category: product!.category.name,
                               brand: product!.brand.name,
+                              brandImage: product!.brand.image,
                               stock: product!.stock,
                             ),
                             PackDetails(

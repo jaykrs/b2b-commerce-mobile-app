@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:EazySupplies/core/routes/app_routes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderViewPage extends StatefulWidget {
   final Order orderData;
@@ -15,10 +16,10 @@ class OrderViewPage extends StatefulWidget {
   State<OrderViewPage> createState() => _OrderViewPageState();
 }
 
-Future<void> getPaymentUrl({
+Future<String?> getPaymentUrl({
   required String orderId,
   required double amount,
-  required List<String> method,
+  required String method,
   required String reasonForCollection,
 }) async {
   try {
@@ -37,16 +38,25 @@ Future<void> getPaymentUrl({
         .timeout(ApiConfig.timeout);
 
     if (response.statusCode == 200) {
-      const AlertDialog(title: Text('Check Email for Payment process.'));
       if (kDebugMode) {
         print('Success: ${response.data}');
       }
-      // Handle your response logic here (e.g., navigate to the URL)
+      if (method == 'OFF') return '';
+      final data = response.data;
+      if (data is Map) {
+        final paymentData = data['realTimePaymentData'];
+        if (paymentData is Map) {
+          final url = paymentData['message']?.toString().trim();
+          if (url != null && url.startsWith('https://')) return url;
+        }
+      }
+      throw StateError('The payment gateway did not return a valid URL.');
     } else {
       if (kDebugMode) {
         print('Server Error: ${response.statusCode}');
       }
     }
+    return null;
   } on DioException catch (e) {
     // Detailed error logging
     if (kDebugMode) {
@@ -57,6 +67,7 @@ Future<void> getPaymentUrl({
         print('Error Data: ${e.response?.data}');
       }
     }
+    rethrow;
   }
 }
 
@@ -69,12 +80,20 @@ Future<void> handlePaymentProcess({
   try {
     // 1. You could add a loading indicator here (e.g., EasyLoading.show())
 
-    await getPaymentUrl(
+    final paymentUrl = await getPaymentUrl(
       orderId: orderData.id.toString(),
       amount: calculatedAmount,
-      method: [selectedMethod],
+      method: selectedMethod,
       reasonForCollection: "product buy Mobile Order ${orderData.id}",
     );
+
+    if (selectedMethod == 'NB') {
+      final uri = Uri.tryParse(paymentUrl ?? '');
+      if (uri == null ||
+          !await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+        throw StateError('Unable to open the secure payment page.');
+      }
+    }
 
     // 2. Handle success (e.g., show a success snackbar or navigate)
     if (kDebugMode) {
@@ -85,6 +104,7 @@ Future<void> handlePaymentProcess({
     if (kDebugMode) {
       print("Error in payment process: $e");
     }
+    rethrow;
   } finally {
     // 4. Hide loading indicator here
   }
@@ -98,23 +118,40 @@ class _OrderViewPageState extends State<OrderViewPage> {
     super.initState();
   }
 
-  double? get totalCalculatedAmount {
+  double get totalCalculatedAmount {
     if (kDebugMode) {
       print(widget.orderData.jsonOrderData);
     }
     List<dynamic>? data = widget.orderData.jsonOrderData;
-    return data?.fold(0.0, (sum, item) => sum! + (item['totalprice'] as num));
+    if (data == null || data.isEmpty) {
+      return widget.orderData.items.fold(
+        0.0,
+        (sum, item) => sum + item.price * item.quantity,
+      );
+    }
+    return data.fold(0.0, (sum, item) {
+      final value = item['totalPrice'] ?? item['totalprice'] ?? 0;
+      return sum +
+          (value is num ? value.toDouble() : double.tryParse('$value') ?? 0);
+    });
   }
 
   double? get totaltaxAmount {
     List<dynamic>? data = widget.orderData.jsonOrderData;
-    return data?.fold(0.0, (sum, item) => sum! + (item['taxamt'] as num));
+    return data?.fold(0.0, (sum, item) {
+      final value = item['taxamt'] ?? item['taxAmount'] ?? 0;
+      return sum! +
+          (value is num ? value.toDouble() : double.tryParse('$value') ?? 0);
+    });
   }
 
   double? get totalDiscountAmount {
     List<dynamic>? data = widget.orderData.jsonOrderData;
-    return data?.fold(
-        0.0, (sum, item) => sum! + (item['_discountAmount'] as num));
+    return data?.fold(0.0, (sum, item) {
+      final value = item['_discountAmount'] ?? item['discountAmount'] ?? 0;
+      return sum! +
+          (value is num ? value.toDouble() : double.tryParse('$value') ?? 0);
+    });
   }
 
   @override
@@ -270,17 +307,39 @@ class _OrderViewPageState extends State<OrderViewPage> {
                               onPressed: selectedPaymentMethodId == null
                                   ? null
                                   : () async {
-                                      // CALL THE HANDLER HERE
-                                      await handlePaymentProcess(
-                                        orderData: widget.orderData,
-                                        selectedMethod:
-                                            selectedPaymentMethodId!,
-                                        calculatedAmount:
-                                            totalCalculatedAmount!,
-                                      );
-                                      setState(() {
-                                        _b = true;
-                                      });
+                                      try {
+                                        await handlePaymentProcess(
+                                          orderData: widget.orderData,
+                                          selectedMethod:
+                                              selectedPaymentMethodId!,
+                                          calculatedAmount:
+                                              totalCalculatedAmount,
+                                        );
+                                        if (!mounted) return;
+                                        setState(() => _b = true);
+                                        final message =
+                                            selectedPaymentMethodId == 'OFF'
+                                                ? 'Offline payment recorded.'
+                                                : 'Secure payment page opened.';
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(message)),
+                                        );
+                                      } catch (error) {
+                                        if (!mounted) return;
+                                        final message = error is DioException
+                                            ? (error.response?.data?['error'] ??
+                                                    error.response
+                                                        ?.data?['message'] ??
+                                                    'Payment processing failed.')
+                                                .toString()
+                                            : error.toString().replaceFirst(
+                                                'Bad state: ', '');
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text(message)),
+                                        );
+                                      }
                                     },
                               child: const Text('Proceed to Pay'))),
                   const SizedBox(height: 42),

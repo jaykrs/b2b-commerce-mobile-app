@@ -1,31 +1,36 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
+import 'package:EazySupplies/core/models/userModel.dart';
+import 'package:EazySupplies/core/utils/brand_image_url.dart';
+import 'package:EazySupplies/core/utils/product_image_url.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:EazySupplies/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp(
-      initialRoute: '',
-    ));
+  group('production configuration', () {
+    test('uses the secure production API', () {
+      expect(ApiConfig.baseUrl, 'https://api.eazysupplies.com/api');
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    test('encodes product image filenames safely', () {
+      final url = buildProductImageUrl('folder/Product image (1).jpg');
+      final uri = Uri.parse(url);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      expect(uri.scheme, 'https');
+      expect(uri.host, 'api.eazysupplies.com');
+      expect(uri.queryParameters['file'], 'folder/Product image (1).jpg');
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    test('resolves brand assets against the production host', () {
+      expect(
+        buildBrandImageUrl('/assets/images/brands/royal-grove.png'),
+        'https://api.eazysupplies.com/assets/images/brands/royal-grove.png',
+      );
+    });
+
+    test('offers only payment methods supported by the API', () {
+      expect(
+        PaymentMethod.values.map((method) => method.id),
+        orderedEquals(['NB', 'OFF']),
+      );
+    });
   });
 }

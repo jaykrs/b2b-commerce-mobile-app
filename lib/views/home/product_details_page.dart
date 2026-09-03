@@ -13,6 +13,7 @@ import '../../core/components/review_row_button.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/constants/api_config.dart';
 import '../../core/utils/product_image_url.dart';
+import 'components/bundle_meta_data.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -99,30 +100,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   onCartButtonTap: () async {
                     final id = product?.id.toString();
                     if (id == null) return;
-
-                    final isInCart = await CartStorage.isInCart(id);
-
-                    if (!isInCart) {
-                      // Add item with qty = 1
-                      await CartStorage.addToCart(id, 1);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Item added to cart'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
+                    final wasInCart = await CartStorage.isInCart(id);
+                    if (wasInCart) {
+                      await CartStorage.updateCartQty(id, quantity);
                     } else {
-                      // Increase qty if already in cart
-                      await CartStorage.increaseQty(id);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Item quantity updated'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
+                      await CartStorage.addToCart(id, quantity);
                     }
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(wasInCart
+                            ? 'Cart quantity updated to $quantity'
+                            : '$quantity item(s) added to cart'),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -176,6 +168,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ),
                       const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppDefaults.padding,
+                        ),
+                        child: BundleMetaData(
+                          category: product!.category.name,
+                          brand: product!.brand.name,
+                          brandImage: product!.brand.image,
+                          stock: product!.stock,
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(AppDefaults.padding),
                         child: Column(

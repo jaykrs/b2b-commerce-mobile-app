@@ -683,6 +683,7 @@ class Brand {
   final int id;
   final String name;
   final String slug;
+  final String? image;
   final String createdAt;
   final String updatedAt;
 
@@ -690,6 +691,7 @@ class Brand {
     required this.id,
     required this.name,
     required this.slug,
+    this.image,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -698,9 +700,10 @@ class Brand {
     return Brand(
       id: json['id'] as int,
       name: json['name'] as String,
-      slug: json['slug'] as String,
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
+      slug: json['slug']?.toString() ?? '',
+      image: json['image']?.toString(),
+      createdAt: json['createdAt']?.toString() ?? '',
+      updatedAt: json['updatedAt']?.toString() ?? '',
     );
   }
 
@@ -708,6 +711,7 @@ class Brand {
         'id': id,
         'name': name,
         'slug': slug,
+        'image': image,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
       };
@@ -938,10 +942,7 @@ class PaymentMethod {
   });
 
   static const List<PaymentMethod> values = [
-    PaymentMethod(name: 'Net Banking', id: 'NB'),
-    PaymentMethod(name: 'Debit Card', id: 'DC'),
-    PaymentMethod(name: 'Credit Card', id: 'CC'),
-    PaymentMethod(name: 'UPI (Unified Payments Interface)', id: 'UPI'),
-    PaymentMethod(name: 'Offline', id: 'OFF'),
+    PaymentMethod(name: 'Online Payment', id: 'NB'),
+    PaymentMethod(name: 'Offline Payment', id: 'OFF'),
   ];
 }
