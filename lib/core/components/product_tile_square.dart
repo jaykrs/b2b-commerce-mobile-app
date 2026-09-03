@@ -102,6 +102,16 @@ class ProductTileSquare extends StatelessWidget {
                     ),
                 ],
               ),
+              if (data.mrp != null && data.mrp! > data.price) ...[
+                const SizedBox(height: 4),
+                Text(
+                  '${(((data.mrp! - data.price) / data.mrp!) * 100).round()}% OFF',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: const Color(0xFF1B7F4B),
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
+              ],
               if ((data.pkgUnit ?? '').trim().isNotEmpty) ...[
                 const SizedBox(height: 4),
                 Text('/${data.pkgUnit}',

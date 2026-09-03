@@ -146,14 +146,24 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
                         ?.copyWith(color: Colors.black),
                   ),
                   const SizedBox(width: 4),
-                  Text(
-                    '₹${widget.data.price.toStringAsFixed(0)}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                  ),
+                  if (widget.data.mrp != null && widget.data.mrp! > widget.data.price)
+                    Text(
+                      '₹${widget.data.mrp!.toStringAsFixed(0)}',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.black45,
+                          ),
+                    ),
                 ],
               ),
+              if (widget.data.mrp != null && widget.data.mrp! > widget.data.price)
+                Text(
+                  '${(((widget.data.mrp! - widget.data.price) / widget.data.mrp!) * 100).round()}% OFF',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: const Color(0xFF1B7F4B),
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
 
               const SizedBox(height: 8),
 

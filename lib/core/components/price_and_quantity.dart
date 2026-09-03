@@ -21,6 +21,9 @@ class PriceAndQuantityRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalPrice = currentPrice * quantity;
+    final discountPercent = orginalPrice > currentPrice
+        ? (((orginalPrice - currentPrice) / orginalPrice) * 100).round()
+        : 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,6 +48,16 @@ class PriceAndQuantityRow extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
+            if (discountPercent > 0) ...[
+              const SizedBox(width: AppDefaults.padding / 2),
+              Text(
+                '$discountPercent% OFF',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: const Color(0xFF1B7F4B),
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+            ],
             // const Spacer(),
             // Row(
             //   children: [
