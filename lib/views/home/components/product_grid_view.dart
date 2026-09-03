@@ -1,8 +1,8 @@
-import 'dart:convert';
+import 'package:EazySupplies/core/constants/apiClients.dart';
+import 'package:EazySupplies/core/constants/api_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../core/components/product_tile_square.dart';
 import '../../../core/constants/constants.dart';
@@ -27,17 +27,22 @@ class _ProductGridViewState extends State<ProductGridView> {
 
   Future<void> fetchProducts() async {
     try {
-      final response = await http.get(
-        Uri.parse('http://192.168.18.14:3000/api/products'),
+      final response = await ApiClient.dio.get(
+        ApiConfig.products,
+        queryParameters: const {
+          'status': 1,
+          'paginate': 100,
+        },
       );
 
-      if (response.statusCode == 200) {
-        //final List<dynamic> data = jsonDecode(response.body);
-        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-       
-        final List<dynamic> data = jsonResponse['data'];   
+      if (!mounted) return;
+      if (response.statusCode == 200 && response.data is Map) {
+        final responseData = Map<String, dynamic>.from(response.data);
+        final data = responseData['data'] as List<dynamic>? ?? [];
         setState(() {
-          products = data.map((e) => Product.fromJson(e)).toList();
+          products = data
+              .map((e) => Product.fromJson(Map<String, dynamic>.from(e)))
+              .toList();
           isLoading = false;
         });
       } else {
@@ -45,6 +50,7 @@ class _ProductGridViewState extends State<ProductGridView> {
         debugPrint('Failed to load products: ${response.statusCode}');
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() => isLoading = false);
       debugPrint('Error fetching products: $e');
     }
@@ -76,32 +82,3 @@ class _ProductGridViewState extends State<ProductGridView> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-
-// import '../../../core/components/product_tile_square.dart';
-// import '../../../core/constants/constants.dart';
-
-// class ProductGridView extends StatelessWidget {
-//   const ProductGridView({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: GridView.builder(
-//         padding: const EdgeInsets.only(top: AppDefaults.padding),
-//         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//           crossAxisCount: 2,
-//           mainAxisSpacing: 16,
-//           childAspectRatio: 0.85,
-//         ),
-//         itemCount: 16,
-//         itemBuilder: (context, index) {
-//           return ProductTileSquare(data: Dummy.products.first);
-//         },
-//       ),
-//     );
-//   }
-// }

@@ -26,6 +26,7 @@ class _PopularPacksState extends State<PopularPacks> {
 
   Future<void> loadTagProducts() async {
     final data = await getProductListBasedOnTags();
+    if (!mounted) return;
     setState(() {
       tags = data;
       isLoading = false;

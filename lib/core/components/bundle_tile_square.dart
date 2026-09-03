@@ -33,6 +33,7 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
   void loadQuantity() async {
     final qty = await CartStorage.getItemQty(widget.data.id.toString());
 
+    if (!mounted) return;
     setState(() {
       quantity = qty;
     });
@@ -40,18 +41,21 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
 
   /// ✅ Update quantity
   void onQuantityChanged(int newQty) async {
-    if (await CartStorage.isInCart(widget.data.id.toString())) {
-      await CartStorage.updateCartQty(widget.data.id.toString(), newQty);
-    } else if (await CartStorage.isNotInCart(widget.data.id.toString()) &&
-        newQty > 0) {
-      await CartStorage.addToCart(widget.data.id.toString(), newQty);
-    } else if (await CartStorage.isInCart(widget.data.id.toString()) &&
-        newQty == 0) {
-      await CartStorage.removeFromCart(widget.data.id.toString());
+    final productId = widget.data.id.toString();
+    final normalizedQty = newQty.clamp(0, widget.data.stock).toInt();
+    final isInCart = await CartStorage.isInCart(productId);
+
+    if (normalizedQty <= 0) {
+      if (isInCart) await CartStorage.removeFromCart(productId);
+    } else if (isInCart) {
+      await CartStorage.updateCartQty(productId, normalizedQty);
+    } else {
+      await CartStorage.addToCart(productId, normalizedQty);
     }
 
+    if (!mounted) return;
     setState(() {
-      quantity = newQty;
+      quantity = normalizedQty;
     });
   }
 
@@ -61,6 +65,7 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
       await CartStorage.removeFromCart(widget.data.id.toString());
     }
 
+    if (!mounted) return;
     setState(() {
       quantity = 0;
     });
@@ -125,7 +130,7 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
               /// Name
               Text(
                 widget.data.name,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.black,
@@ -146,7 +151,8 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
                         ?.copyWith(color: Colors.black),
                   ),
                   const SizedBox(width: 4),
-                  if (widget.data.mrp != null && widget.data.mrp! > widget.data.price)
+                  if (widget.data.mrp != null &&
+                      widget.data.mrp! > widget.data.price)
                     Text(
                       '₹${widget.data.mrp!.toStringAsFixed(0)}',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -156,7 +162,8 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
                     ),
                 ],
               ),
-              if (widget.data.mrp != null && widget.data.mrp! > widget.data.price)
+              if (widget.data.mrp != null &&
+                  widget.data.mrp! > widget.data.price)
                 Text(
                   '${(((widget.data.mrp! - widget.data.price) / widget.data.mrp!) * 100).round()}% OFF',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -171,9 +178,11 @@ class _BundleTileSquareState extends State<BundleTileSquare> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      onQuantityChanged(quantity + 1);
-                    },
+                    onPressed: quantity >= widget.data.stock
+                        ? null
+                        : () {
+                            onQuantityChanged(quantity + 1);
+                          },
                     icon: SvgPicture.asset(
                       AppIcons.addQuantity,
                       width: 24,

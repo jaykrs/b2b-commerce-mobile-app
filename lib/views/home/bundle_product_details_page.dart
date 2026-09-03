@@ -44,15 +44,18 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
 
       if (response.statusCode == 200) {
         final data = response.data['data'];
+        if (!mounted) return;
         setState(() {
-          product = Product.fromJson(data);
+          product = Product.fromJson(Map<String, dynamic>.from(data));
           isLoading = false;
         });
       } else {
+        if (!mounted) return;
         setState(() => isLoading = false);
       }
     } catch (e) {
       debugPrint('Error fetching product: $e');
+      if (!mounted) return;
       setState(() => isLoading = false);
     }
   }
@@ -67,7 +70,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
     final id = widget.productId.toString();
     final existingQty = await CartStorage.getItemQty(id);
 
-    if (existingQty > 0) {
+    if (mounted && existingQty > 0) {
       setState(() {
         quantity = existingQty;
       });
@@ -159,6 +162,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                                   // Add item with current quantity from parent state
                                   await CartStorage.addToCart(id, quantity);
 
+                                  if (!context.mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text('Item added to cart'),
@@ -169,6 +173,7 @@ class _BundleProductDetailsPageState extends State<BundleProductDetailsPage> {
                                   // Update quantity in cart to match current quantity in UI
                                   await CartStorage.updateCartQty(id, quantity);
 
+                                  if (!context.mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content:

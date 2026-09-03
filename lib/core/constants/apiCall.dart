@@ -31,19 +31,28 @@ Future<User> getUser() async {
   }
 }
 
-Future<List<Product>> getProducts() async {
+Future<List<Product>> getProducts({
+  Iterable<int>? ids,
+  bool rethrowErrors = false,
+}) async {
   try {
-    final response = await ApiClient.dio
-        .get(
-          ApiConfig.products,
-        )
-        .timeout(ApiConfig.timeout);
+    final productIds = ids?.where((id) => id > 0).toSet().toList() ?? [];
+    final response = await ApiClient.dio.get(
+      ApiConfig.products,
+      queryParameters: {
+        'status': 1,
+        'paginate': 100,
+        if (productIds.isNotEmpty) 'ids': productIds.join(','),
+      },
+    ).timeout(ApiConfig.timeout);
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = response.data;
-      final List<dynamic> data = jsonResponse['data'];
+    if (response.statusCode == 200 && response.data is Map) {
+      final jsonResponse = Map<String, dynamic>.from(response.data);
+      final data = jsonResponse['data'] as List<dynamic>? ?? [];
 
-      final bundles = data.map((e) => Product.fromJson(e)).toList();
+      final bundles = data
+          .map((e) => Product.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
 
       // ✅ STEP 3: Save API data locally
       //    await LocalStorageService.saveBundles(bundles);
@@ -55,6 +64,7 @@ Future<List<Product>> getProducts() async {
     }
   } catch (e) {
     debugPrint('API error: $e');
+    if (rethrowErrors) rethrow;
     return [];
   }
 }

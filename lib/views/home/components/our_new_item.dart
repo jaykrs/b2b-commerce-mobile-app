@@ -26,6 +26,7 @@ class _OurNewItemState extends State<OurNewItem> {
 
   Future<void> loadBundles() async {
     final data = await getProducts();
+    if (!mounted) return;
     setState(() {
       products = data;
       isLoading = false;

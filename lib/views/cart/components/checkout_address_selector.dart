@@ -31,6 +31,7 @@ class _AddressSelectorState extends State<AddressSelector> {
   Future<void> fetchAddresses() async {
     try {
       final data = await getAddress();
+      if (!mounted) return;
       setState(() {
         addressList = data;
         isLoading = false;
@@ -41,6 +42,7 @@ class _AddressSelectorState extends State<AddressSelector> {
         widget.onAddressSelected(data[0]);
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() => isLoading = false);
       debugPrint('Error fetching addresses: $e');
     }
@@ -87,7 +89,8 @@ class _AddressSelectorState extends State<AddressSelector> {
           ),
           const Padding(
             padding: EdgeInsets.all(16),
-            child: Center(child: Text('Add a delivery address to place your order.')),
+            child: Center(
+                child: Text('Add a delivery address to place your order.')),
           ),
         ],
       );

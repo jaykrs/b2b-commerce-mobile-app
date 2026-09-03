@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:EazySupplies/core/constants/apiClients.dart';
@@ -25,6 +27,20 @@ class CheckoutPage extends StatefulWidget {
 class _CheckoutPageState extends State<CheckoutPage> {
   Address? selectedAddress;
   bool isLoading = false;
+  String? _idempotencyKey;
+
+  double get orderAmount => widget.checkOutList.fold<double>(0, (sum, item) {
+        final price = (item['price'] as num?)?.toDouble() ?? 0;
+        final quantity = (item['quantity'] as num?)?.toInt() ?? 0;
+        return sum + (price * quantity);
+      });
+
+  String _newIdempotencyKey() {
+    final timestamp = DateTime.now().microsecondsSinceEpoch;
+    final random = Random.secure().nextInt(1 << 32);
+    return 'mobile-$timestamp-$random';
+  }
+
   void onAddressSelected(Address address) {
     setState(() {
       selectedAddress = address;
@@ -32,6 +48,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Future<void> placeOrder() async {
+    if (isLoading) return;
+
     final address = selectedAddress;
     final hasCompleteAddress = address != null &&
         address.address.trim().isNotEmpty &&
@@ -47,25 +65,38 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
     setState(() => isLoading = true);
     try {
+      _idempotencyKey ??= _newIdempotencyKey();
       final payload = {
-        "userId": 1,
         "status": "PENDING",
         "items": widget.checkOutList,
         "shipping": {
           "address": address.address.trim(),
           "city": address.city.trim(),
-          "state": "DL",
+          "state": "NA",
           "postalCode": address.zipcode.trim(),
-          "country": "IN"
-        }
+          "country": "India"
+        },
+        "payment": {
+          "method": "CREDIT_CARD",
+          "status": "PENDING",
+          "amount": orderAmount,
+        },
+        "jsonData": {"source": "mobile"},
       };
       final response = await ApiClient.dio
-          .post(ApiConfig.orders, data: payload)
+          .post(
+            ApiConfig.orders,
+            data: payload,
+            options: Options(
+              headers: {'Idempotency-Key': _idempotencyKey!},
+            ),
+          )
           .timeout(ApiConfig.timeout);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        CartStorage.clearCart();
-        // ignore: use_build_context_synchronously
+        await CartStorage.clearCart();
+        _idempotencyKey = null;
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Order placed successfully!'),
@@ -73,20 +104,31 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
         );
 
-        // Navigate after a short delay if you want
-        Future.delayed(const Duration(seconds: 1), () {
-          // ignore: use_build_context_synchronously
-          Navigator.pushNamed(context, AppRoutes.orderSuccessfull);
-        });
+        await Future<void>.delayed(const Duration(seconds: 1));
+        if (!mounted) return;
+        Navigator.pushReplacementNamed(context, AppRoutes.orderSuccessfull);
       }
     } catch (e) {
       debugPrint('Place order error: $e');
-      final apiMessage = e is DioException && e.response?.data is Map
-          ? e.response?.data['error']?.toString()
-          : null;
+      String? apiMessage;
+      if (e is DioException && e.response?.data is Map) {
+        final responseData = Map<String, dynamic>.from(e.response!.data);
+        apiMessage = (responseData['error'] ??
+                responseData['message'] ??
+                (responseData['details'] is Map
+                    ? responseData['details']['message']
+                    : null))
+            ?.toString();
+      }
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(apiMessage ?? 'Failed to place order')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            apiMessage ??
+                'We could not place the order. Your cart is still saved; please try again.',
+          ),
+        ),
+      );
     } finally {
       if (mounted) setState(() => isLoading = false);
     }
@@ -162,7 +204,9 @@ class BillingSummary extends StatelessWidget {
 
   double get subTotal {
     return checkOutList.fold(0.0, (sum, item) {
-      return sum + (item['price'] * item['quantity']);
+      final price = (item['price'] as num?)?.toDouble() ?? 0;
+      final quantity = (item['quantity'] as num?)?.toInt() ?? 0;
+      return sum + (price * quantity);
     });
   }
 
@@ -183,6 +227,8 @@ class BillingSummary extends StatelessWidget {
 
           // Items
           ...checkOutList.map((item) {
+            final price = (item['price'] as num?)?.toDouble() ?? 0;
+            final quantity = (item['quantity'] as num?)?.toInt() ?? 0;
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: Row(
@@ -190,11 +236,11 @@ class BillingSummary extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      '${item['name']}   x  ${item['quantity']}',
+                      '${item['name']}   x  $quantity',
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Text('₹${item['price'] * item['quantity']}'),
+                  Text('₹${(price * quantity).toStringAsFixed(2)}'),
                 ],
               ),
             );

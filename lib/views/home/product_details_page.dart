@@ -45,14 +45,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         },
       );
 
+      if (!mounted) return;
       setState(() {
-        product = Product.fromJson(response.data['data']);
+        product = Product.fromJson(
+          Map<String, dynamic>.from(response.data['data']),
+        );
         isLoading = false;
       });
     } on DioException catch (e) {
+      if (!mounted) return;
       setState(() => isLoading = false);
       debugPrint('Dio error: ${e.message}');
     } catch (e) {
+      if (!mounted) return;
       setState(() => isLoading = false);
       debugPrint('Unexpected error: $e');
     }
@@ -68,7 +73,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final id = widget.productId.toString();
     final existingQty = await CartStorage.getItemQty(id);
 
-    if (existingQty > 0) {
+    if (mounted && existingQty > 0) {
       setState(() {
         quantity = existingQty;
       });

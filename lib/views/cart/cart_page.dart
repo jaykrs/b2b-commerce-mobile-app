@@ -21,6 +21,8 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   List<Map<String, dynamic>> cartItems = [];
   bool isLoading = true;
+  String? loadError;
+  int unavailableItemCount = 0;
   List<Map<String, dynamic>> mergedCartItems = [];
   @override
   void initState() {
@@ -31,48 +33,62 @@ class _CartPageState extends State<CartPage> {
 // Updated loadCartWithProducts
 
   Future<void> loadCartWithProducts() async {
-    setState(() => isLoading = true);
+    if (!mounted) return;
+    setState(() {
+      isLoading = true;
+      loadError = null;
+    });
 
     final cart = await CartStorage.getCartItems();
-    final products = await getProducts();
+    if (cart.isEmpty) {
+      if (!mounted) return;
+      setState(() {
+        cartItems = [];
+        mergedCartItems = [];
+        unavailableItemCount = 0;
+        isLoading = false;
+      });
+      return;
+    }
 
-    mergedCartItems = cart.map((cartItem) {
-      final product = products.firstWhere(
-        (p) => p.id.toString() == cartItem['id'],
-        orElse: () => Product(
-            id: 0,
-            name: 'Unknown',
-            description: '',
-            price: 0,
-            stock: 0,
-            categoryId: 0,
-            brandId: 0,
-            tags: '',
-            sku: '',
-            skuType: '',
-            createdAt: '',
-            updatedAt: '',
-            dimension: '',
-            pkgUnit: '',
-            tax: 0,
-            unitRate: 0,
-            supplier: '',
-            status: false,
-            category: Category.empty(),
-            brand: Brand.empty(),
-            suppliers: [],
-            ordersCount: 0,
-            mrp: 0,
-            caseRate: 0),
+    try {
+      final productIds = cart
+          .map((item) => int.tryParse(item['id']?.toString() ?? ''))
+          .whereType<int>();
+      final products = await getProducts(
+        ids: productIds,
+        rethrowErrors: true,
       );
-
-      return {
-        'product': product,
-        'quantity': cartItem['itemQty'],
+      final productsById = {
+        for (final product in products) product.id: product
       };
-    }).toList();
+      final hydratedItems = [
+        for (final cartItem in cart)
+          if (productsById[int.tryParse(cartItem['id']?.toString() ?? '')]
+              case final product?)
+            {
+              'product': product,
+              'quantity': (cartItem['itemQty'] as num?)?.toInt() ?? 1,
+            },
+      ];
 
-    setState(() => isLoading = false);
+      if (!mounted) return;
+      setState(() {
+        cartItems = cart;
+        mergedCartItems = hydratedItems;
+        unavailableItemCount = cart.length - hydratedItems.length;
+        isLoading = false;
+      });
+    } catch (error) {
+      debugPrint('Cart product refresh failed: $error');
+      if (!mounted) return;
+      setState(() {
+        cartItems = cart;
+        loadError =
+            'We could not refresh your cart right now. Your saved items are safe.';
+        isLoading = false;
+      });
+    }
   }
 
 // Update quantity
@@ -121,8 +137,33 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) return const Center(child: CircularProgressIndicator());
+    if (loadError != null && mergedCartItems.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(AppDefaults.padding),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(loadError!, textAlign: TextAlign.center),
+              const SizedBox(height: AppDefaults.padding),
+              ElevatedButton(
+                onPressed: loadCartWithProducts,
+                child: const Text('Try again'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     if (mergedCartItems.isEmpty) {
-      return const Center(child: Text('Your cart is empty'));
+      return Center(
+        child: Text(
+          cartItems.isEmpty
+              ? 'Your cart is empty'
+              : 'The saved items in your cart are no longer available.',
+          textAlign: TextAlign.center,
+        ),
+      );
     }
 
     final totalPrice = getTotalPrice();
@@ -150,6 +191,14 @@ class _CartPageState extends State<CartPage> {
             child: Column(
               children: [
                 const Text('Product Cart'),
+                if (unavailableItemCount > 0)
+                  Padding(
+                    padding: const EdgeInsets.all(AppDefaults.padding),
+                    child: Text(
+                      '$unavailableItemCount saved cart item(s) are currently unavailable.',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ...mergedCartItems.map((item) {
                   final product = item['product'] as Product;
                   final qty = item['quantity'] as int;

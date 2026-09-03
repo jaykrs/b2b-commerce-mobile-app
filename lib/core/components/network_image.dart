@@ -45,53 +45,66 @@ class NetworkImageWithLoader extends StatelessWidget {
           ? Container(
               color: AppColors.scaffoldWithBoxBackground,
               alignment: Alignment.center,
-              child: const Icon(Icons.inventory_2_outlined, color: AppColors.placeholder, size: 42),
+              child: const Icon(
+                Icons.inventory_2_outlined,
+                color: AppColors.placeholder,
+                size: 42,
+              ),
             )
           : CachedNetworkImage(
-        fit: fit,
-        imageUrl: imageUrl,
-        httpHeaders: const {
-          "Accept": "image/*",
-        },
-
-        // ✅ Normal case (fast + cached)
-        imageBuilder: (context, imageProvider) => Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: imageProvider,
+              key: ValueKey(imageUrl),
               fit: fit,
-            ),
-          ),
-        ),
+              imageUrl: imageUrl,
+              httpHeaders: const {
+                "Accept": "image/*",
+              },
+              // Avoid the card fade while ensuring a reused grid cell never
+              // keeps the previous product image after its URL changes.
+              fadeInDuration: Duration.zero,
+              fadeOutDuration: Duration.zero,
 
-        // ✅ Loading skeleton
-        placeholder: (context, url) => const Skeleton(),
+              // ✅ Normal case (fast + cached)
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: fit,
+                  ),
+                ),
+              ),
 
-        // 🔥 FIX: Fallback when API fails
-        errorWidget: (context, url, error) {
-          return FutureBuilder<Uint8List?>(
-            future: fetchImageBytes(url),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Skeleton();
-              }
+              // ✅ Loading skeleton
+              placeholder: (context, url) => const Skeleton(),
 
-              if (snapshot.hasData) {
-                return Image.memory(
-                  snapshot.data!,
-                  fit: fit,
+              // 🔥 FIX: Fallback when API fails
+              errorWidget: (context, url, error) {
+                return FutureBuilder<Uint8List?>(
+                  future: fetchImageBytes(url),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Skeleton();
+                    }
+
+                    if (snapshot.hasData) {
+                      return Image.memory(
+                        snapshot.data!,
+                        fit: fit,
+                      );
+                    }
+
+                    return Container(
+                      color: AppColors.scaffoldWithBoxBackground,
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.inventory_2_outlined,
+                        color: AppColors.placeholder,
+                        size: 42,
+                      ),
+                    );
+                  },
                 );
-              }
-
-              return Container(
-                color: AppColors.scaffoldWithBoxBackground,
-                alignment: Alignment.center,
-                child: const Icon(Icons.inventory_2_outlined, color: AppColors.placeholder, size: 42),
-              );
-            },
-          );
-        },
-      ),
+              },
+            ),
     );
   }
 }

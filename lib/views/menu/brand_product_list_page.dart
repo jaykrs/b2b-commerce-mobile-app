@@ -1,9 +1,8 @@
-import 'dart:convert';
+import 'package:EazySupplies/core/constants/apiClients.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
-import 'package:http/http.dart' as http;
 
 import '../../core/components/app_back_button.dart';
 import '../../core/components/product_tile_square.dart';
@@ -35,16 +34,24 @@ class _CategoryProductPageState extends State<BrandProductPage> {
 
   Future<void> fetchCategoryProducts() async {
     try {
-      final response = await http.get(
-        Uri.parse('${ApiConfig.products}?brandId=${widget.brandId}'),
+      final response = await ApiClient.dio.get(
+        ApiConfig.products,
+        queryParameters: {
+          'status': 1,
+          'brand_ids': widget.brandId,
+          'paginate': 100,
+        },
       );
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-        final List<dynamic> data = jsonResponse['data'];
+      if (!mounted) return;
+      if (response.statusCode == 200 && response.data is Map) {
+        final responseData = Map<String, dynamic>.from(response.data);
+        final data = responseData['data'] as List<dynamic>? ?? [];
 
         setState(() {
-          products = data.map((e) => Product.fromJson(e)).toList();
+          products = data
+              .map((e) => Product.fromJson(Map<String, dynamic>.from(e)))
+              .toList();
           isLoading = false;
         });
       } else {
@@ -52,6 +59,7 @@ class _CategoryProductPageState extends State<BrandProductPage> {
         debugPrint('Failed to load brand products: ${response.statusCode}');
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() => isLoading = false);
       debugPrint('Error fetching brand products: $e');
     }
@@ -68,25 +76,29 @@ class _CategoryProductPageState extends State<BrandProductPage> {
           ? const Center(child: CircularProgressIndicator())
           : products.isEmpty
               ? const Center(child: Text('No products found'))
-              : Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppDefaults.padding),
-                  child: GridView.builder(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppDefaults.padding),
-                    itemCount: products.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 0.65, // adjust lower to reduce overflow
-                    ),
-                    scrollCacheExtent: const ScrollCacheExtent.pixels(900),
-                    itemBuilder: (context, index) {
-                      return ProductTileSquare(data: products[index]);
-                    },
-                  )),
+              : LayoutBuilder(
+                  builder: (context, constraints) {
+                    final crossAxisCount = constraints.maxWidth >= 1200
+                        ? 4
+                        : constraints.maxWidth >= 800
+                            ? 3
+                            : 2;
+                    return GridView.builder(
+                      padding: const EdgeInsets.all(AppDefaults.padding),
+                      itemCount: products.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 0.68,
+                      ),
+                      scrollCacheExtent: const ScrollCacheExtent.pixels(900),
+                      itemBuilder: (context, index) {
+                        return ProductTileSquare(data: products[index]);
+                      },
+                    );
+                  },
+                ),
     );
   }
 }
