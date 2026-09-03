@@ -1,5 +1,6 @@
 import 'package:EazySupplies/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:EazySupplies/core/constants/apiCall.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 
@@ -72,6 +73,7 @@ class _MenuPageState extends State<MenuPage> {
                             childAspectRatio:
                                 0.8, // makes tile taller if needed
                           ),
+                          scrollCacheExtent: const ScrollCacheExtent.pixels(900),
                           itemCount: categories.length,
                           itemBuilder: (context, index) {
                             final category = categories[index];

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:EazySupplies/core/constants/api_config.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
@@ -81,6 +82,7 @@ class _CategoryProductPageState extends State<BrandProductPage> {
                       crossAxisSpacing: 16,
                       childAspectRatio: 0.65, // adjust lower to reduce overflow
                     ),
+                    scrollCacheExtent: const ScrollCacheExtent.pixels(900),
                     itemBuilder: (context, index) {
                       return ProductTileSquare(data: products[index]);
                     },

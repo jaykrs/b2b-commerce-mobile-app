@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:EazySupplies/core/models/userModel.dart';
 import 'package:http/http.dart' as http;
 
@@ -64,6 +65,7 @@ class _ProductGridViewState extends State<ProductGridView> {
                     crossAxisSpacing: 16,
                     childAspectRatio: 0.85,
                   ),
+                  scrollCacheExtent: const ScrollCacheExtent.pixels(900),
                   itemCount: products.length,
                   itemBuilder: (context, index) {
                     return ProductTileSquare(
